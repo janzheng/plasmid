@@ -1,4 +1,9 @@
 
+
+// DEPRECATED!
+// Use airfetch/getTable, checkExistence, or getTables
+
+
 import Cytosis from 'cytosis';
 import { cacheGet, cacheSet, cacheClear } from "./cache"
 
