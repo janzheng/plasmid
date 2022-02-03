@@ -144,7 +144,8 @@ export const checkExistence = async (keyword, tableName, fieldName = "Email") =>
 
 // let kw = await getTable('Keywords', { view: 'Sorted' })
 export const getTable = async (tableName, options) => {
-  const _cache = `getTable-${tableName}`
+  // const _cache = `getTable-${tableName}`
+  const _cache = `getTable-${tableName}-${JSON.stringify(options)}`
   if (cacheCheck(_cache)) return cacheCheck(_cache)
 
   const cytosis = await new Cytosis({
@@ -268,3 +269,17 @@ export const saveRecord = async ({ keyword, fieldName }, tableName, payload, tab
 
 
 
+
+
+// takes a cytosis.results['table'] and flattens the '.fields' into the objects. Keeps .id (can get)
+export const flattenTable = (table) => {
+  let newtable = []
+  // clean up the cytosis table by only keeping id, fields, and basics of _table
+  table.map(entry => {
+    newtable.push({
+      ...entry.fields,
+      id: entry.id,
+    })
+  })
+  return newtable
+}
