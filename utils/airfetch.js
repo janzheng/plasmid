@@ -3,13 +3,17 @@
     airfetch.js
 
     - wrappers and helpers for cytosis
+    - flattenRecord / flattenTable; ability to turn off cache on tables
 
-    last updated: 1/11/2022
+    last updated: 2/5/2022
 
 */
 
 import Cytosis from 'cytosis';
 import { cacheSet, cacheCheck } from "./cache"
+
+import { config } from "dotenv"
+config(); // https://github.com/sveltejs/sapper/issues/122
 
 
 // NOTE: These need to be set @ the project-level .env
@@ -71,28 +75,27 @@ export const getContent = async (
       tables: ['Content'],
       options: { 'view': view }
     }], 
-    jsonLocation = '../../../static/data/content.json'
+    // jsonLocation = '../../../static/data/content.json'
   ) => {
 
   let content
   try {
-    content = require(jsonLocation)
+    // content = require(jsonLocation)
   } catch (err) { // do nothing if file doesn't exist // _err(err)
     console.error('content:', err)
   }
 
-  console.log('[Content] Cache Mode:', process.env.CACHE)
+  // console.log('[Content] Cache Mode:', process.env.CACHE)
 
-  if (process.env.CACHE && process.env.CACHE == 'Loader' && content) {
-    console.log('[Content] -- Loader Mode')
-    // TODO: create Notion + Airtable compatible return schema; as a wrapper
-    return content // json file should be in form of cytosis.results  
-  } else {
-    console.log('[Content] Using Airtable as CMS')
-  }
+  // if (process.env.CACHE && process.env.CACHE == 'Loader' && content) {
+  //   console.log('[Content] -- Loader Mode')
+  //   // TODO: create Notion + Airtable compatible return schema; as a wrapper
+  //   return content // json file should be in form of cytosis.results  
+  // } else {
+  //   console.log('[Content] Using Airtable as CMS')
+  // }
 
   // TODO: get from Notion?
-
   return await getTables(bases)
 }
 
@@ -143,10 +146,9 @@ export const checkExistence = async (keyword, tableName, fieldName = "Email") =>
 
 
 // let kw = await getTable('Keywords', { view: 'Sorted' })
-export const getTable = async (tableName, options) => {
-  // const _cache = `getTable-${tableName}`
+export const getTable = async (tableName, options, useCache=true) => {
   const _cache = `getTable-${tableName}-${JSON.stringify(options)}`
-  if (cacheCheck(_cache)) return cacheCheck(_cache)
+  if (useCache && cacheCheck(_cache)) return cacheCheck(_cache)
 
   const cytosis = await new Cytosis({
     apiKey: apiEditorKey,
@@ -163,6 +165,7 @@ export const getTable = async (tableName, options) => {
   cacheSet(_cache, cytosis.results[tableName]) // short cache to pings
   return cytosis.results[tableName]
 }
+
 
 
 
@@ -225,6 +228,8 @@ const getTables = async (bases = [{
 // tableName: name of table
 /* examples of Payload (partial/translation of the data obj)
 
+  ** if recordId given, will overwrite existing record instead! 
+
   payload: {
     'Message': data['comment'],
     'Attendee': data['recordId'] ? [data['recordId']] : null,
@@ -241,6 +246,7 @@ const getTables = async (bases = [{
 
 */
 export const addRecord = async (tableName, payload, recordId = null, tableOptions) => {
+
   const cytosis = await Cytosis.save({
     apiKey: apiEditorKey,
     baseId: baseId,
@@ -252,6 +258,8 @@ export const addRecord = async (tableName, payload, recordId = null, tableOption
 
   return cytosis
 }
+
+
 
 // if record exists (based on the keyword and field name), add to existing one, otherwise create a new
 export const saveRecord = async ({ keyword, fieldName }, tableName, payload, tableOptions = { insertOptions: ['typecast'] }) => {
@@ -275,11 +283,52 @@ export const saveRecord = async ({ keyword, fieldName }, tableName, payload, tab
 export const flattenTable = (table) => {
   let newtable = []
   // clean up the cytosis table by only keeping id, fields, and basics of _table
-  table.map(entry => {
-    newtable.push({
-      ...entry.fields,
-      id: entry.id,
-    })
+  table.map(record => {
+    newtable.push(flattenRecord(record))
   })
   return newtable
+}
+
+export const flattenRecord = (record) => {
+  return {
+    ...record.fields,
+    id: record.id,
+  }
+}
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+// 
+//  API functions
+// 
+
+/*  
+  wrapper for getContent for SvelteKit API get
+  paste this as api/content.js:
+
+  // gets content from the Content table
+  import { getSiteContent } from '@plasmid/utils/airfetch'
+  export const get = getSiteContent // sveltekit post api
+
+*/
+
+export const getSiteContent = async() => {
+  let content = await getContent([{
+    tables: ['Content'],
+    options: { 'view': view }
+  }])
+
+  return {body: content}
 }
