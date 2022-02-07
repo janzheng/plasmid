@@ -2,6 +2,7 @@
   "name": "plasmid",
   "version": "0.0.1",
   "description": "",
+  "type": "module",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
     "commit": "git add . -A; git commit; git push origin main"
