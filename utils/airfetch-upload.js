@@ -24,7 +24,7 @@ export const drive = _deta.Drive("tmpImages");
   usage example in the post() 
 
 */
-export const handleFile = async (file, originUrl, tableName, fieldName = 'Attachments') => {
+export const handleFile = async (file, originUrl, tableName, fieldName = 'Attachments', path ='/deta/airtable/') => {
   const buffer = await file.arrayBuffer();
   const uintarr = new Uint8Array(buffer)
 
@@ -35,7 +35,8 @@ export const handleFile = async (file, originUrl, tableName, fieldName = 'Attach
 
   const record = await addRecord(
     tableName,
-    { [fieldName]: [{ url: `${originUrl}/deta/airtable/${fileref}` }], },
+    // localhost:1234/deta/airtable/filename
+    { [fieldName]: [{ url: `${originUrl}${path}${fileref}` }], },
     null,
     { insertOptions: ['typecast'], },
   )

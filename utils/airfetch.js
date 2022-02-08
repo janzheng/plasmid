@@ -10,7 +10,7 @@
 */
 
 import Cytosis from 'cytosis';
-import { cacheSet, cacheCheck } from "./cache"
+import { cacheSet, cacheCheck } from "./cache.js"
 
 import { config } from "dotenv"
 config(); // https://github.com/sveltejs/sapper/issues/122
