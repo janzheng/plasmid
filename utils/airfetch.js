@@ -114,9 +114,9 @@ export const getContent = async (
 
 // check if a field (e.g. email) exists in the Email field in a specified
 // for not adding duplicates
-export const checkExistence = async (keyword, tableName, fieldName = "Email") => {
+export const checkExistence = async (keyword, tableName, fieldName = "Email", useCache = true) => {
   const _cache = `checkExistence-${keyword}-${tableName}-${fieldName}`
-  if (cacheCheck(_cache)) return cacheCheck(_cache)
+  if (useCache && cacheCheck(_cache)) return cacheCheck(_cache)
 
   const cytosis = await new Cytosis({
     apiKey: apiEditorKey,
@@ -147,6 +147,7 @@ export const checkExistence = async (keyword, tableName, fieldName = "Email") =>
 
 // let kw = await getTable('Keywords', { view: 'Sorted' })
 export const getTable = async (tableName, options, useCache=true) => {
+
   const _cache = `getTable-${tableName}-${JSON.stringify(options)}`
   if (useCache && cacheCheck(_cache)) return cacheCheck(_cache)
 

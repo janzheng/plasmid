@@ -7,8 +7,9 @@
 				{#if description}<label class={`Formlet-description ${styles['descriptionClasses']||''}`} for={id}>{@html marked(description)}</label>{/if}
 			</div>
 	  </slot>
-		<Select items={options} bind:listOpen={listOpen} bind:this={ref} {...selectOptions} bind:selectedValue={value} on:select={handleInput}/>
-
+    {#if value}
+  		<Select items={options} bind:listOpen={listOpen} bind:this={ref} {...selectOptions} bind:selectedValue={value} on:select={handleInput}/>
+    {/if}
 		<!-- 
 			<Select items={options} 
 				isCreatable={true} 
@@ -44,6 +45,13 @@
 	onMount(async () => {
 		if($form[id]) {
 			value = $form[id]
+
+      if(value && value.length > 0) {
+        value.map((val,i) => {
+          if(!val) // remove empty ones as a guard
+            value.splice(i)
+        })
+      }
 		}
 	})
 
