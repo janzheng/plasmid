@@ -202,13 +202,14 @@ export const getTable = async (tableName, options, useCache=true) => {
 
   return value is an Object with table names as Keys
 */
-const getTables = async (bases = [{
+export const getTables = async (bases = [{
   tables:  ['Content'], 
-  options: {'view': view}
+  options: {'view': view},
+  useCache: true
 }]) => {
 
   const _cache = `getTables-${view}-${JSON.stringify(bases)}`
-  if (cacheCheck(_cache)) return cacheCheck(_cache)
+  if (useCache && cacheCheck(_cache)) return cacheCheck(_cache)
 
   let _result = await new Cytosis({
     apiKey: apiEditorKey,
