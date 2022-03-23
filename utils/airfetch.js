@@ -205,8 +205,7 @@ export const getTable = async (tableName, options, useCache=true) => {
 export const getTables = async (bases = [{
   tables:  ['Content'], 
   options: {'view': view},
-  useCache: true
-}]) => {
+}], useCache = true) => {
 
   const _cache = `getTables-${view}-${JSON.stringify(bases)}`
   if (useCache && cacheCheck(_cache)) return cacheCheck(_cache)
