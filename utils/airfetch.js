@@ -142,7 +142,39 @@ export const checkExistence = async (keyword, tableName, fieldName = "Email", us
   return null
 }
 
+// future name of checkExistence
+export const getRecord = async (keyword, tableName, fieldName, useCache) => {
+  return checkExistence(keyword, tableName, fieldName, useCache)
+}
 
+
+// export const getRecordFromTables = async (keyword, tables, fieldName = "Email", useCache = true) => {
+//   const _cache = `checkExistence-${keyword}-${tableName}-${fieldName}`
+//   if (useCache && cacheCheck(_cache)) return cacheCheck(_cache)
+
+//   const cytosis = await new Cytosis({
+//     apiKey: apiEditorKey,
+//     baseId: baseId,
+//     bases: [
+//       {
+//         tables, // ["Abstracts", "Reviewers"]
+//         options: {
+//           "maxRecords": 1,
+//           keyword: `${keyword}`,
+//           matchKeywordWithField: fieldName,
+//           matchStyle: 'exact',
+//         }
+//       },
+//     ],
+//     routeDetails: '[api/getters/checkExistence]',
+//   })
+//   if (cytosis.results[tableName].length > 0) {
+//     const record = cytosis.results[tableName][0]
+//     cacheSet(_cache, record) // short cache to pings
+//     return record
+//   }
+//   return null
+// }
 
 
 // let kw = await getTable('Keywords', { view: 'Sorted' })
