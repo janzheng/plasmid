@@ -1275,10 +1275,10 @@ cross-fetch@^3.0.6, cross-fetch@^3.1.0:
   dependencies:
     node-fetch "2.6.7"
 
-cytosis@^0.0.5:
-  version "0.0.5"
-  resolved "https://registry.yarnpkg.com/cytosis/-/cytosis-0.0.5.tgz#9890b4b9c9e745fbd8bb5efcb95eebcb29c67d70"
-  integrity sha512-4VD5ZvdEP5ZZTuAfMCV47206W5mzRelDk/YG9lUE4b1BTN21mJYjrqP/M5vP0qxvX85uwy24N4/MH/HA7T7fLg==
+cytosis@^0.0.602:
+  version "0.0.602"
+  resolved "https://registry.yarnpkg.com/cytosis/-/cytosis-0.0.602.tgz#bb2bcd377e3e448b478b81d679b2f3fd8450e8d5"
+  integrity sha512-YmdpGwazm0WnXCQ/rlaKQgJBjVs4CBRYBr15QTDLkAvQzulwZXQWUPcEDy2xkVJRhiyOWo5oZKYdkEWi/+3XvQ==
   dependencies:
     airtable "^0.11.1"
 
