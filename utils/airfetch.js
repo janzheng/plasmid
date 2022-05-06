@@ -118,7 +118,7 @@ export const checkExistence = async (keyword, tableName, fieldName = "Email", us
   const _cache = `checkExistence-${keyword}-${tableName}-${fieldName}`
   if (useCache && cacheCheck(_cache)) return cacheCheck(_cache)
 
-  const cytosis = await new Cytosis({
+  const cytosis = await new Cytosis.default({
     apiKey: apiEditorKey,
     baseId: baseId,
     bases: [
@@ -152,7 +152,7 @@ export const getRecord = async (keyword, tableName, fieldName, useCache) => {
 //   const _cache = `checkExistence-${keyword}-${tableName}-${fieldName}`
 //   if (useCache && cacheCheck(_cache)) return cacheCheck(_cache)
 
-//   const cytosis = await new Cytosis({
+//   const cytosis = await new Cytosis.default({
 //     apiKey: apiEditorKey,
 //     baseId: baseId,
 //     bases: [
@@ -183,7 +183,7 @@ export const getTable = async (tableName, options, useCache=true) => {
   const _cache = `getTable-${tableName}-${JSON.stringify(options)}`
   if (useCache && cacheCheck(_cache)) return cacheCheck(_cache)
 
-  const cytosis = await new Cytosis({
+  const cytosis = await new Cytosis.default({
     apiKey: apiEditorKey,
     baseId: baseId,
     bases: [
@@ -241,8 +241,9 @@ export const getTables = async (bases = [{
 
   const _cache = `getTables-${view}-${JSON.stringify(bases)}`
   if (useCache && cacheCheck(_cache)) return cacheCheck(_cache)
+  
 
-  let _result = await new Cytosis({
+  let _result = await new Cytosis.default({
     apiKey: apiEditorKey,
     baseId: baseId,
     bases: bases,
