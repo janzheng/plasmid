@@ -23,7 +23,8 @@ const apiEditorKey = process.env.AIRTABLE_PRIVATE_API
 const baseId = process.env.AIRTABLE_PRIVATE_BASE
 
 
-
+// adapters and linkers will have problems with this
+const cytosis = (Cytosis && Cytosis.default) || Cytosis 
 
 
 
@@ -118,7 +119,7 @@ export const checkExistence = async (keyword, tableName, fieldName = "Email", us
   const _cache = `checkExistence-${keyword}-${tableName}-${fieldName}`
   if (useCache && cacheCheck(_cache)) return cacheCheck(_cache)
 
-  const cytosis = await new Cytosis.default({
+  const cytosis = await new cytosis({
     apiKey: apiEditorKey,
     baseId: baseId,
     bases: [
@@ -152,7 +153,7 @@ export const getRecord = async (keyword, tableName, fieldName, useCache) => {
 //   const _cache = `checkExistence-${keyword}-${tableName}-${fieldName}`
 //   if (useCache && cacheCheck(_cache)) return cacheCheck(_cache)
 
-//   const cytosis = await new Cytosis.default({
+//   const cytosis = await new cytosis({
 //     apiKey: apiEditorKey,
 //     baseId: baseId,
 //     bases: [
@@ -183,7 +184,7 @@ export const getTable = async (tableName, options, useCache=true) => {
   const _cache = `getTable-${tableName}-${JSON.stringify(options)}`
   if (useCache && cacheCheck(_cache)) return cacheCheck(_cache)
 
-  const cytosis = await new Cytosis.default({
+  const cytosis = await new cytosis({
     apiKey: apiEditorKey,
     baseId: baseId,
     bases: [
@@ -243,7 +244,7 @@ export const getTables = async (bases = [{
   if (useCache && cacheCheck(_cache)) return cacheCheck(_cache)
   
 
-  let _result = await new Cytosis.default({
+  let _result = await new cytosis({
     apiKey: apiEditorKey,
     baseId: baseId,
     bases: bases,
