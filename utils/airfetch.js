@@ -283,7 +283,7 @@ export const getTables = async (bases = [{
 */
 export const addRecord = async (tableName, payload, recordId = null, tableOptions) => {
 
-  const cytosis = await Cytosis.save({
+  const cytosis = await cytosis.save({
     apiKey: apiEditorKey,
     baseId: baseId,
     tableName: tableName,
