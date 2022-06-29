@@ -94,6 +94,7 @@ export const getFile = async(name) => {
 // 
 
 /*  
+  - doesn't work so well on Deta micros or Vercel b/c of file limits
   - takes a formdata post request and adds it to deta
 
   paste this as airtable/index.js:
