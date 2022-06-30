@@ -40,23 +40,84 @@ export async function _getter({ url }) {
   export const get = grabber(data)
 
 */
-export const grabbyGetter = (data, config) => {
+export const getGrabby = (data, config) => {
   const _getter = async ({ url }) => {
     let id = url.searchParams.get('id')
     if (data && id && data[id]) {
 
       // get blocks from whimsy notion, w/o client needing to get block values
       if (config) {
-        let type = config.sources.find(f=>f.name==id).type
-
-        console.log('returning data:', type, id, getBlockValues(data[id]))
-        if (type == "whimsy")
+        let source = config.sources.find(f => f.name == id)?.type
+        let type = source.type
+        if (type == "whimsy" && !source.inputs.ids.includes('collection'))
           return { body: getBlockValues(data[id]) }
       }
 
       return { body: data[id] }
     }
     return { status: 400 }
+  }
+
+  return _getter
+}
+
+
+
+
+export const getGrabbyMulti = (data, config) => {
+  const _getter = async ({ url }) => {
+    let id = url.searchParams.get('id')
+
+    // console.log('grabby endpoint ::', id)
+    if (!id)
+      return { status: 400 }
+
+    let arr = id.split(',')
+
+    if (arr.length > 1) {
+      let body = {}
+
+      arr.map(id => {
+        let item = data[id]
+        if (config) {
+          let source = config.sources.find(f => f.name == id)?.type
+          let type = source.type
+          // TODO: THIS FAILS ON COLLECTION WHIMSIES!!!
+          if (type == "whimsy" && !source.inputs.ids.includes('collection'))
+            item = getBlockValues(data[id])
+        }
+        
+        body = { ...body, [id]: item }
+      })
+      // console.log('[grabby] : body :', id)
+      return {
+        body: body,
+        headers: {
+          "content-type": "application/json",
+          "accept": "application/json",
+        }
+      }
+    }
+    else if (data && id && data[id]) {
+      // console.log('[grabby] : data[id] :', id)
+
+      // get blocks from whimsy notion, w/o client needing to get block values
+      if (config) {
+        let type = config.sources.find(f => f.name == id).type
+        if (type == "whimsy")
+          return { body: getBlockValues(data[id]) }
+      }
+
+      return {
+        body: data[id],
+        headers: {
+          "content-type": "application/json",
+          "accept": "application/json",
+        }
+      }
+    }
+    return { body: {} }
+  // return { status: 400 }
   }
 
   return _getter

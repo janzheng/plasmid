@@ -368,3 +368,27 @@ export const getSiteContent = async() => {
 
   return {body: content}
 }
+
+export const getFlatSiteContent = async () => {
+  let content = await getSiteContent()
+  return { body: { Content: flattenTable(content.body.Content) } }
+}
+
+
+// takes a {url, tableName, fieldName} object and attempts to insert that into an airtable location
+export const postToAirtable = async ({ request, url }) => {
+  const data = await request.json()
+
+  const record = await addRecord(
+    data.tableName,
+    { [data.fieldName]: [{ url: data.url }], },
+    null,
+    { insertOptions: ['typecast'], },
+  )
+
+  return {
+    body: record,
+  };
+
+};
+

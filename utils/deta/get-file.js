@@ -10,7 +10,7 @@ import { fileTypeFromBuffer } from 'file-type'
 // Server-side Examples
 // 
 
-export const getFile = async (name) => {
+export const getFileData = async (name) => {
 
   const file = await getDrive().get(name);
   const fileArrayBuffer = await file.arrayBuffer();
@@ -31,10 +31,10 @@ export const getFile = async (name) => {
 
 // use this for endpoints by setting get equal to _get
 // GET /deta
-export const getFile_getter = async (request) => {
+export const getFile = async (request) => {
 
   const name = request.params.name; //request.url.searchParams.get('name');
-  let data = await getFile(name)
+  let data = await getFileData(name)
 
   return {
     body: data.buffer,
