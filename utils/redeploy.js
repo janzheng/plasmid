@@ -8,12 +8,14 @@ export const redeploy = ({ url }) => {
   let secret = url.searchParams.get('secret')
   console.log('Secret:', secret, '.env secret:', process.env.VITE_DEPLOY_SECRET)
   if (process.env.VITE_DEPLOY_SECRET && secret == process.env.VITE_DEPLOY_SECRET) {
+    console.log('Redeploying with secret')
     return {
       status: 302,
       headers: { Location: process.env.VITE_DEPLOY }
     }
   }
-  else if (typeof(process.env.VITE_DEPLOY_SECRET) == 'undefined') {
+  else if (typeof (process.env.VITE_DEPLOY_SECRET) == 'undefined') {
+    console.log('Redeploying without secret')
     return {
       status: 302,
       headers: { Location: process.env.VITE_DEPLOY }
@@ -21,6 +23,7 @@ export const redeploy = ({ url }) => {
   }
 
   // bad request // secret didn't work
+  console.log('Incorrect secret')
   return { status: 400, body: 'incorrect secret' }
 }
 
