@@ -38,7 +38,7 @@ export const Store = store.writable({})
 
 // gets the record
 export const _get = (name, table = 'Content') => {
-  console.log('get', name, store.get(Store), store.get(Store)[table])
+  // console.log('get', name, store.get(Store), store.get(Store)[table])
   return store.get(Store) && store.get(Store)[table] && store.get(Store)[table].find(e => e['Name'] == name)
 }
 
