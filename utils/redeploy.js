@@ -6,6 +6,7 @@
 
 export const redeploy = ({ url }) => {
   let secret = url.searchParams.get('secret')
+  console.log('secret:', secret, 'env secret:', process.env.VITE_DEPLOY_SECRET)
   if (process.env.VITE_DEPLOY_SECRET && secret == process.env.VITE_DEPLOY_SECRET) {
     return {
       status: 302,
