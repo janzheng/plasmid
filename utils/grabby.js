@@ -68,7 +68,8 @@ export const getGrabbyMulti = (data, config) => {
   const _getter = async ({ url }) => {
     let id = url.searchParams.get('id')
 
-    // console.log('grabby endpoint ::', id)
+    console.log('grabby multi endpoint ::', id)
+
     if (!id)
       return { status: 400 }
 
@@ -80,11 +81,14 @@ export const getGrabbyMulti = (data, config) => {
       arr.map(id => {
         let item = data[id]
         if (config) {
-          let source = config.sources.find(f => f.name == id)?.type
+          let source = config.sources.find(f => f.name == id)
           let type = source.type
           // TODO: THIS FAILS ON COLLECTION WHIMSIES!!!
-          if (type == "whimsy" && !source.inputs.ids.includes('collection'))
+          if (type == "whimsy" && !source.inputs.ids?.join().includes('collection')) {
             item = getBlockValues(data[id])
+            // console.log('whatttt:', id, item, source.inputs)
+            console.log('whatttt:', id, source.inputs, source.inputs.ids?.join())
+          }
         }
         
         body = { ...body, [id]: item }
@@ -99,11 +103,12 @@ export const getGrabbyMulti = (data, config) => {
       }
     }
     else if (data && id && data[id]) {
-      // console.log('[grabby] : data[id] :', id)
+      console.log('[grabby] : data[id] :', id)
 
       // get blocks from whimsy notion, w/o client needing to get block values
       if (config) {
         let type = config.sources.find(f => f.name == id).type
+        // if (type == "whimsy" && !source.inputs.ids.includes('collection'))
         if (type == "whimsy")
           return { body: getBlockValues(data[id]) }
       }
