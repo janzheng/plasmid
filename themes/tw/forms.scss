@@ -1,0 +1,98 @@
+// forms
+
+
+// form {
+
+// multiple select
+// somehow these can't be encapsulated in form-solid — specificity and tw / nesting order problem
+.form-checkbox,
+input[type='checkbox'] {
+  @extend .input-checkers;
+}
+
+.form-radio,
+input[type='radio'] {
+  @extend .input-checkers;
+  border-radius:100%;
+}
+
+// .form-solid {
+input[type='text'],
+input[type='url'],
+input[type='email'],
+input[type='password'],
+input[type='date'],
+input[type='datetime-local'],
+input[type='month'],
+input[type='number'],
+input[type='search'],
+input[type='time'],
+input[type='week'],
+input[type='tel'],
+input[type='search'] {
+  @extend .input-block;
+  @extend .input-borders;
+}
+
+// textarea, 
+textarea,
+.form-textarea, ._form-textarea,
+.contenteditable {
+  @extend .input-borders;
+  @apply p-4;
+}
+
+// ._form-textarea {
+//   @apply w-full rounded-md bg-gray-100 border-transparent border-2 border-transparent hover:border-blue-500 hover:border-2 focus:outline-none focus:ring-0 transition ease-in-out
+// }
+
+select,
+select[multiple],
+.form-select,
+.form-multiselect {
+  @extend .input-borders;
+}
+
+// }
+// }
+
+
+
+
+.input-block {
+  @apply mt-1 block w-full
+}
+
+.input-borders {
+  @apply rounded-md bg-white border-blue-200 focus:border-blue-500 border-2 focus:bg-white focus:ring-0 hover:border-blue-500 hover:transition-all ease-in-out;
+}
+
+.input-checkers {
+  @apply bg-gray-100 border-blue-200 focus:border-blue-500 border-2 focus:bg-white focus:ring-0 hover:border-blue-500 hover:transition-all ease-in-out;
+}
+
+.input-formlet-outline {
+  // no hover styles
+  @apply rounded-md bg-white border-blue-100 focus:border-blue-500 border-2 focus:bg-white focus:ring-0;
+}
+
+.input-formlet-outline-hover {
+  // no hover styles
+  @extend .input-formlet-outline;
+  @apply hover:border-blue-500 hover:transition-all ease-in-out cursor-pointer;
+}
+
+.input-formlet-checkers-label {
+  // for radio, checkboxes
+  @extend .input-formlet-outline;
+  @extend .input-formlet-outline-hover;
+  @apply block w-full py-2 px-4;
+
+  &,
+  * {
+    @apply cursor-pointer;
+  }
+}
+
+
+

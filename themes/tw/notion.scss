@@ -1,0 +1,50 @@
+.notion-toggle summary {
+  white-space: break-spaces !important;
+  cursor: pointer;
+}
+
+.notion-callout {
+  // .notion-blank {
+  //   padding: 0;
+  //   height: 0;
+  // }
+}
+
+.notion-callout h1,
+.notion-callout h2,
+.notion-callout h3 {
+  padding-top: 0;
+  margin-top: 0;
+}
+
+// specifically for narrative pages
+.notion-column h4,
+h3~h4 {
+  padding-top: 0;
+}
+
+// responsive side-by-side notion panels
+.notion-column {
+  @media screen and (max-width: 640px) {
+    width: 100% !important;
+
+    * {
+      width: 100% !important;
+    }
+  }
+}
+
+
+
+
+.notion-list-disc li {
+  margin-top: 0.6rem !important;
+  margin-bottom: 0.6rem !important;
+}
+
+.notion-callout-children {
+  & *:first-child {
+    margin-top: 0;
+    padding-top: 0;
+  }
+}

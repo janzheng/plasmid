@@ -31,6 +31,7 @@
     "marked": "^4.0.12",
     "node-cache": "^5.1.2",
     "nodemailer": "^6.6.2",
+    "pocketbase": "^0.1.2",
     "sanitize-html": "^2.4.0"
   },
   "dependencies": {

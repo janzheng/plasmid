@@ -1,0 +1,41 @@
+.Card {
+  @apply rounded-md mb-2 p-4 border-2 border-transparent;
+
+  &:last-of-type {
+    // @apply mb-0;
+  }
+}
+
+.__outline {}
+
+.Card-light {
+  @extend .Card;
+  @apply border-gray-200;
+}
+
+.Card-shadow {
+  @extend .Card;
+  @apply shadow-md;
+}
+
+.Card-active {
+  @extend .Card;
+  @apply border-blue-500;
+}
+
+.Card-success {
+  @extend .Card;
+  @apply border-green-500 text-green-900 bg-green-50;
+}
+
+.Card-warning {
+  @extend .Card;
+  @apply border-orange-500 text-orange-900 bg-orange-50;
+}
+
+.Card-danger,
+.Card-error {
+  @extend .Card;
+  @apply border-red-500 text-red-900 bg-red-50;
+}
+

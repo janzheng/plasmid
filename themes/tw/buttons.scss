@@ -1,0 +1,24 @@
+.Btn-solid {
+  @apply block px-4 rounded-md bg-blue-600 hover:bg-blue-700 no-underline hover:no-underline text-white hover:text-white transition duration-150 ease-in-out cursor-pointer;
+
+  // xs padding
+  @apply py-4 mb-4 sm:py-2 sm:mb-0 text-center;
+}
+
+.Btn-outline {
+  @apply inline-block py-2 px-4 rounded-md border-2 border-blue-600 shadow-sm hover:border-blue-700 hover:bg-blue-100/50 no-underline hover:no-underline text-blue-600 hover:text-blue-700 transition duration-150 ease-in-out cursor-pointer underline;
+
+  // xs padding
+  @apply py-4 mb-4 sm:py-2 sm:mb-0 text-center;
+}
+
+.Btn-text {
+  @apply inline-block py-2 px-4 rounded-md border-2 border-transparent underline hover:no-underline text-blue-600 hover:text-blue-700 transition duration-150 ease-in-out cursor-pointer;
+
+  // xs padding
+  @apply py-4 mb-4 sm:py-2 sm:mb-0 text-center;
+}
+
+.Btn-outline-slim {
+  @apply inline-block py-0 px-2 rounded-md border border-blue-600 shadow-sm hover:border-blue-700 hover:bg-blue-100/50 no-underline hover:no-underline text-blue-600 hover:text-blue-700 transition duration-150 ease-in-out cursor-pointer;
+}
