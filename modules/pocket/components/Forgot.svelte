@@ -20,7 +20,7 @@
         <p>
           Check your email for the password reset email
         </p>
-        <label class="block">
+        <!-- <label class="block">
           <div class="flex">
             <span class="text-gray-700">Token</span>
           </div>
@@ -32,7 +32,7 @@
           </div>
           <input bind:value={password} type="password" class="form-input mt-1 block w-full" placeholder="•••••••••••••">
         </label>
-        <input class="Btn-solid | text-center w-full mt-4 ease-in-out block" type="submit" value="Reset password">
+        <input class="Btn-solid | text-center w-full mt-4 ease-in-out block" type="submit" value="Reset password"> -->
       </div>  
     {/if}
 
@@ -53,7 +53,7 @@
 
 <script>
   import { goto } from '$app/navigation';
-  import { requestReset, confirmReset } from '$plasmid/modules/pocket/'
+  import { requestPasswordReset, confirmPasswordReset } from '$plasmid/modules/pocket/'
 
   let email, requested = false, User, error, token, password
   export let successLink = "/"
@@ -62,10 +62,10 @@
     try {
       if(requested == false) {
         console.log('requesting reset')
-        await requestReset(email)
+        await requestPasswordReset(email)
         requested = true
       } else {
-        User = await confirmReset(token, password)
+        User = await confirmPasswordReset(token, password)
       }
     } catch (e) {
       error = e.response

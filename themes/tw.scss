@@ -7,7 +7,8 @@
 */
 
 
-.paraWrap, ._paraWrap {
+.paraWrap, ._paraWrap,
+.paraStrip, ._paraStrip {
   p:last-of-type {
     padding-bottom: 0;
   }
@@ -84,9 +85,18 @@
 
 
 
+:root {
+  --avatarSize: 48px;
+}
+.Avatar {
+  @apply rounded-full;
+  width: var(--avatarSize);
+  height: var(--avatarSize);
 
-
-
+  &.--placeholder {
+    @apply bg-slate-100 text-slate-800 p-4 flex place-content-center place-items-center;
+  }
+}
 
 
 ._spinner {

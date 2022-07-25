@@ -3015,6 +3015,11 @@ side-channel@^1.0.4:
     get-intrinsic "^1.0.2"
     object-inspect "^1.9.0"
 
+slugify@^1.6.5:
+  version "1.6.5"
+  resolved "https://registry.yarnpkg.com/slugify/-/slugify-1.6.5.tgz#c8f5c072bf2135b80703589b39a3d41451fbe8c8"
+  integrity sha512-8mo9bslnBO3tr5PEVFzMPIWwWnipGS0xVbYf65zxDqfNwmzYn1LpiKNrR6DlClusuvo+hDHd1zKpmfAe83NQSQ==
+
 source-map-js@^1.0.2:
   version "1.0.2"
   resolved "https://registry.yarnpkg.com/source-map-js/-/source-map-js-1.0.2.tgz#adbc361d9c62df380125e7f161f71c826f1e490c"
@@ -3118,6 +3123,11 @@ supports-preserve-symlinks-flag@^1.0.0:
   version "1.0.0"
   resolved "https://registry.yarnpkg.com/supports-preserve-symlinks-flag/-/supports-preserve-symlinks-flag-1.0.0.tgz#6eda4bd344a3c94aea376d4cc31bc77311039e09"
   integrity sha512-ot0WnXS9fgdkgIcePe6RHNk1WA8+muPa6cSjeR3V8K27q9BB1rTE3R1p7Hv0z1ZyAc8s6Vvv8DIyWf681MAt0w==
+
+svelte-easy-crop@^1.0.7:
+  version "1.0.7"
+  resolved "https://registry.yarnpkg.com/svelte-easy-crop/-/svelte-easy-crop-1.0.7.tgz#710c108ea5d494c51fb98b5042dad62bfdfb954a"
+  integrity sha512-7+AJJsS38dRYDxdfpOvykRzZyRD0/NsthZTS/Ig5KWYM8W63ILWBhx1cu6i0RBA4898rfJMlTDldE81pfEw3yw==
 
 timeout-abort-controller@^3.0.0:
   version "3.0.0"

@@ -19,12 +19,18 @@
       </label>
     </div>
     <input class="Btn-solid | text-center w-full mt-4 ease-in-out block" type="submit" value="Sign in">
-    <input class="Btn-outline | text-center w-full mt-4 ease-in-out block" type="submit" value="Sign in with Google">
+    {#if useGoogle}
+      <input class="Btn-outline | text-center w-full mt-4 ease-in-out block" type="submit" value="Sign in with Google">
+    {/if}
     <!-- <input class="Btn-outline | text-center w-full mt-4 ease-in-out block" type="submit" value="Sign in with Twitter"> -->
 
-    {#if error}
+    {#if message}
+        <div class="Card-success | mt-4 ">
+          {message}
+        </div>
+    {/if}{#if error}
       <div class="Card-error | mt-4 ">
-        {error?.data?.message}
+        {error?.data?.message || error}
       </div>
     {/if}
   </div>
@@ -49,23 +55,26 @@
   import { goto } from '$app/navigation';
   import { userLogin } from '$plasmid/modules/pocket/'
 
-  let user = {}, User, error
+  export let user = {}, _user, error = '', message
   export let forgotLink = "/forgot-password"
   export let successLink = "/"
   export let signupLink = "/signup"
 
-  async function handleSubmit() {
+  export let useGoogle = false
+
+  export let handleSubmit = async () => {
+
     try {
-      User = await userLogin(user.email, user.password)
+      message = 'Logging in ...'
+      _user = await userLogin(user.email, user.password)
     } catch (e) {
       error = e.response
     }
 
-    if($User) {
-      console.log('Logged in!', $User)
+    if(_user) {
+      console.log('Logged in!', _user)
       goto(successLink)
     }
-
   }
 
 </script>

@@ -32,7 +32,9 @@
     "node-cache": "^5.1.2",
     "nodemailer": "^6.6.2",
     "pocketbase": "^0.1.2",
-    "sanitize-html": "^2.4.0"
+    "sanitize-html": "^2.4.0",
+    "slugify": "^1.6.5",
+    "svelte-easy-crop": "^1.0.7"
   },
   "dependencies": {
     "@polka/send": "^0.4.0",

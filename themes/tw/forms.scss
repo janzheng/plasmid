@@ -33,6 +33,12 @@ input[type='search'] {
   @extend .input-block;
   @extend .input-borders;
 }
+input[type='file'] {
+  @extend .input-borders;
+
+  @apply px-3 py-1.5 bg-clip-padding border border-solid border-blue-300 focus:text-blue-700 focus:bg-white focus:border-blue-600 focus:outline-none
+}
+
 
 // textarea, 
 textarea,
