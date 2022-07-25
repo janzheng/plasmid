@@ -69,7 +69,7 @@ export const todayCitation = (value, format='D MMMM, YYYY') => {
 
 // Notion Dates
 
-export function getNotionStartDate(ndate, format = 'MMMM DD, YYYY') {
+export function GETNotionStartDate(ndate, format = 'MMMM DD, YYYY') {
   if (!ndate) return null
   ndate = ndate.start_date
 

@@ -281,11 +281,30 @@ export const getTables = async (bases = [{
   }
 
 */
-export const addRecord = async (tableName, payload, recordId = null, tableOptions) => {
+export const addRecord = async (tableName, payload, recordId = null, tableOptions, _apiEditorKey, _baseId) => {
 
   const record = await cytosis.save({
-    apiKey: apiEditorKey,
-    baseId: baseId,
+    apiKey: _apiEditorKey || apiEditorKey,
+    baseId: _baseId || baseId,
+    tableName: tableName,
+    recordId,
+    tableOptions,
+    payload
+  })
+
+  return record
+}
+
+
+export const addRecord_v2 = async ({
+  tableName, payload, recordId = null, tableOptions,
+  _apiEditorKey = apiEditorKey,
+  _baseId = baseId,
+}) => {
+
+  const record = await cytosis.save({
+    apiKey: _apiEditorKey,
+    baseId: _baseId,
     tableName: tableName,
     recordId,
     tableOptions,
@@ -375,8 +394,8 @@ export const getFlatSiteContent = async () => {
 }
 
 
-// takes a {url, tableName, fieldName} object and attempts to insert that into an airtable location
-export const postToAirtable = async ({ request, url }) => {
+// takes a {url, tableName, fieldName} object and attempts to insert that into an airtable location as an attachment
+export const postToAirtable = async ({ request }) => {
   const data = await request.json()
 
   const record = await addRecord(

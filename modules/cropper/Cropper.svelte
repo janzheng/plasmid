@@ -79,7 +79,7 @@
     return Math.min(maxPosition, Math.max(position, -maxPosition))
   }
 
-  export function getCropSize(imgWidth, imgHeight, aspect) {
+  export function GETCropSize(imgWidth, imgHeight, aspect) {
     if (imgWidth >= imgHeight * aspect) {
       return {
         width: imgHeight * aspect,
