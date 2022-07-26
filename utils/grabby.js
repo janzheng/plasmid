@@ -83,8 +83,7 @@ export const getGrabbyMulti = (data, config) => {
         if (config) {
           let source = config.sources.find(f => f.name == id)
           let type = source.type
-          // TODO: THIS FAILS ON COLLECTION WHIMSIES!!!
-          if (type == "whimsy" && !source.inputs.ids?.join().includes('collection')) {
+          if (type == "whimsy" && source.inputs.ids && source.inputs.ids.filter(o => o.includes('collection')).length == 0) {
             item = getBlockValues(data[id])
           }
         }

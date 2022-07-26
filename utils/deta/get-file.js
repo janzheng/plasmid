@@ -17,7 +17,7 @@ export const getFileData = async (name) => {
   const buffer = Buffer.from(fileArrayBuffer)
   const type = await fileTypeFromBuffer(buffer)
 
-  console.log('type::', type)
+  // console.log('type::', type)
   return {
     file,
     fileArrayBuffer,
