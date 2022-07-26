@@ -68,7 +68,7 @@ export const getGrabbyMulti = (data, config) => {
   const _getter = async ({ url }) => {
     let id = url.searchParams.get('id')
 
-    // console.log('grabby multi endpoint ::', id)
+    console.log('grabby multi endpoint ::', id)
 
     if (!id)
       return { status: 400 }
@@ -106,7 +106,7 @@ export const getGrabbyMulti = (data, config) => {
       if (config) {
         let type = config.sources.find(f => f.name == id).type
         // if (type == "whimsy" && !source.inputs.ids.includes('collection'))
-        if (type == "whimsy")
+        if (type == "whimsy" && source.inputs.ids && source.inputs.ids.filter(o => o.includes('collection')).length == 0)
           return { body: getBlockValues(data[id]) }
       }
 
