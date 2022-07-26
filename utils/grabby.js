@@ -104,7 +104,8 @@ export const getGrabbyMulti = (data, config) => {
 
       // get blocks from whimsy notion, w/o client needing to get block values
       if (config) {
-        let type = config.sources.find(f => f.name == id).type
+        let source = config.sources.find(f => f.name == id)
+        let type = source.type
         // if (type == "whimsy" && !source.inputs.ids.includes('collection'))
         if (type == "whimsy" && source.inputs.ids && source.inputs.ids.filter(o => o.includes('collection')).length == 0)
           return { body: getBlockValues(data[id]) }
