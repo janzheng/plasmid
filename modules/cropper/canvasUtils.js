@@ -7,7 +7,7 @@ export const createImage = (url) =>
     image.src = url;
   });
 
-export function GETRadianAngle(degreeValue) {
+export function getRadianAngle(degreeValue) {
   return (degreeValue * Math.PI) / 180;
 }
 
