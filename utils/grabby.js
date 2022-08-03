@@ -68,7 +68,7 @@ export const getGrabbyMulti = (data, config) => {
   const _getter = async ({ url }) => {
     let id = url.searchParams.get('id')
 
-    console.log('grabby multi endpoint ::', id)
+    // console.log('grabby multi endpoint ::', id)
 
     if (!id)
       return { status: 400 }

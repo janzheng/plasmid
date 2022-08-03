@@ -21,6 +21,10 @@
 .Card-active {
   @extend .Card;
   @apply border-blue-500;
+
+  &.--thin {
+    @apply border;
+  }
 }
 
 .Card-success {

@@ -7,7 +7,7 @@
 */
 import PocketBase from 'pocketbase';
 
-const client = new PocketBase('https://pocket.phage.directory');
+export const client = new PocketBase('https://pocket.phage.directory');
 
 // persistent user login — use Session, not a custom store
 // make sure Locals is also being set, or Session will be overwritteb by hooks
@@ -25,7 +25,16 @@ export const userLoginEndpoint = async (email, pass) => {
 
 
 
+export const getProfiles = async (index, size, obj) => {
+  return await client.Records.getList("profiles", index, size, obj)
+}
+export const getProfile = async (username) => {
+  let res = await client.Records.getList("profiles", 1, 50, {
+    filter: `username='${username}'`,
+  })
 
+  return res.items[0]
+}
 
 
 
@@ -40,9 +49,16 @@ export const userLoginEndpoint = async (email, pass) => {
 // console.log('testtest:', collections)
 // }
 
-export const getAvatar = (file, size=`100x100`) => {
+export const getAvatar = (profile, size=`100x100`) => {
+  let file = profile?.avatar
   if(file)
-    return `https://pocket.phage.directory/api/files/p36XqM89RQKxYld/ajq5LIClQCPNynY/${file}?thumb=${size}`
+    return `https://pocket.phage.directory/api/files/${profile?.['@collectionId']}/${profile?.['id']}/${file}?thumb=${size}`
+  return null
+}
+export const getCover = (profile ) => {
+  let file = profile?.cover
+  if (file)
+    return `https://pocket.phage.directory/api/files/${profile?.['@collectionId']}/${profile?.['id']}/${file}`
   return null
 }
 

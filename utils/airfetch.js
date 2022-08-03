@@ -11,7 +11,8 @@
 
 
 
-import Cytosis from 'cytosis';
+// import Cytosis from 'cytosis';
+import Cytosis from './cytosis.js';
 import { cacheSet, cacheCheck } from "./cache.js"
 
 import { config } from "dotenv"
@@ -26,9 +27,8 @@ const baseId = process.env.AIRTABLE_PRIVATE_BASE
 
 
 // adapters and linkers will have problems with this
-const cytosis = (Cytosis && Cytosis.default) || Cytosis 
-
-
+export const cytosis = Cytosis
+// export const cytosis = (Cytosis && Cytosis.default) || Cytosis 
 
 
 /* 
@@ -120,7 +120,7 @@ export const checkExistence = async (keyword, tableName, fieldName = "Email", us
   const _cache = `checkExistence-${keyword}-${tableName}-${fieldName}`
   if (useCache && cacheCheck(_cache)) return cacheCheck(_cache)
 
-  const cytosis = await new cytosis({
+  const cytosis = await new Cytosis({
     apiKey: apiEditorKey,
     baseId: baseId,
     bases: [
@@ -154,7 +154,7 @@ export const getRecord = async (keyword, tableName, fieldName, useCache) => {
 //   const _cache = `checkExistence-${keyword}-${tableName}-${fieldName}`
 //   if (useCache && cacheCheck(_cache)) return cacheCheck(_cache)
 
-//   const cytosis = await new cytosis({
+//   const cytosis = await new Cytosis({
 //     apiKey: apiEditorKey,
 //     baseId: baseId,
 //     bases: [
@@ -180,14 +180,14 @@ export const getRecord = async (keyword, tableName, fieldName, useCache) => {
 
 
 // let kw = await getTable('Keywords', { view: 'Sorted' })
-export const getTable = async (tableName, options, useCache=true) => {
+export const getTable = async (tableName, options, useCache = true, _apiEditorKey, _baseId) => {
 
   const _cache = `getTable-${tableName}-${JSON.stringify(options)}`
   if (useCache && cacheCheck(_cache)) return cacheCheck(_cache)
 
-  const cytosis = await new cytosis({
-    apiKey: apiEditorKey,
-    baseId: baseId,
+  const cytosis = await new Cytosis({
+    apiKey: _apiEditorKey || apiEditorKey,
+    baseId: _baseId || baseId,
     bases: [
       {
         tables: [tableName],
@@ -199,6 +199,67 @@ export const getTable = async (tableName, options, useCache=true) => {
 
   cacheSet(_cache, cytosis.results[tableName]) // short cache to pings
   return cytosis.results[tableName]
+}
+
+
+
+export const getTablePaged = async (
+  pageSize, tableName, options, useCache = true, _apiEditorKey, _baseId
+  ) => {
+
+  // const _cache = `getTablePaged-${pageSize}-${tableName}-${JSON.stringify(options)}`
+  let _cache = `getTablePaged-${tableName}-${JSON.stringify(options)}`
+
+  console.log('cache:', _cache)
+  let pageObj
+  if (useCache && cacheCheck(_cache)) {
+    pageObj = cacheCheck(_cache)
+  }
+
+  // console.log('!! pageSize:', pageSize)
+  // if(pageObj) {
+  //   console.log('cache pageObj:', pageSize, pageObj, pageObj.curPage)
+    if (pageSize && pageSize < pageObj.curPage) {
+      return {
+        ...pageObj,
+        results: pageObj.results.slice(0,pageSize*100) // each page is 100 results
+      }
+    }
+  // }
+
+  if (!pageObj) {
+    await new Promise((resolve, reject) => {
+      cytosis.getPageTable({
+        apiKey: _apiEditorKey || apiEditorKey,
+        baseId: _baseId || baseId,
+        tableName,
+        options,
+      }, (page) => {
+        cacheSet(_cache, page) // short cache to pings
+        pageObj = page
+        pageObj.curPage = 1
+        resolve(pageObj)
+      })
+    })
+  }
+
+  if (pageObj && pageObj.getNextPage && pageSize > 1) {
+    let curPage = pageObj.curPage || 1
+    while (curPage < pageSize) {
+      await new Promise((resolve, reject) => {
+        pageObj.getNextPage().then(({ results, isDone }) => {
+          pageObj.results = results
+          curPage++
+          if (isDone)
+            pageObj.isDone = isDone
+          pageObj.curPage = curPage
+          resolve(pageObj)
+        })
+      })
+    }
+  }
+
+  return pageObj
 }
 
 
@@ -245,7 +306,7 @@ export const getTables = async (bases = [{
   if (useCache && cacheCheck(_cache)) return cacheCheck(_cache)
   
 
-  let _result = await new cytosis({
+  let _result = await new Cytosis({
     apiKey: apiEditorKey,
     baseId: baseId,
     bases: bases,

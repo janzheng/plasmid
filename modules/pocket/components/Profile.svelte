@@ -18,7 +18,16 @@
         </label>
         <label class="block">
           <span class="text-gray-700">About</span>
-          <textarea bind:value={user.profile.about} class="form-textarea mt-1 block w-full h-24" rows="3" placeholder="A little something about yourself."></textarea>
+          <textarea bind:this={about} on:keyup={(e)=>{
+            console.log('changed!')
+              e.target.style.height = "auto"
+              e.target.style.height = (e.target.scrollHeight + 20) + "px"
+            }} 
+            bind:value={user.profile.about} 
+            class="form-textarea mt-1 block w-full h-24" 
+            rows="3" 
+            style="overflow: hidden;"
+            placeholder="A little something about yourself."></textarea>
         </label>
         <div class="block">
           <div class="flex | gap-2 place-items-center ">
@@ -132,8 +141,15 @@
   let newEmail = user?.email, emailPassword = '', emailMessage, emailError
   let passMessage, passError // for changing password
 
+  let about 
+  
   $: {
-    avatar = getAvatar(user?.profile?.avatar)
+    avatar = getAvatar(user?.profile)
+  }
+
+  $: if(about) {
+    about.style.height = "auto"
+    about.style.height = (about.scrollHeight + 20) + "px"
   }
 
   $: if(croppedImage) {
