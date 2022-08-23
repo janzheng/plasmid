@@ -30,7 +30,6 @@ export const niceTimeDate = (value, format='h:mm a, MMM D') => {
 }
 
 export const dateTo = (value) => {
-
   let monthsDiff = dayjs().diff(String(value), "month"); 
   if (value && monthsDiff < 2) {
     return dayjs().to(dayjs(String(value)))
@@ -39,6 +38,16 @@ export const dateTo = (value) => {
   // for 2mo+ old dates just return the actual date
   return niceDate(value)
 }
+
+// adds a "z" to adjust for UTC to local time
+// will return "5 minutes ago" given a UTC time
+export const dateFromLocal = (value) => {
+  value = String(value)
+  if (!value.toLowerCase().includes('z'))
+    value+='z'
+  return dayjs(String(value)).fromNow()
+}
+
 
 export const dateDiff = (value, diff) => {
   if (value) {

@@ -8,10 +8,24 @@
 
 .__outline {}
 
+.Card-lighter {
+  @extend .Card;
+  @apply border-gray-100;
+}
+
 .Card-light {
   @extend .Card;
   @apply border-gray-200;
 }
+
+.Card-flat {
+  @extend .Card;
+  @apply border-gray-100 bg-gray-100;
+}
+  .Card-flat-white {
+    @extend .Card;
+    @apply border-white bg-white;
+  }
 
 .Card-shadow {
   @extend .Card;

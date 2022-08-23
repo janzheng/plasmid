@@ -1,20 +1,25 @@
 
 
-%button-base {
+.button-base, .btn-base {
   @apply 
     py-2 px-4 
     border border-gray-300 rounded-md 
     transition duration-150 ease-in-out 
     hover:border-gray-800 
+    focus:ring-blue-500 focus:ring-2 focus:ring-inset focus:outline-none
     cursor-pointer;
 }
 
 .Btn, .btn {
-  @extend %button-base;
+  @extend .button-base;
 }
 
 .Btn-solid, .btn-solid {
-  @apply block px-4 rounded-md bg-blue-600 hover:bg-blue-700 no-underline hover:no-underline text-white hover:text-white transition duration-150 ease-in-out cursor-pointer;
+  @apply inline-block px-4 rounded-md bg-blue-600 
+    border-2 border-blue-600 
+    hover:bg-blue-700 hover:bg-blue-700 
+    no-underline hover:no-underline text-white hover:text-white 
+    transition duration-150 ease-in-out cursor-pointer;
 
   // xs padding
   @apply py-4 mb-4 sm:py-2 sm:mb-0 text-center;
@@ -45,6 +50,10 @@
 
   // xs padding
   @apply py-4 mb-4 sm:py-2 sm:mb-0 text-center;
+}
+
+.Btn-link, .btn-link {
+  @apply inline-block text-blue-700 hover:text-blue-900 hover:no-underline transition duration-150 ease-in-out cursor-pointer;
 }
 
 

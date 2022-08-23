@@ -1,0 +1,43 @@
+
+
+:root {
+  --tw-arrow-height: 6px;
+  --tw-arrow-width: 12px;
+  --tw-arrow-color: #444;
+}
+
+.arrow-up {
+  width: 0;
+  height: 0;
+  border-left: var(--tw-arrow-height) solid transparent;
+  border-right: var(--tw-arrow-height) solid transparent;
+
+  border-bottom: var(--tw-arrow-width) solid var(--tw-arrow-color);
+}
+
+.arrow-down {
+  width: 0;
+  height: 0;
+  border-left: var(--tw-arrow-height) solid transparent;
+  border-right: var(--tw-arrow-height) solid transparent;
+
+  border-top: var(--tw-arrow-width) solid var(--tw-arrow-color);
+}
+
+.arrow-right {
+  width: 0;
+  height: 0;
+  border-top: var(--tw-arrow-height) solid transparent;
+  border-bottom: var(--tw-arrow-height) solid transparent;
+
+  border-left: var(--tw-arrow-width) solid var(--tw-arrow-color);
+}
+
+.arrow-left {
+  width: 0;
+  height: 0;
+  border-top: var(--tw-arrow-height) solid transparent;
+  border-bottom: var(--tw-arrow-height) solid transparent;
+
+  border-right: var(--tw-arrow-width) solid var(--tw-arrow-color);
+}
