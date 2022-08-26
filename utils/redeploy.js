@@ -29,6 +29,42 @@ export const redeploy = ({ url }) => {
 
 
 
+
+
+
+
+
+
+import { redirect, error } from '@sveltejs/kit';
+import { PUBLIC_DEPLOY } from '$env/static/public';
+import { DEPLOY_SECRET } from '$env/static/private';
+
+export const redeploy_new = ({ url }) => {
+  let secret = url.searchParams.get('secret')
+  console.log('Secret:', secret, '.env secret:', DEPLOY_SECRET, secret === DEPLOY_SECRET)
+  if (DEPLOY_SECRET && secret === DEPLOY_SECRET) {
+    console.log('Redeploying with secret')
+    throw redirect(302, PUBLIC_DEPLOY)
+  }
+  else if (typeof (DEPLOY_SECRET) == 'undefined') {
+    console.log('Redeploying without secret')
+    throw redirect(302, PUBLIC_DEPLOY)
+  }
+
+  // bad request // secret didn't work
+  console.log('Incorrect secret')
+  // return new Response(
+  //   'incorrect secret',
+  // )
+  // return { status: 400, body: 'incorrect secret' }
+  throw error(400, 'incorrect secret')
+}
+
+
+
+
+
+
 // export const redeploy = ({ url }) => {
 //   let secret = url.searchParams.get('secret')
 //   console.log('vite deploy secret: ', import.meta.env.VITE_DEPLOY_SECRET)

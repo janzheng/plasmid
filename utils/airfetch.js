@@ -77,6 +77,7 @@ export const getContent = async (
       tables: ['Content'],
       options: { 'view': view }
     }], 
+    useCache=true,
     // jsonLocation = '../../../static/data/content.json'
   ) => {
 
@@ -98,7 +99,7 @@ export const getContent = async (
   // }
 
   // TODO: get from Notion?
-  return await getTables(bases)
+  return await getTables(bases, useCache)
 }
 
 
@@ -138,7 +139,9 @@ export const checkExistence = async (keyword, tableName, fieldName = "Email", us
   })
   if (cytosis.results[tableName].length > 0) {
     const record = cytosis.results[tableName][0]
-		cacheSet(_cache, record) // short cache to pings
+
+    if (useCache)
+  		cacheSet(_cache, record) // short cache to pings
     return record
   }
   return null
@@ -197,7 +200,9 @@ export const getTable = async (tableName, options, useCache = true, _apiEditorKe
     routeDetails: '[api/getters/getTable]',
   })
 
-  cacheSet(_cache, cytosis.results[tableName]) // short cache to pings
+  if (useCache)
+    cacheSet(_cache, cytosis.results[tableName]) // short cache to pings
+
   return cytosis.results[tableName]
 }
 
@@ -235,7 +240,10 @@ export const getTablePaged = async (
         tableName,
         options,
       }, (page) => {
-        cacheSet(_cache, page) // short cache to pings
+
+        if (useCache)
+          cacheSet(_cache, page) // short cache to pings
+          
         pageObj = page
         pageObj.curPage = 1
         resolve(pageObj)
@@ -313,7 +321,8 @@ export const getTables = async (bases = [{
     routeDetails: '[airfetch/getTables]',
   })
 
-  cacheSet(_cache, _result.results)
+  if(useCache)
+    cacheSet(_cache, _result.results)
 
   return _result.results
 }
