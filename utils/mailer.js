@@ -8,6 +8,8 @@
 
 */
 
+
+// 2022 Notice :::  mailgun-js is deprecated; use mailer2 
 import mailgun from 'mailgun-js'; // insecure, uses private API, but works better w/ Vercel
 import MailComposer from 'nodemailer/lib/mail-composer'; 
 import { config } from "dotenv";

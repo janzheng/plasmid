@@ -43,6 +43,6 @@
     "calendar-link": "^2.1.1",
     "cytosis": "^0.0.607",
     "file-type": "^17.1.1",
-    "mailgun.js": "^7.0.2"
+    "mailgun.js": "^8.0.0"
   }
 }

@@ -139,7 +139,11 @@ export const mailto = async (data, loud = false, trail = false) => {
     // const res = await sendMail(mailData)
     // const res = await compose(mailData)
 
-    let msg = await mg.messages.create(process.env.MG_DOMAIN, mailData)
+    let msg
+    if(process.env.ENABLE_EMAIL === 'true')
+      msg = await mg.messages.create(process.env.MG_DOMAIN, mailData)
+    else
+      console.error('Must enable email via env var ENABLE_EMAIL')
 
     if(loud)
       console.log(`[mailto] Email sent to: ${to}`, msg , mailData)
