@@ -43,21 +43,30 @@ export const redeploy_new = ({ url }) => {
   let secret = url.searchParams.get('secret')
   console.log('Secret:', secret, '.env secret:', DEPLOY_SECRET, secret === DEPLOY_SECRET)
   if (DEPLOY_SECRET && secret === DEPLOY_SECRET) {
-    console.log('Redeploying with secret')
-    throw redirect(302, PUBLIC_DEPLOY)
+    console.log('Redeploying with secret', PUBLIC_DEPLOY)
+    // throw redirect(302, PUBLIC_DEPLOY)
+    return new Response('Redeploying with secret', {
+      status: 302,
+      headers: { Location: PUBLIC_DEPLOY }
+    })
   }
   else if (typeof (DEPLOY_SECRET) == 'undefined') {
     console.log('Redeploying without secret')
-    throw redirect(302, PUBLIC_DEPLOY)
+    // throw redirect(302, PUBLIC_DEPLOY)
+    return new Response('Redeploying with secret', {
+      status: 302,
+      headers: { Location: PUBLIC_DEPLOY }
+    })
   }
 
   // bad request // secret didn't work
   console.log('Incorrect secret')
-  // return new Response(
-  //   'incorrect secret',
-  // )
+  return new Response(
+    'incorrect secret',
+    {status: 400}
+  )
   // return { status: 400, body: 'incorrect secret' }
-  throw error(400, 'incorrect secret')
+  // throw error(400, 'incorrect secret')
 }
 
 
