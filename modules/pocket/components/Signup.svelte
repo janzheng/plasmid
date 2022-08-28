@@ -82,7 +82,7 @@
 
 <script>
   import slugify from 'slugify'
-	import { browser } from '$app/env';
+	import { browser } from '$app/environment';
   import { session } from '$app/stores';
   import { userLogin } from '$plasmid/modules/pocket/'
 

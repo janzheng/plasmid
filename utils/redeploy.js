@@ -39,6 +39,7 @@ import { redirect, error } from '@sveltejs/kit';
 import { PUBLIC_DEPLOY } from '$env/static/public';
 import { DEPLOY_SECRET } from '$env/static/private';
 
+// this is meant for server-side sveltekit
 export const redeploy_new = ({ url }) => {
   let secret = url.searchParams.get('secret')
   console.log('Secret:', secret, '.env secret:', DEPLOY_SECRET, secret === DEPLOY_SECRET)
