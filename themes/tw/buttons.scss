@@ -8,6 +8,11 @@
     hover:border-gray-800 
     focus:ring-blue-500 focus:ring-2 focus:ring-inset focus:outline-none
     cursor-pointer;
+
+
+  &.--short {
+      @apply py-0;
+    }
 }
 
 .Btn, .btn {
@@ -23,6 +28,10 @@
 
   // xs padding
   @apply py-4 mb-4 sm:py-2 sm:mb-0 text-center;
+
+  &.--short {
+    @apply py-0;
+  }
 }
 
 
@@ -32,6 +41,10 @@
 
   // xs padding
   @apply py-4 mb-4 sm:py-2 sm:mb-0 text-center;
+
+  &.--short {
+      @apply py-0;
+    }
 }
 
 
@@ -41,6 +54,10 @@
 
   // xs padding
   @apply py-4 mb-4 sm:py-2 sm:mb-0 text-center;
+
+  &.--short {
+      @apply py-0;
+    }
 }
 
 
@@ -50,10 +67,18 @@
 
   // xs padding
   @apply py-4 mb-4 sm:py-2 sm:mb-0 text-center;
+
+  &.--short {
+      @apply py-0;
+    }
 }
 
 .Btn-link, .btn-link {
   @apply inline-block text-blue-700 hover:text-blue-900 hover:no-underline transition duration-150 ease-in-out cursor-pointer;
+
+  &.--short {
+      @apply py-0;
+    }
 }
 
 

@@ -1,8 +1,8 @@
 
 
 <!-- <form class="content" action="/api/form" method="post"> -->
-{#if user}
-  <form class="Card-light" on:submit|preventDefault={handleSubmit}>
+{#if $user}
+  <form class="Card-light" on:submit|preventDefault={handleEditProfile}>
     <div class="mb-2 text-lg">
       Edit Profile
     </div>
@@ -10,20 +10,20 @@
       <div class="grid grid-cols-1 gap-6">
         <label class="block">
           <span class="text-gray-700">Username</span>
-          <input bind:value={user.profile.username} type="text" class="form-input mt-1 block w-full" placeholder="jonsmith">
+          <input bind:value={$user.profile.username} type="text" class="form-input mt-1 block w-full" placeholder="jonsmith">
         </label>
         <label class="block">
           <span class="text-gray-700">Full name</span>
-          <input bind:value={user.profile.name} type="text" class="form-input mt-1 block w-full" placeholder="John Smith">
+          <input bind:value={$user.profile.name} type="text" class="form-input mt-1 block w-full" placeholder="John Smith">
         </label>
         <label class="block">
           <span class="text-gray-700">About</span>
           <textarea bind:this={about} on:keyup={(e)=>{
-            console.log('changed!')
+            // console.log('[Profile] Profile changed successfully!')
               e.target.style.height = "auto"
               e.target.style.height = (e.target.scrollHeight + 20) + "px"
             }} 
-            bind:value={user.profile.about} 
+            bind:value={$user.profile.about} 
             class="form-textarea mt-1 block w-full h-24" 
             rows="3" 
             style="overflow: hidden;"
@@ -34,7 +34,7 @@
             {#if avatar}
               <img class="Avatar" src={avatar} alt="avatar"/>
             {:else}
-              <span class="Avatar --placeholder" src={avatar} alt="avatar">{getInitials(user.profile.name)}</span>
+              <span class="Avatar --placeholder" src={avatar} alt="avatar">{getInitials($user.profile.name)}</span>
             {/if}
             <div class="align-center">
               <Cropper bind:croppedImage={croppedImage} bind:croppedBlob={croppedBlob}>
@@ -130,21 +130,22 @@
 
 
 <script>
-	import { session } from '$app/stores';
+	import { page } from '$app/stores';
   import { goto, prefetch } from '$app/navigation';
+	import { user } from '$lib/store'
   import { getAvatar, updateProfile, requestEmailChange, requestPasswordReset } from '$plasmid/modules/pocket/'
   import Cropper from '$plasmid/modules/cropper/Cropper.svelte'
 
-  let user = $session.user
+  
   let error, message, avatar
   let croppedImage, croppedBlob
-  let newEmail = user?.email, emailPassword = '', emailMessage, emailError
+  let newEmail = $user?.email, emailPassword = '', emailMessage, emailError
   let passMessage, passError // for changing password
 
   let about 
   
   $: {
-    avatar = getAvatar(user?.profile)
+    avatar = getAvatar($user?.profile)
   }
 
   $: if(about) {
@@ -164,7 +165,7 @@
     try {
       emailError = null
       emailMessage = 'Sending confirmation email ...'
-      await requestEmailChange(newEmail, user.email, emailPassword)
+      await requestEmailChange(newEmail, $user.email, emailPassword)
       emailMessage = 'Confirmation email sent!'
     } catch (e) {
       let res = e.response
@@ -186,7 +187,7 @@
     try {
       passError = null
       passMessage = 'Sending password reset email ...'
-      await requestPasswordReset(user.email)
+      await requestPasswordReset($user.email)
       passMessage = 'Password reset email sent!'
     } catch (e) {
       let res = e.response
@@ -201,13 +202,13 @@
   }
 
 	async function handleLogout() {
-		session.set({ user: null });
-		await prefetch('/account/handle-logout');
-		await goto('/account/handle-logout');
+		// session.set({ user: null });
+		// await prefetch('/account/handle-logout');
+		await goto('/api/account/logout');
 	}
 
 
-  async function handleSubmit() {
+  async function handleEditProfile() {
     try {
 
       message = error = ''
@@ -217,7 +218,7 @@
       // (overcomes vercel upload limitations)
       // this will trigger two server-side calls
       if(croppedImage) {
-        await updateProfile(user, user.profile, croppedBlob)
+        await updateProfile($user, $user.profile, croppedBlob)
       }
       
 
@@ -228,16 +229,16 @@
 					'Content-Type': 'application/json'
 				},
 				body: JSON.stringify({
-          user,
-          profile: user.profile
+          user: $user,
+          profile: $user.profile
         })
 			});
 
 			if (res.ok) {
         // log-in as client as well
         let newUser = await res.json()
-        user = newUser
-        $session = newUser
+        $user = newUser
+        // $session = newUser
 
         message = 'Profile updated successfully'
 			} else {
@@ -248,7 +249,7 @@
       }
 
     } catch (e) {
-      console.error('[handleSubmit] error:', e, e.response)
+      console.error('[handleEditProfile] error:', e, e.response)
       let res = e.response
       if (res.data?.data) {
         error = Object.values(res.data.data)[0].message

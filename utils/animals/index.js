@@ -3,7 +3,12 @@
 // but that implementation doesn't compile
 
 import animals from './animals.json';
-import adjectives from './adjectives.json';
+import adjSrc1 from './adjectives.json';
+import adjSrc2 from './adjectives2.json';
+
+let adjectives = Array.from(new Set(adjSrc1.concat(adjSrc2)))
+
+
 
 const capitalizeFirstLetter = (string) => {
   return string.charAt(0).toUpperCase() + string.slice(1)

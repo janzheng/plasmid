@@ -313,13 +313,14 @@ export const getTables = async (bases = [{
   const _cache = `getTables-${view}-${JSON.stringify(bases)}`
   if (useCache && cacheCheck(_cache)) return cacheCheck(_cache)
   
-
   let _result = await new Cytosis({
     apiKey: apiEditorKey,
     baseId: baseId,
     bases: bases,
     routeDetails: '[airfetch/getTables]',
   })
+
+  // console.log('[airfetch/getTables] _result:', _result)
 
   if(useCache)
     cacheSet(_cache, _result.results)

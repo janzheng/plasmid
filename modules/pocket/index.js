@@ -7,7 +7,10 @@
 */
 import PocketBase from 'pocketbase';
 
-export const client = new PocketBase('https://pocket.phage.directory');
+// export let clientName = 'https://pocket.phage.directory'
+export let clientName = 'https://redpond.phage.directory'
+
+export const client = new PocketBase(clientName);
 
 // persistent user login — use Session, not a custom store
 // make sure Locals is also being set, or Session will be overwritteb by hooks
@@ -15,12 +18,45 @@ export const client = new PocketBase('https://pocket.phage.directory');
 
 // catch this elsewhere with e.response
 export const userLogin = async (email, pass) => {
-  let user = await client.Users.authViaEmail(email, pass);
-  return user
+  return await client.Users.authViaEmail(email, pass);
+  // let user = await client.Users.authViaEmail(email, pass);
+  // return user
 }
 // use in server endpoint for session
 export const userLoginEndpoint = async (email, pass) => {
-  return await client.Users.authViaEmail(email, pass);
+  // try {
+    return await client.Users.authViaEmail(email, pass);
+  // } catch (e) {
+  //   console.error('[userLoginEndpoint] error', e?.response?.data)
+  //   throw {
+  //     status: e?.response?.status,
+  //     data: e?.response?.data,
+  //     statusText: e?.response?.statusText,
+  //   }
+  // }
+}
+
+export const getAuthMethods = async () => {
+  return await client.Users.listAuthMethods();
+}
+
+export const oAuthenticate = async ({
+  provider,
+  code,
+  redirectUrl,
+}) => {
+  try {
+    let authData = await client.Users.authViaOAuth2(
+      provider.name,
+      code,
+      provider.codeVerifier,
+      redirectUrl
+    )
+    return authData
+
+  } catch(e) {
+    console.error('[oAuthenticate] error', e, '?', e.message, e.response)
+  }
 }
 
 
@@ -50,15 +86,18 @@ export const getProfile = async (username) => {
 // }
 
 export const getAvatar = (profile, size=`100x100`) => {
+  // console.log('get avatar', profile)
   let file = profile?.avatar
   if(file)
-    return `https://pocket.phage.directory/api/files/${profile?.['@collectionId']}/${profile?.['id']}/${file}?thumb=${size}`
+    return `${clientName}/api/files/${profile?.['@collectionId']}/${profile?.['id']}/${file}?thumb=${size}`
+  else if(profile?.avatarUrl)
+    return profile?.avatarUrl
   return null
 }
 export const getCover = (profile ) => {
   let file = profile?.cover
   if (file)
-    return `https://pocket.phage.directory/api/files/${profile?.['@collectionId']}/${profile?.['id']}/${file}`
+    return `${clientName}/api/files/${profile?.['@collectionId']}/${profile?.['id']}/${file}`
   return null
 }
 
