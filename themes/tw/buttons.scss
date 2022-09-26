@@ -23,6 +23,8 @@
   @apply inline-block px-4 rounded-md bg-blue-600 
     border-2 border-blue-600 
     hover:bg-blue-700 hover:bg-blue-700 
+    active:bg-blue-800 active:bg-blue-800
+    focus:ring-blue-600 focus:ring-2 focus:ring-inset focus:outline-none 
     no-underline hover:no-underline text-white hover:text-white 
     transition duration-150 ease-in-out cursor-pointer;
 
