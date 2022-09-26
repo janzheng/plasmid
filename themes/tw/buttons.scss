@@ -43,8 +43,8 @@
   @apply py-4 mb-4 sm:py-2 sm:mb-0 text-center;
 
   &.--short {
-      @apply py-0;
-    }
+    @apply py-0;
+  }
 }
 
 
@@ -86,3 +86,15 @@
 .Btn-outline-slim, .btn-outline-slim {
   @apply inline-block py-0 px-2 rounded-md border border-blue-600 shadow-sm hover:border-blue-700 hover:bg-blue-100/50 no-underline hover:no-underline text-blue-600 hover:text-blue-700 transition duration-150 ease-in-out cursor-pointer;
 }
+
+.Btn-warning,
+.btn-warning {
+  @apply inline-block py-2 px-4 rounded-md border-2 border-red-600 shadow-sm hover:border-red-700 hover:bg-red-100/50 no-underline hover:no-underline text-red-600 hover:text-red-700 transition duration-150 ease-in-out cursor-pointer underline;
+  
+    // xs padding
+    @apply py-4 mb-4 sm:py-2 sm:mb-0 text-center;
+  
+    &.--short {
+      @apply py-0;
+    }
+  }

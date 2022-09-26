@@ -42,10 +42,11 @@ input[type='file'] {
 
 // textarea, 
 textarea,
+textarea[type='text'],
 .form-textarea, ._form-textarea,
 .contenteditable {
-  @extend .input-borders;
   @apply p-4;
+  @extend .input-borders;
 }
 
 // ._form-textarea {
