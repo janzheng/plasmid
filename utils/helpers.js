@@ -62,11 +62,11 @@
 
 
 
-export const keyReplace = (text, replacer, cleanup=true) => {
+export const keyReplace = (textTemplate, replacerObject, cleanup=true) => {
   /*
     replaces content in a source string with a string from a replacer object
 
-    text: hello {{ name }}
+    textTemplate: hello {{ name }}
     replacer: {
       name: 'banana!'
     }
@@ -75,18 +75,18 @@ export const keyReplace = (text, replacer, cleanup=true) => {
 
   */
   try {
-    let result = text
+    let result = textTemplate
 
-    if(!replacer) {
+    if(!replacerObject) {
       throw new Error('Did you forget to pass a replacer object into keyReplace()?')
       return
     }
 
-    Object.keys(replacer).map((key) => {
+    Object.keys(replacerObject).map((key) => {
       // let regex = `/\\{\\{\\s*${key}\\s*\\}\\}/g`
       let regex = new RegExp(`\\{\\{\\s*${key}\\s*\\}\\}`, 'g')
       if(result)
-        result = result.replace(regex, replacer[key])
+        result = result.replace(regex, replacerObject[key])
 
       // console.log('replacing result:', key, regex)
     })
@@ -117,24 +117,20 @@ export const keyReplace = (text, replacer, cleanup=true) => {
 // takes a data object, and maps a definition to a data source
 // retains the original data, plus any new mappings
 // ofc keep the original mapping as much as possible to prevent confusion
-// export const defineDict = (data, loud = false) => {
-
-//   let dictionary = {
-//     // definition: data source
-//     'abstract_id': data && data['abstract_id'],
-//     'name': data && data['name'],
-//     ...data
-//   }
-//   if (loud)
-//     console.log('[[ dictionary ]]', dictionary)
-//   return dictionary
-// }
-
-export const textReplacer = (text, data, defineDict, loud=false) => {
-  if(!defineDict) {
-    defineDict = (data) => (data) // pass the data through; don't add new definitions
+export const defaultDictFn = (data, loud = false) => {
+  let dictionary = {
+    // definition: data source
+    'name': data?.['Name'],
+    'email': data?.['Email'],
+    ...data
   }
-  const _dict = defineDict(data, loud)
+  if (loud)
+    console.log('[[ dictionary ]]', dictionary)
+  return dictionary
+}
+
+export const textReplacer = (text, data, dict = defaultDictFn, loud=false) => {
+  let _dict = dict ? dict(data, loud) : data
   return keyReplace(text, _dict)
 }
 

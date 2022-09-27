@@ -11,6 +11,8 @@
   
 */
 
+import { checkToken } from "$plasmid/utils/env-helpers"
+
 import Mailgun from 'mailgun.js'; // insecure, uses private API, but works better w/ Vercel
 import formData from 'form-data';
 // import MailComposer from 'nodemailer/lib/mail-composer'; 
@@ -108,8 +110,11 @@ export const setup = (data) => {
 
 
 
+
+
+
 // abstract  way to send emails — deliberately force each value
-export const mailto = async (data, loud = false, trail = false) => {
+export const mailto = async (data, secret, loud = false, trail = false) => {
 
   try {
     const fromName = data['fromName'] || headers['fromName']
@@ -135,17 +140,29 @@ export const mailto = async (data, loud = false, trail = false) => {
       icalEvent
     }
 
+    if (process.env.MG_SECRET)
+      console.warn('MG_SECRET is deprecated! Replace with SECRET_PAIRS')
+
+    // deprecated; use SECRET_PAIRS instead; keep around for debugging
+    if (secret != process.env.MG_SECRET || !process.env.MG_SECRET) {
+      throw new Error('Please provide a valid secret key and/or define the MG_SECRET')
+      return
+    }
+
+    checkToken(secret) // check for the secret here
+
 		// console.log('[notify] sending out notification', mailData)
     // const res = await sendMail(mailData)
     // const res = await compose(mailData)
 
     let msg
-    if(process.env.ENABLE_EMAIL === 'true') {
+    if(process.env.MG_ENABLED === 'true') {
       msg = await mg.messages.create(process.env.MG_DOMAIN, mailData)
       if(loud)
         console.log(`[mailto] Email sent to: ${to}`, msg , mailData)
-    } else
-      console.error('Must enable email via env var ENABLE_EMAIL')
+    } else {
+      throw new Error('Must enable email via env var MG_ENABLED')
+    }
 
 
     // if(loud)

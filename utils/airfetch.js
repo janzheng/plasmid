@@ -148,6 +148,9 @@ export const checkExistence = async (keyword, tableName, fieldName = "Email", us
 }
 
 // future name of checkExistence
+// keyword: e.g. "jan@phage.directory"
+// tableName: e.g. "Profiles"
+// fieldName: e.g. "Email"
 export const getRecord = async (keyword, tableName, fieldName, useCache) => {
   return checkExistence(keyword, tableName, fieldName, useCache)
 }

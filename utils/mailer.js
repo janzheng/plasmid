@@ -1,4 +1,9 @@
-/*  Last updated: 6/3/2021
+/* 
+
+  DEPRECATED — USE mailer2.js
+
+
+  Last updated: 6/3/2021
 
   Mailer — a way to send mail
 
