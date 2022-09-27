@@ -144,7 +144,7 @@ export const mailto = async (data, secret, loud = false, trail = false) => {
       console.warn('MG_SECRET is deprecated! Replace with SECRET_PAIRS')
 
     // deprecated; use SECRET_PAIRS instead; keep around for debugging
-    if (secret != process.env.MG_SECRET || !process.env.MG_SECRET) {
+    if (process.env.MG_SECRET && (secret != process.env.MG_SECRET) ) {
       throw new Error('Please provide a valid secret key and/or define the MG_SECRET')
       return
     }
