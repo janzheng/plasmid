@@ -42,7 +42,7 @@
   "dependencies": {
     "@polka/send": "^0.4.0",
     "@polka/send-type": "^0.5.2",
-    "calendar-link": "^2.1.1",
+    "calendar-link": "^2.2.0",
     "cytosis": "^0.0.607",
     "file-type": "^17.1.1",
     "mailgun.js": "^8.0.0"

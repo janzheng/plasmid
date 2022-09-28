@@ -8,12 +8,40 @@
 import { cytosis, getContent } from "$plasmid/utils/airfetch.js"
 
 // import send from '@polka/send';
-import { google, outlook, office365, yahoo, ics, eventify } from "calendar-link";
-
+import { google, outlook, office365, yahoo, ics } from "calendar-link";
+// import cal from 'calendar-link'; // eventify not getting imported
+// const { google, outlook, office365, yahoo, ics, eventify } = cal;
 
 
 import { config } from "dotenv";
 config(); // https://github.com/sveltejs/sapper/issues/122
+
+
+
+// ripped from calendar-link since not exported
+import dayjs from 'dayjs';
+export const eventify = (event) => {
+  const { start, end, duration, ...rest } = event;
+  const startUtc = dayjs(start).utc();
+  const endUtc = end
+    ? dayjs(end).utc()
+    : (() => {
+      if (event.allDay) {
+        return startUtc.add(1, "day");
+      }
+      if (duration && duration.length == 2) {
+        const value = Number(duration[0]);
+        const unit = duration[1];
+        return startUtc.add(value, unit);
+      }
+      return dayjs().utc();
+    })();
+  return {
+    ...rest,
+    startUtc,
+    endUtc,
+  };
+};
 
 
 
