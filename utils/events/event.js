@@ -8,9 +8,9 @@
 import { cytosis, getContent } from "$plasmid/utils/airfetch.js"
 
 // import send from '@polka/send';
-// import { google, outlook, office365, yahoo, ics } from "calendar-link";
-import cal from 'calendar-link'; // eventify not getting imported
-const { google, outlook, office365, yahoo, ics, eventify } = cal;
+import { google, outlook, office365, yahoo, ics } from "calendar-link";
+// import cal from 'calendar-link'; // eventify not getting imported
+// const { google, outlook, office365, yahoo, ics, eventify } = cal;
 
 
 import { config } from "dotenv";
