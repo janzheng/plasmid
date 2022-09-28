@@ -19,6 +19,7 @@ import { marked } from 'marked';
 import { mailto } from "$plasmid/utils/mailer2"
 import { getRecord } from "$plasmid/utils/airfetch"
 import { keyRemap, textReplacer, textKeyReplacer } from "$plasmid/utils/helpers"
+import { getIcsDecodedFromEvent } from "$plasmid/utils/events/event"
 
 // import { getIcsDecoded } from "@/routes/api/event.js"
 // import { trail } from '$plasmid/utils/logger-trails'
@@ -55,6 +56,9 @@ export const notifyFromTemplate = async ({
   loud = true,
   dictMap, // use this simpler dict mapping instead of dictionary
   dictionary = defaultDictionaryFn, // use the dictionary if not using object keys or Airtable field names
+  attachment,
+  icalEvent, // = { filename: 'event.ics', content: ics_string }
+  event, // turned into an icalEvent
 }) => {
   try {
 
@@ -99,12 +103,21 @@ export const notifyFromTemplate = async ({
 
       console.log('[notifyFromTemplate]', data, md, titleText)
 
+      if(event) {
+        icalEvent = {
+          filename: 'event.ics',
+          content: await getIcsDecodedFromEvent(event)
+        }
+      }
+
       // 3. send the email
       await mailto({
         subject: titleText,
         to: targetEmail, // data['Email'], // explicitly define the email address target so no accidents
         html: md,
         text: md,
+        attachment,
+        icalEvent,
       }, secret, loud, false)
 
       return true

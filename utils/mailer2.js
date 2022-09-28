@@ -121,12 +121,34 @@ export const mailto = async (data, secret, loud = false, trail = false) => {
     const fromEmail = data['fromEmail'] || headers['fromEmail']
     // const replyTo = data['replyTo'] || headers['replyTo']
     const replyEmail = data['replyEmail'] || headers['replyEmail'] || fromEmail
-    let to = data['to'] || headers['to']
     const subject = data['subject'] || headers['subject']
     const text = data['text'] || headers['text']
     const html = data['html'] || headers['html']
-    const attachment = data['attachment']
+    // always use arrays for attachment
+    // https://nodemailer.com/message/attachments/ | https://www.npmjs.com/package/mailgun.js
+    let to = data['to'] || headers['to']
+    let attachment = data['attachment'] || []
     const icalEvent = data['icalEvent']
+
+    /* 
+      OLD; mailgun.js doesn't support ical shortcut
+      check: https://github.com/mailgun/mailgun.js/issues/280
+      for icalEvent, use:
+      icalEvent: {
+        filename: 'event.ics',
+        content: ics, // <-- the content of an ics file, e.g. BEGIN:VCALENDAR...
+      }
+
+      Attachment (singular) looks like:
+
+      const firstFile = {
+          filename: 'test.pdf',
+          data: await fsPromises.readFile(filepath) // this is the file buffer
+      }
+
+      messageParams.attachment = [firstFile, secondFile];
+
+    */
 
     if (process.env.MG_SECRET)
       console.warn('MG_SECRET is deprecated! Replace with SECRET_PAIRS')
@@ -143,6 +165,24 @@ export const mailto = async (data, secret, loud = false, trail = false) => {
       to = "jan@phage.directory"
     } 
 
+
+    // coerce array to be an array; this probably won't work
+    if(!Array.isArray(attachment))
+      attachment = [attachment]
+
+    let icalFile = {}
+    if(icalEvent) {
+      // console.log('[mailer] icalEvent', icalEvent)
+      let contentBuffer = Buffer.from(icalEvent.content, 'utf-8')
+      icalFile = {
+        filename: icalEvent.filename,
+        // data is the filebuffer of content
+        data: contentBuffer,
+        contentType: 'application/ics'
+      }
+      attachment = [icalFile, ...attachment ]
+    }
+
 		// console.log('[notify] sending out notification', mailData)
     // const res = await sendMail(mailData)
     // const res = await compose(mailData)
@@ -155,8 +195,7 @@ export const mailto = async (data, secret, loud = false, trail = false) => {
       subject: subject,
       text: text,
       html: html || text,
-      attachment,
-      icalEvent
+      attachment
     }
 
     let msg

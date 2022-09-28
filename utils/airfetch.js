@@ -81,11 +81,11 @@ export const getContent = async (
     // jsonLocation = '../../../static/data/content.json'
   ) => {
 
-  let content
+  // let content
   try {
     // content = require(jsonLocation)
   } catch (err) { // do nothing if file doesn't exist // _err(err)
-    console.error('content:', err)
+    console.error('[getContent]:', err)
   }
 
   // console.log('[Content] Cache Mode:', process.env.CACHE)
