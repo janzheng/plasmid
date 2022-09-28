@@ -121,12 +121,31 @@ export const mailto = async (data, secret, loud = false, trail = false) => {
     const fromEmail = data['fromEmail'] || headers['fromEmail']
     // const replyTo = data['replyTo'] || headers['replyTo']
     const replyEmail = data['replyEmail'] || headers['replyEmail'] || fromEmail
-    const to = data['to'] || headers['to']
+    let to = data['to'] || headers['to']
     const subject = data['subject'] || headers['subject']
     const text = data['text'] || headers['text']
     const html = data['html'] || headers['html']
     const attachment = data['attachment']
     const icalEvent = data['icalEvent']
+
+    if (process.env.MG_SECRET)
+      console.warn('MG_SECRET is deprecated! Replace with SECRET_PAIRS')
+
+    // deprecated; use SECRET_PAIRS instead; keep around for debugging
+    if (process.env.MG_SECRET && (secret != process.env.MG_SECRET) ) {
+      throw new Error('Please provide a valid secret key and/or define the MG_SECRET')
+      return
+    }
+
+    if (checkToken(secret).includes('demo')) {
+      // check for the secret here; if demo, force email address here
+      console.warn('[mailer] demo mode: not sending public emails; redirecting to [jan@phage.directory]')
+      to = "jan@phage.directory"
+    } 
+
+		// console.log('[notify] sending out notification', mailData)
+    // const res = await sendMail(mailData)
+    // const res = await compose(mailData)
 
     const mailData = {
       from: `${fromName} <${fromEmail}>`,
@@ -139,21 +158,6 @@ export const mailto = async (data, secret, loud = false, trail = false) => {
       attachment,
       icalEvent
     }
-
-    if (process.env.MG_SECRET)
-      console.warn('MG_SECRET is deprecated! Replace with SECRET_PAIRS')
-
-    // deprecated; use SECRET_PAIRS instead; keep around for debugging
-    if (process.env.MG_SECRET && (secret != process.env.MG_SECRET) ) {
-      throw new Error('Please provide a valid secret key and/or define the MG_SECRET')
-      return
-    }
-
-    checkToken(secret) // check for the secret here
-
-		// console.log('[notify] sending out notification', mailData)
-    // const res = await sendMail(mailData)
-    // const res = await compose(mailData)
 
     let msg
     if(process.env.MG_ENABLED === 'true') {

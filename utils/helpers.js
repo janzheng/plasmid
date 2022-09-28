@@ -62,6 +62,7 @@
 
 
 
+    // takes a string, and replaces all instances of {{key}} with the value of key in the data object
 export const keyReplace = (textTemplate, replacerObject, cleanup=true) => {
   /*
     replaces content in a source string with a string from a replacer object
@@ -122,6 +123,7 @@ export const defaultDictFn = (data, loud = false) => {
     // definition: data source
     'name': data?.['Name'],
     'email': data?.['Email'],
+    'json': JSON.stringify(data, null, 2),
     ...data
   }
   if (loud)
@@ -129,10 +131,47 @@ export const defaultDictFn = (data, loud = false) => {
   return dictionary
 }
 
+
+// uses keyReplace() to replace text w/ an additional dictionary object
 export const textReplacer = (text, data, dict = defaultDictFn, loud=false) => {
   let _dict = dict ? dict(data, loud) : data
   return keyReplace(text, _dict)
 }
+
+// the main difference is that a keyMap is simpler, but it can't process itself, e.g. doing an introspection / JSON stringifying the data itself. The annoying part about textReplacer is that defaultDictFn is a function, and can't pass non-pojo in
+// NOT USED — instead, using dictionary factory fn instead 
+export const textKeyReplacer = (text, data, keyMap, loud = false) => {
+  return keyReplace(text, keyRemap(data, keyMap))
+}
+
+
+/* 
+  takes an object, and a map of old keys to new keys
+  - the map object's keys are the OLD keys to remap
+  - values are the NEW keys to remap to
+
+  usage: this changes 'name' to 'firstName' in the result:
+    let newdata = keyRemap(JSON5.parse(data), {name: 'firstName'})
+
+  inputs:
+    obj: {
+      name: 'Jan',
+    }
+
+    map: {
+      name: 'firstName'
+    }
+
+  output: {
+    firstName: 'Jan'
+  }
+*/
+export const keyRemap = (obj, map) => {
+  return Object.keys(obj).reduce((acc, key) => {
+    acc[map[key] || key] = obj[key];
+    return acc;
+  }, {});
+};
 
 
 
@@ -162,4 +201,3 @@ export const getNiceAddress = (stripeAddress) => {
           Canada
           `
 }
-
