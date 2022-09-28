@@ -90,9 +90,9 @@ export async function getEventLinks(event) {
   if (!event) await getEventFromContent()
   try {
     return {
-      google: googleLink(event),
-      yahoo: yahooLink(event),
-      officeLink: office365(event),
+      google: google(event),
+      yahoo: yahoo(event),
+      office: office365(event),
       outlook: outlook(event),
       ics: ics(event),
     };
