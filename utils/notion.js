@@ -1,4 +1,6 @@
 
+import * as notionClient from "@notionhq/client";
+
 /* 
 
   Helpers for reading Notion blocks; used in conjunction with sveltekit-notion, grabby, and cf-notion-api-worker
@@ -54,4 +56,32 @@ export const getBlockValues = (blockArray) => {
     ]
   }
   return null
+}
+
+
+
+
+/* 
+
+  Notion API helpers
+
+*/
+
+// send this in
+// const notion = new notionClient.Client({
+//   auth: process.env.NOTION_API,
+// });
+
+export const patchPage = async (pageId, properties, notion) => {
+  const response = await notion.pages.update({
+    page_id: pageId,
+    properties,
+    // properties: {
+    //   'In stock': {
+    //     checkbox: true,
+    //   },
+    // },
+  });
+  console.log('[notion/patchPage]',response);
+  return response
 }
