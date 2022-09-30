@@ -7,10 +7,10 @@ export const getBee = async ({
   timeout = 10000,
   block_resources = true,
   extract_rules = `{"text":"body"}`,
-}, isScraping, result, _fetch) => {
+}, _fetch) => {
 
+  let result
   try {
-    isScraping = true
     result = ""
     let beeresults = ``
     let __fetch = _fetch || fetch // for server-side or client-side
@@ -22,7 +22,6 @@ export const getBee = async ({
       console.log('bee init results:', beeresults)
       result = beeresults
       console.log('bee text:', result)
-      isScraping = false
     }
 
     return result
