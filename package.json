@@ -41,6 +41,15 @@
     "sanitize-html": "^2.4.0",
     "scrapingbee": "^1.6.1",
     "slugify": "^1.6.5",
+    "rehype-remark": "^9.1.2",
+    "rehype-slug": "^5.0.1",
+    "rehype-parse": "^8.0.4",
+    "rehype-stringify": "^9.0.3",
+    "remark-attr": "^0.11.1",
+    "remark-gfm": "^3.0.1",
+    "remark-parse": "^10.0.1",
+    "remark-rehype": "^10.1.0",
+    "remark-stringify": "^10.0.2",
     "svelte-easy-crop": "^1.0.7"
   },
   "dependencies": {

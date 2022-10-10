@@ -3,6 +3,8 @@
 
   WIP CYTOSIS
 
+  10/4/2022: Added CONCATENATE() around all search terms to coerce numbers and rollups into strings
+
 */
 
 import Airtable from 'airtable'
@@ -866,18 +868,18 @@ class Cytosis {
       // this only works when there is an EXACT match
       // DEFAULT
       if (options.matchCase == true) {
-        filter = `IF({${options.matchKeywordWithField}} = "${options.keyword}",TRUE(),FALSE())`
+        filter = `IF(CONCATENATE({${options.matchKeywordWithField}}) = "${options.keyword}",TRUE(),FALSE())`
       } else {
-        filter = `IF(LOWER({${options.matchKeywordWithField}}) = LOWER("${options.keyword}"),TRUE(),FALSE())`
+        filter = `IF(LOWER(CONCATENATE({${options.matchKeywordWithField}})) = LOWER("${options.keyword}"),TRUE(),FALSE())`
       }
 
       // this works when the string exists as a part
       // "exact" match is default so we don't have code for it
       if (options.matchStyle == "partial") {
         if (options.matchCase == true) {
-          filter = `IF(SEARCH("${options.keyword}",{${options.matchKeywordWithField}}) > 0,TRUE(),FALSE())`
+          filter = `IF(SEARCH("${options.keyword}",CONCATENATE({${options.matchKeywordWithField}})) > 0,TRUE(),FALSE())`
         } else {
-          filter = ` IF(SEARCH(LOWER("${options.keyword}"),LOWER({${options.matchKeywordWithField}})) > 0,TRUE(),FALSE())`
+          filter = ` IF(SEARCH(LOWER("${options.keyword}"),LOWER(CONCATENATE({${options.matchKeywordWithField}}))) > 0,TRUE(),FALSE())`
         }
       }
 
@@ -897,18 +899,18 @@ class Cytosis {
           return
 
         if (options.matchCase == true) {
-          filters.push(`IF({${fieldName}} = "${keyword}",TRUE(),FALSE())`)
+          filters.push(`IF(CONCATENATE({${fieldName}}) = "${keyword}",TRUE(),FALSE())`)
         } else {
-          filters.push(`IF(LOWER({${fieldName}}) = LOWER("${keyword}"),TRUE(),FALSE())`)
+          filters.push(`IF(LOWER(CONCATENATE({${fieldName}})) = LOWER("${keyword}"),TRUE(),FALSE())`)
         }
 
         // this works when the string exists as a part
         // "exact" match is default so we don't have code for it
         if (options.matchStyle == "partial") {
           if (options.matchCase == true) {
-            filters.push(`IF(SEARCH("${keyword}",{${fieldName}}) > 0,TRUE(),FALSE())`)
+            filters.push(`IF(SEARCH("${keyword}",CONCATENATE({${fieldName}})) > 0,TRUE(),FALSE())`)
           } else {
-            filters.push(`IF(SEARCH(LOWER("${keyword}"),LOWER({${fieldName}})) > 0,TRUE(),FALSE())`)
+            filters.push(`IF(SEARCH(LOWER("${keyword}"),LOWER(CONCATENATE({${fieldName}}))) > 0,TRUE(),FALSE())`)
           }
         }
       })

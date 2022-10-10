@@ -72,6 +72,18 @@ export const fetchGet = async (url, data, fetch) => {
 }
 
 
+// convenience function for fetching data and converting to json
+export const fetchJson = async (url, fetch) => {
+  if (!fetch || !url) // server-side won't have access to fetch object
+    throw new Error('fetchJson needs access to the fetch object and a url!')
+
+  const response = await fetch(url)
+  const json = await response.json()
+
+  return json
+}
+
+
 /*
   appends data into form, including files
   - use 'formidable' on the API to tease out files and fields 
