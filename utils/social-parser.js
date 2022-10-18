@@ -136,6 +136,10 @@ export const socialParse = (inputText) => {
 
   const resultsMap = new Map();
   const resultsArr = []
+
+  // remove all commas, if they exist
+  inputText = inputText.replace(/,/g, '');
+  
   Object.entries(internals.regexes).forEach(([type, regex]) => {
 
     // While loop is needed to process multiple matches from 1 regex

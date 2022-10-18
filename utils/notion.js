@@ -85,3 +85,17 @@ export const patchPage = async (pageId, properties, notion) => {
   console.log('[notion/patchPage]',response);
   return response
 }
+
+export const createPage = async (parent, properties, notion) => {
+  const response = await notion.pages.create({
+    parent,
+    properties,
+    // properties: {
+    //   'In stock': {
+    //     checkbox: true,
+    //   },
+    // },
+  });
+  console.log('[notion/createPage]', response);
+  return response
+}
