@@ -10,7 +10,7 @@
 import bcrypt from 'bcryptjs'
 import crypto from 'crypto'
 
-import { notifySetup, notify } from '../mailer.js'
+// import { notifySetup, notify } from '../mailer.js'
 
 // import { addUser, findUserById, findUserByEmail } from './auth-users.js'
 
