@@ -491,7 +491,6 @@ export const checkPassword = async ({
   _baseId
 }) => {
 
-  console.log('checkPass?!?!?!?!?!?!?!?!?!?!', _baseId)
   try {
     // find the user
     let record = await getRecord_v2({
