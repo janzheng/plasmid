@@ -483,16 +483,22 @@ export const flattenRecord = (record) => {
 
 */
 export const checkPassword = async ({
-  id, idField = "Name", plaintextPass, passField = "Passphrase", isHashed = false
+  id, 
+  idField = "Name", 
+  plaintextPass, 
+  passField = "Passphrase",
+  isHashed = false, 
+  _baseId
 }) => {
 
+  console.log('checkPass?!?!?!?!?!?!?!?!?!?!', _baseId)
   try {
     // find the user
     let record = await getRecord_v2({
       keyword: id,
       tableName: "People",
       fieldName: idField,
-      _baseId: env?.V3_DB_BASE,
+      _baseId: _baseId || baseId,
       useCache: false,
     })
     if (!record)
@@ -510,7 +516,8 @@ export const checkPassword = async ({
     return false
   } catch (err) {
     console.error('checkPassword:', err?.message || err)
-    return { error: err?.message || err }
+    // return { error: err?.message || err }
+    return false
   }
 }
 
