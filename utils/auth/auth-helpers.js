@@ -113,6 +113,13 @@ export const sanitizeUserForNotifier = (user1) => {
 
 
 // https://github.com/feathersjs/feathers/blob/3c2218e633dfb19f430eb539b73afb3f684b6479/packages/authentication-local/src/strategy.ts#L116
+/* 
+
+  let pass = "banana"
+  let hashpass = await hashPassword(pass)
+  console.log('??', pass, hashpass, await comparePasswords(pass, hashpass))
+
+*/
 export const hashPassword = async (password, saltRounds=10) => {
   const hash = await bcrypt.hash(password, saltRounds);
   return hash

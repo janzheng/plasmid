@@ -376,8 +376,6 @@ export const addRecord_v2 = async ({
   _baseId = baseId,
 }) => {
 
-  console.log('adding thru', _baseId)
-
   const record = await cytosis.save({
     apiKey: _apiEditorKey,
     baseId: _baseId,
