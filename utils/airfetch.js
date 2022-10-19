@@ -155,6 +155,40 @@ export const getRecord = async (keyword, tableName, fieldName, useCache) => {
   return checkExistence(keyword, tableName, fieldName, useCache)
 }
 
+export const getRecord_v2 = async ({ keyword, tableName, fieldName, useCache=false, _apiEditorKey, _baseId }) => {
+  const _cache = `getRecord_v2-${keyword}-${tableName}-${fieldName}`
+  if (useCache && cacheCheck(_cache)) return cacheCheck(_cache)
+
+  const cytosis = await new Cytosis({
+    apiKey: _apiEditorKey || apiEditorKey,
+    baseId: _baseId || baseId,
+    bases: [
+      {
+        tables: [tableName],
+        options: {
+          "maxRecords": 1,
+          keyword: `${keyword}`,
+          matchKeywordWithField: fieldName,
+          matchStyle: 'exact',
+        }
+      },
+    ],
+    routeDetails: '[api/getters/getRecord_v2]',
+  })
+  if (cytosis.results[tableName].length > 0) {
+    const record = cytosis.results[tableName][0]
+
+    if (useCache)
+  		cacheSet(_cache, record) // short cache to pings
+    return record
+  }
+  return null
+}
+
+
+
+
+
 
 // export const getRecordFromTables = async (keyword, tables, fieldName = "Email", useCache = true) => {
 //   const _cache = `checkExistence-${keyword}-${tableName}-${fieldName}`
@@ -428,6 +462,57 @@ export const flattenRecord = (record) => {
 
 
 
+
+// checks against unhashed animal names
+// future: check against hashed animal names, real passwords, etc.
+/* Usage
+
+  let user = await checkPassword({
+    id: formJson.Username, 
+    idField: "Slug", 
+    plaintextPass: formJson.Password,
+    passField: "Passphrase"
+  })
+  
+  if(!user) {
+    return {
+      success: false,
+      error: "Invalid username or password",
+    }
+  }
+
+*/
+export const checkPassword = async ({
+  id, idField = "Name", plaintextPass, passField = "Passphrase", isHashed = false
+}) => {
+
+  try {
+    // find the user
+    let record = await getRecord_v2({
+      keyword: id,
+      tableName: "People",
+      fieldName: idField,
+      _baseId: env?.V3_DB_BASE,
+      useCache: false,
+    })
+    if (!record)
+      return false
+
+    record = flattenRecord(record)
+    // console.log('checkPassword:', record[passField], plaintextPass)
+
+    // check if the user has a passphrase in the passField field 
+    if (record[passField] && record[passField] == plaintextPass) {
+      return record
+    }
+
+    // return record if the passphrase matches
+    return false
+  } catch (err) {
+    console.error('checkPassword:', err?.message || err)
+    return { error: err?.message || err }
+  }
+}
 
 
 
