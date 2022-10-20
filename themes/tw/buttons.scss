@@ -1,99 +1,272 @@
+/* 
+
+  Buttons!
 
 
-.button-base, .btn-base {
-  @apply 
-    py-2 px-4 
-    border border-gray-300 rounded-md 
-    transition duration-150 ease-in-out 
-    hover:border-gray-800 
-    focus:ring-blue-500 focus:ring-2 focus:ring-inset focus:outline-none
-    cursor-pointer;
+  types
+  - solid
+  - text (like links but with padding)
+  - outline
+  - light (soft background, light shadow)
+  - attributes
+    - short
+    - tall
 
 
-  &.--short {
-      @apply py-0;
-    }
+  colors / semantic
+  - primary (Default blue)
+  - secondary
+  - success
+  - danger
+  - warning
+  - info
+  - states
+    - disabled
+    - hover
+    - active
+    - focus
+
+
+
+  Notes: demo these different use cases
+  - link that looks like a button
+  - button that looks like a link
+
+
+*/
+
+// Button attributes
+%btn--short {
+  @apply py-0;
 }
+
+%btn--tall {
+  @apply py-4;
+}
+
+%btn--tight {
+  @apply py-0 px-2 border;
+}
+
+
+// Button types
+%btn { // acts as button base
+  @apply inline-block
+    transition duration-150 ease-in-out cursor-pointer text-center
+    no-underline hover:no-underline 
+    border-2 rounded-md
+    py-4 px-4 mb-4  // mobile has bigger hit areas
+    sm:py-2 sm:mb-0 // large screens
+    hover:bg-gray-200
+    disabled:cursor-not-allowed disabled:text-current disabled:hover:text-current disabled:bg-gray-200 disabled:border-gray-200 disabled:hover:bg-gray-200 disabled:hover:bg-gray-200 disabled:active:bg-gray-200 disabled:active:bg-gray-200 disabled:ring-0 disabled:active:ring-0 disabled:focus:ring-0
+  ;
+
+  &.--short {@extend %btn--short;}
+  &.--tall {@extend %btn--tall;}
+  &.--tight {@extend %btn--tight;}
+}
+
+%btn-outline {
+  @extend %btn;
+  @apply 
+    shadow-sm 
+    disabled:hover:bg-gray-200 disabled:border-gray-200 disabled:hover:border-gray-200
+  ;
+}
+
+%btn-light {
+  // "light" mode doesn't have primary / warning etc. colors
+  @extend %btn;
+  @apply 
+    border border-slate-200
+    hover:bg-slate-200/50
+    text-slate-800 hover:text-slate-700
+    shadow-sm 
+
+    disabled:bg-slate-200 disabled:border-slate-200 disabled:hover:bg-slate-200 disabled:hover:bg-slate-200 disabled:active:bg-slate-200 disabled:active:bg-slate-200
+  ;
+}
+
+%btn-text {
+  // "text" buttons should feel like a link, but have all the same sizing behaviours as a button — esp. for padding and alignment
+  // note this might be overridden depending on the current theme's link styles
+  @extend %btn;
+  @apply 
+    border-2 border-transparent
+    shadow-none
+    underline 
+    text-blue-600 hover:text-blue-800
+
+    bg-transparent hover:bg-transparent
+    disabled:no-underline disabled:text-gray-400 disabled:hover:text-gray-400
+    disabled:bg-transparent disabled:border-transparent disabled:hover:bg-transparent disabled:hover:bg-transparent disabled:active:bg-transparent disabled:active:bg-transparent
+  ;
+}
+
+%btn-link {
+  // "link" buttons behave like inline links
+  // @extend %btn;
+  @apply 
+    inline-block
+    no-underline hover:underline
+    border-2 border-transparent
+    shadow-none
+    underline 
+
+    bg-transparent hover:bg-transparent
+    disabled:no-underline disabled:text-gray-400 disabled:hover:text-gray-400
+    disabled:bg-transparent disabled:border-transparent disabled:hover:bg-transparent disabled:hover:bg-transparent disabled:active:bg-transparent disabled:active:bg-transparent
+  ;
+}
+
+
+
+
+
+
+
+
+// Button styles
+%btn-primary {
+  @apply
+    text-white hover:text-white 
+
+    bg-blue-600 border-blue-600 
+    hover:bg-blue-700 hover:bg-blue-700 
+    active:bg-blue-800 active:ring-blue-400 active:ring-2
+    focus:ring-blue-100 focus:ring-2 focus:ring-inset 
+    ;
+}
+    %btn-danger {
+      @apply
+        text-white hover:text-white 
+
+        bg-red-600 border-red-600 
+        hover:bg-red-700 hover:bg-red-700 
+        active:bg-red-800 active:ring-red-400 active:ring-2
+        focus:ring-red-100 focus:ring-2 focus:ring-inset 
+        ;
+    }
+    %btn-warning {
+      @apply
+        text-white hover:text-white 
+
+        bg-orange-600 border-orange-600 
+        hover:bg-orange-700 hover:bg-red-700 
+        active:bg-orange-800 active:ring-orange-400 active:ring-2
+        focus:ring-orange-100 focus:ring-2 focus:ring-inset 
+        ;
+    }
+    %btn-success {
+      @apply
+        text-white hover:text-white 
+
+        bg-green-600 border-green-600 
+        hover:bg-green-700 hover:bg-green-700 
+        active:bg-green-800 active:ring-green-400 active:ring-2
+        focus:ring-green-100 focus:ring-2 focus:ring-inset 
+        ;
+    }
+
+%btn-outline-primary {
+  @apply
+    text-blue-600 hover:text-blue-700 
+    border-blue-600 
+    hover:border-blue-700 hover:bg-blue-100/50 
+    active:bg-blue-100 active:ring-blue-200 active:ring-2
+    focus:ring-blue-100 focus:ring-4 focus:ring-inset 
+  ;
+}
+    %btn-outline-danger {
+      @apply
+        text-red-600 hover:text-red-700 
+        border-red-600 
+        hover:border-red-700 hover:bg-red-100/50 
+        active:bg-red-100 active:ring-red-200 active:ring-2
+        focus:ring-red-100 focus:ring-4 focus:ring-inset 
+      ;
+    }
+    %btn-outline-warning {
+      @apply
+        text-orange-600 hover:text-orange-700 
+        border-orange-600 
+        hover:border-orange-700 hover:bg-orange-100/50 
+        active:bg-orange-100 active:ring-orange-200 active:ring-2
+        focus:ring-orange-100 focus:ring-4 focus:ring-inset 
+      ;
+    }
+    %btn-outline-success {
+      @apply
+        text-green-600 hover:text-green-700 
+        border-green-600 
+        hover:border-green-700 hover:bg-green-100/50 
+        active:bg-green-100 active:ring-green-200 active:ring-2
+        focus:ring-green-100 focus:ring-4 focus:ring-inset 
+      ;
+    }
+
+
+
+%btn-link-primary {
+  @apply
+    text-blue-600 hover:text-blue-800
+  ;
+}
+
+
+
+
+
+
+
 
 .Btn, .btn {
-  @extend .button-base;
-}
+  @extend %btn;
 
-.Btn-solid, .btn-solid {
-  @apply inline-block px-4 rounded-md bg-blue-600 
-    border-2 border-blue-600 
-    hover:bg-blue-700 hover:bg-blue-700 
-    active:bg-blue-800 active:bg-blue-800
-    focus:ring-blue-600 focus:ring-2 focus:ring-inset focus:outline-none 
-    no-underline hover:no-underline text-white hover:text-white 
-    transition duration-150 ease-in-out cursor-pointer;
+  // .Btn-solid, .btn-outline
+  &-solid {
+    @extend %btn; 
+    @extend %btn-primary;
 
-  // xs padding
-  @apply py-4 mb-4 sm:py-2 sm:mb-0 text-center;
-
-  &:disabled {
-    @apply inline-block px-4 rounded-md bg-gray-300 
-      border-2 border-gray-300
-      hover:bg-gray-300 hover:bg-gray-300
-      active:bg-gray-300 active:bg-gray-300
+    &.--success { @extend %btn-success; }
+    &.--warning { @extend %btn-warning; }
+    &.--danger { @extend %btn-danger; }
   }
-  &.--short {
-    @apply py-0;
+
+  // .Btn-outline, .btn-outline
+  &-outline {
+    @extend %btn-outline; 
+    @extend %btn-outline-primary;
+
+    &.--success { @extend %btn-outline-success; }
+    &.--warning { @extend %btn-outline-warning; }
+    &.--danger { @extend %btn-outline-danger; }
+  }
+
+  // .Btn-light, .btn-light
+  &-light {
+    @extend %btn-light;
+  }
+
+  // .Btn-text, .btn-text
+  &-text {
+    @extend %btn-text !optional;
+  }
+
+  // .Btn-link, .btn-link
+  &-link {
+    @extend %btn-link !optional;
+    @extend %btn-link-primary !optional;
   }
 }
 
 
 
-.Btn-outline, .btn-outline {
-  @apply inline-block py-2 px-4 rounded-md border-2 border-blue-600 shadow-sm hover:border-blue-700 hover:bg-blue-100/50 no-underline hover:no-underline text-blue-600 hover:text-blue-700 transition duration-150 ease-in-out cursor-pointer underline;
-
-  // xs padding
-  @apply py-4 mb-4 sm:py-2 sm:mb-0 text-center;
-
-  &.--short {
-    @apply py-0;
-  }
-}
 
 
 
-.Btn-light, .btn-light {
-  @apply inline-block py-2 px-4 rounded-md border border-slate-100 shadow-sm hover:bg-slate-100/50 no-underline hover:no-underline text-slate-800 hover:text-slate-700 transition duration-150 ease-in-out cursor-pointer underline;
-
-  // xs padding
-  @apply py-4 mb-4 sm:py-2 sm:mb-0 text-center;
-
-  &.--short {
-      @apply py-0;
-    }
-}
 
 
-
-.Btn-text, .btn-text {
-  @apply inline-block py-2 px-4 rounded-md border-2 border-transparent underline hover:no-underline text-blue-600 hover:text-blue-700 transition duration-150 ease-in-out cursor-pointer;
-
-  // xs padding
-  @apply py-4 mb-4 sm:py-2 sm:mb-0 text-center;
-
-  &.--short {
-      @apply py-0;
-    }
-}
-
-.Btn-link, .btn-link {
-  @apply inline-block text-blue-700 hover:text-blue-900 hover:no-underline transition duration-150 ease-in-out cursor-pointer;
-
-  &.--short {
-      @apply py-0;
-    }
-}
-
-
-
-.Btn-outline-slim, .btn-outline-slim {
-  @apply inline-block py-0 px-2 rounded-md border border-blue-600 shadow-sm hover:border-blue-700 hover:bg-blue-100/50 no-underline hover:no-underline text-blue-600 hover:text-blue-700 transition duration-150 ease-in-out cursor-pointer;
-}
 
 .Btn-warning,
 .btn-warning {
@@ -106,3 +279,39 @@
       @apply py-0;
     }
   }
+
+
+
+
+
+
+
+  /* 
+    legacy
+  */
+
+.Btn-outline-slim,
+.btn-outline-slim {
+  // legacy; use instead: "Btn-outline --tight"
+  @extend .Btn-outline;
+  @extend .--tight;
+}
+
+// .button-base, .btn-base {
+//   @apply 
+//     py-2 px-4 
+//     border border-gray-300 rounded-md 
+//     transition duration-150 ease-in-out 
+//     hover:border-gray-800 
+//     focus:ring-blue-200 focus:ring-2 focus:ring-inset focus:outline-none
+//     cursor-pointer;
+
+
+//   &.--short {
+//       @apply py-0;
+//     }
+// }
+
+// .Btn, .btn {
+//   @extend .button-base;
+// }
