@@ -37,12 +37,24 @@ export async function send(data, headers = {}, status, statusText = 'ok') {
   });
 }
 
-export async function errorjson(status = 500, data, headers = {}, ) {
+export function errorjson(status = 500, data, headers = {}, ) {
   let json = JSON.stringify(data)
   return new Response(json, {
     status,
     headers: {
       'Content-Type': 'application/json',
+      ...headers
+    }
+  });
+}
+
+export function allowjson(data, headers = {}, url='*') {
+  let json = JSON.stringify(data)
+  return new Response(json, {
+    status: 200,
+    headers: {
+      'Content-Type': 'application/json',
+      'Access-Control-Allow-Origin': url,
       ...headers
     }
   });
