@@ -48,13 +48,27 @@ export function errorjson(status = 500, data, headers = {}, ) {
   });
 }
 
-export function allowjson(data, headers = {}, url='*') {
+
+
+// created to allow CORS, but vercel.json headers can do that instead, so this doesn't do much
+// do SWR out of the box
+export function hjson(data, headers = {
+}, url='*') {
   let json = JSON.stringify(data)
   return new Response(json, {
     status: 200,
     headers: {
       'Content-Type': 'application/json',
       'Access-Control-Allow-Origin': url,
+      "Access-Control-Allow-Origin": "*",
+      "Access-Control-Allow-Headers": "*",
+      'Access-Control-Allow-Credentials': true,
+      "Access-Control-Allow-Methods": "GET,OPTIONS,PATCH,DELETE,POST,PUT",
+      'Access-Control-Allow-Headers': 'X-CSRF-Token, X-Requested-With, Accept, Accept-Version, Content-Length, Content-MD5, Content-Type, Date, X-Api-Version',
+      // "Cache-Control":`public, s-maxage=${30}, max-age=${60*60*0.1}, stale-while-revalidate=${60*4}`, 
+      // 60s fresh cache but 7 day cache; max-age determines "freshness" and swr time is whenever the stlate data gets sent over
+      // "Cache-Control":`public, s-maxage=${10}, max-age=${10}, stale-while-revalidate=${10}`, 
+      "Cache-Control": `public, s-maxage=${60}, max-age=${60}, stale-while-revalidate=${60 * 60}`,
       ...headers
     }
   });
