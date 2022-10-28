@@ -906,6 +906,7 @@ class Cytosis {
 
         // this works when the string exists as a part
         // "exact" match is default so we don't have code for it
+        // "partial" means the keyword exists as a part of the string
         if (options.matchStyle == "partial") {
           if (options.matchCase == true) {
             filters.push(`IF(SEARCH("${keyword}",CONCATENATE({${fieldName}})) > 0,TRUE(),FALSE())`)

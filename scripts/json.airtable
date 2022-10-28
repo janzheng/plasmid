@@ -1,0 +1,19 @@
+
+
+# spits out json-formatted data
+"{"
+&"\"EventType\":\"" & {EventType} & "\""
+&",\"DataType\":\"" & {DataType} & "\""
+&",\"Data\":\"" & {DataType} & "\""
+&",\"Username\":\"" & {Username} & "\""
+&",\"Posts\":\"" & {Posts} & "\""
+&"}"
+
+
+# takes a json formatted cell and rolls them up into the parent record as an array
+IF(values,
+"{ \"Data\":[" 
+    & ARRAYJOIN(values, " , ")
+  & "]}",
+"")
+
