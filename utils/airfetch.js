@@ -185,6 +185,23 @@ export const getRecord_v2 = async ({ keyword, tableName, fieldName, useCache=fal
   return null
 }
 
+export const getRecordById = async ({ recordId, tableName, useCache=false, _apiEditorKey, _baseId }) => {
+  const _cache = `getRecordById-${recordId}-${tableName}`
+  if (useCache && cacheCheck(_cache)) return cacheCheck(_cache)
+
+  let record = await Cytosis.getRecord({
+    recordId: recordId,
+    tableName: tableName,
+    apiKey: _apiEditorKey || apiEditorKey,
+    baseId: _baseId || baseId,
+  })
+  record = flattenRecord(record)
+
+  if (useCache)
+    cacheSet(_cache, record) // short cache to pings
+
+  return record
+}
 
 
 

@@ -1,13 +1,173 @@
-.Card {
+/* 
+
+  Cards!
+
+
+  types
+  - outline — (default)
+  - outline-text — outline, w/ colored text
+  - solid
+  - light (soft background, light shadow)
+
+  - attributes
+    - card-buttons (--btn; only for solid)
+    - negative margin (--negative)
+
+  colors / semantic
+  - primary (Default blue)
+  - secondary
+  - light
+  - success
+  - danger
+  - warning
+
+
+*/
+
+
+%card--thin {
+  @apply border;
+}
+%card--shadow {
+  @apply shadow-md;
+}
+%card--shadow-lg {
+  @apply shadow-lg;
+}
+%card--negative {
+  @apply -ml-4 -mr-4;
+}
+
+
+// Card types
+%card {
   @apply rounded-md mb-2 p-4 border-2 border-transparent;
 
-  &:last-of-type {
-    // @apply mb-0;
+  &.--thin {@extend %card--thin;}
+  &.--shadow {@extend %card--shadow;}
+  &.--shadow-lg {@extend %card--shadow-lg;}
+  &.--negative {@extend %card--negative;} // for negative margin buttons, so text is flush but hovering still shows an outline / bg
+
+  // apply pfix automatically to all cards
+  p:last-child {
+    padding-bottom: 0;
+  }
+  &--i {
+    padding-bottom: 0 !important;
   }
 }
 
-.__outline {}
+%card-btn {
+  @apply transition duration-150 ease-in-out cursor-pointer;
+}
 
+%card-outline {
+  @extend %card;
+  @apply shadow-sm border-gray-200;
+}
+  %card-outline-primary-simple { @apply border-blue-600; }
+  %card-outline-primary { @apply border-blue-600 text-blue-900 bg-blue-50; }
+  %card-outline-light { @apply border-gray-200; }
+  %card-outline-lighter { @apply border-gray-100; }
+  %card-outline-success { @apply border-green-600 text-green-900 bg-green-50; }
+  %card-outline-warning { @apply border-orange-600 text-orange-900 bg-orange-50; }
+  %card-outline-danger  { @apply border-red-600 text-red-900 bg-red-50; }
+  %card-outline-text-primary { @apply text-blue-600 border-blue-600; }
+  %card-outline-text-success { @apply text-green-600 border-green-600; }
+  %card-outline-text-warning { @apply text-orange-600 border-orange-600; }
+  %card-outline-text-danger  { @apply text-red-600 border-red-600; }
+
+%card-solid {
+  @extend %card;
+  @apply shadow-sm bg-gray-200 border-gray-200;
+  &.--btn { @extend %card-btn; @apply hover:bg-gray-300 hover:border-gray-300; }
+}
+  %card-solid-light { @apply bg-gray-100 border-gray-100; 
+    &.--btn { @extend %card-btn; @apply hover:bg-gray-200 hover:border-gray-200; }
+  }
+  %card-solid-lighter { @apply bg-gray-50 border-gray-50; 
+    &.--btn { @extend %card-btn; @apply hover:bg-gray-100 hover:border-gray-100; }
+  }
+  %card-solid-white { @apply border-white bg-white; 
+    &.--btn { @extend %card-btn; @apply hover:bg-gray-50 hover:border-gray-50; }
+  }
+  %card-solid-ghost { @apply border-white bg-white shadow-none;
+    // ghost is meant to be DARKER when hovered; similar to Youtube or Substack
+    &.--btn { @extend %card-btn; @apply hover:bg-gray-200/25 hover:border-gray-200/25; }
+  }
+  %card-solid-primary { @apply bg-blue-100/50 border-blue-100/50; 
+    &.--text { @apply text-blue-600; }
+    &.--btn { @extend %card-btn; @apply hover:bg-blue-100 hover:border-blue-100; }
+  }
+  %card-solid-success { @apply bg-green-100/50 border-green-100/50; 
+    &.--text { @apply text-green-600; }
+    &.--btn { @extend %card-btn; @apply hover:bg-green-100 hover:border-green-100; }
+  }
+  %card-solid-warning { @apply bg-orange-100/50 border-orange-100/50; 
+    &.--text { @apply text-orange-600; }
+    &.--btn { @extend %card-btn; @apply hover:bg-orange-100 hover:border-orange-100; }
+  }
+  %card-solid-danger  { @apply bg-red-100/50 border-red-100/50; 
+    &.--text { @apply text-red-600; }
+    &.--btn { @extend %card-btn; @apply hover:bg-red-100 hover:border-red-100; }
+  }
+
+
+
+
+
+.Card {
+  @extend %card;
+
+  &, &-outline {
+    @extend %card-outline;
+
+    &.--light { @extend %card-outline-light; }
+    &.--lighter { @extend %card-outline-lighter; }
+    &.--primary-simple { @extend %card-outline-primary-simple; }
+    &.--primary { @extend %card-outline-primary; }
+    &.--success { @extend %card-outline-success; }
+    &.--warning { @extend %card-outline-warning; }
+    &.--danger { @extend %card-outline-danger; }
+  }
+  &-outline-text {
+    @extend %card-outline;
+
+    &.--primary { @extend %card-outline-text-primary; }
+    &.--success { @extend %card-outline-text-success; }
+    &.--warning { @extend %card-outline-text-warning; }
+    &.--danger { @extend %card-outline-text-danger; }
+  }
+  &-solid {
+    @extend %card-solid;
+
+    &.--light { @extend %card-solid-light; }
+    &.--lighter { @extend %card-solid-lighter; }
+    &.--white { @extend %card-solid-white; }
+    &.--ghost { @extend %card-solid-ghost; }
+    &.--primary { @extend %card-solid-primary; }
+    &.--success { @extend %card-solid-success; }
+    &.--warning { @extend %card-solid-warning; }
+    &.--danger { @extend %card-solid-danger; }
+  }
+}
+
+
+
+
+
+
+
+
+
+
+
+
+/* 
+
+  Legacy
+
+*/
 .Card-lighter {
   @extend .Card;
   @apply border-gray-100;
@@ -36,9 +196,6 @@
   @extend .Card;
   @apply border-blue-500;
 
-  &.--thin {
-    @apply border;
-  }
 }
 
 .Card-success {

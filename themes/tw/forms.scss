@@ -75,7 +75,7 @@ select[multiple],
 }
 
 .input-checkers {
-  @apply bg-gray-100 border-blue-200 focus:border-blue-500 border-2 focus:bg-white focus:ring-0 hover:border-blue-500 hover:transition-all ease-in-out;
+  @apply bg-gray-100 border-blue-200 focus:border-blue-500 border-2 focus:bg-white focus:ring-1 hover:border-blue-500 hover:transition-all ease-in-out;
 }
 
 .input-formlet-outline {

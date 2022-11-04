@@ -11,15 +11,20 @@
   - attributes
     - short
     - tall
+    - thin
+    - tight
+
+  - button tags
+    - turns buttons into "tag"-looking things, with all the button styles and options
 
 
   colors / semantic
   - primary (Default blue)
   - secondary
+  - light
   - success
   - danger
   - warning
-  - info
   - states
     - disabled
     - hover
@@ -48,6 +53,25 @@
   @apply py-0 px-2 border;
 }
 
+%btn--snug {
+  @apply py-0 px-1 border;
+}
+%btn--thin {
+  @apply border;
+}
+%btn--dud {
+  // remove all interactions / hovers
+  @apply pointer-events-none cursor-default;
+}
+%btn--pill {
+  @apply rounded-xl;
+}
+%btn-tag {
+  @extend %btn--snug;
+  @extend %btn--thin;
+  @extend %btn--dud;
+}
+
 
 // Button types
 %btn { // acts as button base
@@ -64,6 +88,11 @@
   &.--short {@extend %btn--short;}
   &.--tall {@extend %btn--tall;}
   &.--tight {@extend %btn--tight;}
+  &.--snug {@extend %btn--snug;}
+  &.--thin {@extend %btn--thin;}
+  &.--dud {@extend %btn--dud;}
+  &.--tag {@extend %btn-tag;}
+  &.--pill {@extend %btn--pill;}
 }
 
 %btn-outline {
@@ -108,7 +137,8 @@
   // @extend %btn;
   @apply 
     inline-block
-    no-underline hover:underline
+    no-underline hover:underline 
+    cursor-pointer
     border-2 border-transparent
     shadow-none
     underline 
@@ -117,6 +147,10 @@
     disabled:no-underline disabled:text-gray-400 disabled:hover:text-gray-400
     disabled:bg-transparent disabled:border-transparent disabled:hover:bg-transparent disabled:hover:bg-transparent disabled:active:bg-transparent disabled:active:bg-transparent
   ;
+
+  &.border-0 {
+    border: 0; // helps with text alignment; this overrides the above
+  }
 }
 
 
@@ -212,8 +246,12 @@
     text-blue-600 hover:text-blue-800
   ;
 }
-
-
+%btn-link-light {
+  @apply
+    // text-slate-500 hover:text-slate-300
+    text-slate-500
+  ;
+}
 
 
 
@@ -224,7 +262,7 @@
   @extend %btn;
 
   // .Btn-solid, .btn-outline
-  &-solid {
+  &-solid, &-primary {
     @extend %btn; 
     @extend %btn-primary;
 
@@ -253,11 +291,17 @@
     @extend %btn-text !optional;
   }
 
-  // .Btn-link, .btn-link
+  // .Btn-link, .btn-link; .btn-link-light;
   &-link {
     @extend %btn-link !optional;
     @extend %btn-link-primary !optional;
   }
+    // .btn-link-light;
+    &-link-light {
+      @extend %btn-link !optional;
+      @extend %btn-link-light !optional;
+    }
+
 }
 
 

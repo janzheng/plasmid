@@ -1,0 +1,40 @@
+/* 
+
+  Tags!
+
+  - check out Button Tags
+
+  types
+  - outline-text — outline, w/ colored text
+  - solid
+  - light (soft background, light shadow)
+  - attributes
+    - short
+    - tall
+    - pill (rounded)
+
+
+
+  colors / semantic
+  - primary (Default blue)
+  - secondary
+  - light
+  - success
+  - danger
+  - warning
+
+
+*/
+
+// Tag attributes
+%tag--short {
+  @apply py-0;
+}
+
+%tag--tall {
+  @apply py-4;
+}
+
+%tag--tight {
+  @apply py-0 px-2 border;
+}
