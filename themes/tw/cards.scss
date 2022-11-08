@@ -28,6 +28,9 @@
 %card--thin {
   @apply border;
 }
+%card--pad {
+  @apply p-4 mb-2;
+}
 %card--shadow {
   @apply shadow-md;
 }
@@ -41,8 +44,14 @@
 
 // Card types
 %card {
-  @apply rounded-md mb-2 p-4 border-2 border-transparent;
+  // @apply rounded-md mb-2 p-4 border-2 border-transparent;
+  @apply rounded-md border-2 border-transparent;
 
+  
+  
+  // &.--p0 { @apply p-0; }
+  // &.--m0 { @apply m-0; }
+  &.--pad { @extend %card--pad; }
   &.--thin {@extend %card--thin;}
   &.--shadow {@extend %card--shadow;}
   &.--shadow-lg {@extend %card--shadow-lg;}
@@ -90,6 +99,10 @@
   }
   %card-solid-white { @apply border-white bg-white; 
     &.--btn { @extend %card-btn; @apply hover:bg-gray-50 hover:border-gray-50; }
+  }
+  %card-solid-hoverbox { @apply border-transparent bg-transparent; 
+    &.--btn { @extend %card-btn; 
+      @apply border-transparent bg-transparent hover:bg-gray-100 hover:border-gray-100 shadow-none; }
   }
   %card-solid-ghost { @apply border-white bg-white shadow-none;
     // ghost is meant to be DARKER when hovered; similar to Youtube or Substack
@@ -144,6 +157,7 @@
     &.--light { @extend %card-solid-light; }
     &.--lighter { @extend %card-solid-lighter; }
     &.--white { @extend %card-solid-white; }
+    &.--hoverbox { @extend %card-solid-hoverbox; }
     &.--ghost { @extend %card-solid-ghost; }
     &.--primary { @extend %card-solid-primary; }
     &.--success { @extend %card-solid-success; }
@@ -155,33 +169,47 @@
 
 
 
+.Card {
+  // default no-nonsense card instance
+  // = Card-outline --pad
+  @extend %card;
+  @extend %card-outline;
+  @extend %card--pad;
+}
 
 
+.Card-flat,  .Card-solid-light, .Card-light { // = Card-solid --light 
+  @extend %card; 
+  @extend %card-solid;
+  @extend %card-solid-light;
+  @extend %card--pad;
+}
 
-
+.Card-lighter,  .Card-solid-lighter, .Card-lighter { // = Card-solid --light 
+  @extend %card; 
+  @extend %card-solid;
+  @extend %card-solid-lighter;
+  @extend %card--pad;
+}
 
 
 
 
 /* 
 
-  Legacy
+  Legacy / shortcuts
 
 */
-.Card-lighter {
-  @extend .Card;
-  @apply border-gray-100;
-}
+// .Card-lighter {
+//   @extend .Card;
+//   @apply border-gray-100;
+// }
 
-.Card-light {
-  @extend .Card;
-  @apply border-gray-200;
-}
+// .Card-light {
+//   @extend .Card;
+//   @apply border-gray-200;
+// }
 
-.Card-flat {
-  @extend .Card;
-  @apply border-gray-100 bg-gray-100;
-}
   .Card-flat-white {
     @extend .Card;
     @apply border-white bg-white;

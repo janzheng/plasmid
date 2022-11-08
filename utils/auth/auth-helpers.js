@@ -179,3 +179,7 @@ export const deconstructToken = async (token) => {
 }
 
 
+export const maskPassword = (str='', symbol ='●') => {
+  // ● or *
+  return str.replace(/./g, symbol);
+}

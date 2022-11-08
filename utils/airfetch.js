@@ -362,14 +362,14 @@ export const getTablePaged = async (
 export const getTables = async (bases = [{
   tables:  ['Content'], 
   options: {'view': view},
-}], useCache = true) => {
+}], useCache = true, settings) => {
 
   const _cache = `getTables-${view}-${JSON.stringify(bases)}`
   if (useCache && cacheCheck(_cache)) return cacheCheck(_cache)
   
   let _result = await new Cytosis({
-    apiKey: apiEditorKey,
-    baseId: baseId,
+    apiKey: settings?._apiEditorKey || apiEditorKey,
+    baseId: settings?._baseId || baseId,
     bases: bases,
     routeDetails: '[airfetch/getTables]',
   })
@@ -504,8 +504,8 @@ export const checkPassword = async ({
   idField = "Name", 
   plaintextPass, 
   passField = "Passphrase",
-  isHashed = false, 
-  _baseId
+  _apiEditorKey,
+  _baseId,
 }) => {
 
   try {
@@ -514,6 +514,7 @@ export const checkPassword = async ({
       keyword: id,
       tableName: "People",
       fieldName: idField,
+      _apiEditorKey: _apiEditorKey || baseId,
       _baseId: _baseId || baseId,
       useCache: false,
     })
