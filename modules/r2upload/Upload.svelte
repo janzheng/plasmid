@@ -46,6 +46,9 @@
       {#if showPreview}
         <!-- {#each Array.from(files) as file} -->
         <div class="Card-flat p-4 mt-4">
+          {#if showHash}
+            <p class="break-all">Content ID: {hash}</p>
+          {/if}
           {#if verbose}
             <h3 class="pt-0">Preview:</h3>
             <p>{files?.[0]?.name} ({files?.[0]?.size} bytes) || CID: {hash}</p>
@@ -90,6 +93,7 @@
   export let fileUpload = {}
   export let verbose = false
   export let showPreview = true
+  export let showHash = true
   export let classes = ''
   export let uploadLabel = 'File upload'
   export let dropClasses = `h-64 | rounded-lg border-2 | bg-gray-50  border-gray-300 border-dashed dark:hover:bg-gray-800 dark:bg-gray-700 hover:bg-gray-100 dark:border-gray-600 dark:hover:border-gray-500 dark:hover:bg-gray-600 `

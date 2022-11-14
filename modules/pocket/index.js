@@ -7,8 +7,8 @@
 */
 import PocketBase from 'pocketbase';
 
-// export let clientName = 'https://pocket.phage.directory'
-export let clientName = 'https://redpond.phage.directory'
+export let clientName = 'https://pocket.phage.directory'
+// export let clientName = 'https://redpond.phage.directory'
 
 export const client = new PocketBase(clientName);
 

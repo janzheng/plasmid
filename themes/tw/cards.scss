@@ -192,6 +192,12 @@
   @extend %card--pad;
 }
 
+.Card-primary {
+  @extend %card;
+  @extend %card-solid;
+  @extend %card-solid-primary;
+  @extend %card--pad;
+}
 
 
 

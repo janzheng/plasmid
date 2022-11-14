@@ -270,7 +270,7 @@ export const getTablePaged = async (
   let _cache = `getTablePaged-${tableName}-${JSON.stringify(options)}`
 
   console.log('cache:', _cache)
-  let pageObj
+  let pageObj = {}
   if (useCache && cacheCheck(_cache)) {
     pageObj = cacheCheck(_cache)
   }
@@ -364,7 +364,7 @@ export const getTables = async (bases = [{
   options: {'view': view},
 }], useCache = true, settings) => {
 
-  const _cache = `getTables-${view}-${JSON.stringify(bases)}`
+  const _cache = `getTables-${view}-${JSON.stringify(bases)}-${JSON.stringify(settings)}`
   if (useCache && cacheCheck(_cache)) return cacheCheck(_cache)
   
   let _result = await new Cytosis({
@@ -499,32 +499,40 @@ export const flattenRecord = (record) => {
   }
 
 */
+import { comparePasswords } from "$plasmid/utils/auth/auth-helpers"
 export const checkPassword = async ({
   id, 
   idField = "Name", 
   plaintextPass, 
   passField = "Passphrase",
+  tableName = "People",
   _apiEditorKey,
   _baseId,
-}) => {
+}, isHashed=true) => {
 
   try {
+
     // find the user
     let record = await getRecord_v2({
       keyword: id,
-      tableName: "People",
+      tableName: tableName,
       fieldName: idField,
-      _apiEditorKey: _apiEditorKey || baseId,
+      _apiEditorKey: _apiEditorKey || apiEditorKey,
       _baseId: _baseId || baseId,
       useCache: false,
     })
+
     if (!record)
       return false
 
     record = flattenRecord(record)
-    // console.log('checkPassword:', record[passField], plaintextPass)
 
-    // check if the user has a passphrase in the passField field 
+    // check against hashed password if plaintext isn't matching
+    if (isHashed && record[passField] && plaintextPass && await comparePasswords(plaintextPass, record[passField])) {
+      return record
+    }
+
+    // check if the user has a passphrase in the passField field w/o hash
     if (record[passField] && record[passField] == plaintextPass) {
       return record
     }
@@ -532,7 +540,7 @@ export const checkPassword = async ({
     // return record if the passphrase matches
     return false
   } catch (err) {
-    console.error('checkPassword:', err?.message || err)
+    console.error('checkPassword error:', err?.message || err)
     // return { error: err?.message || err }
     return false
   }
