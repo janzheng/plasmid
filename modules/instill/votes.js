@@ -2,7 +2,7 @@
 
 import { tick } from "svelte";
 import PocketBase from 'pocketbase';
-export const client = new PocketBase('https://pocket.phage.directory');
+export const client = new PocketBase('https://redpond.phage.directory');
 
 import { getAtoms, putAtom } from './atoms'
 

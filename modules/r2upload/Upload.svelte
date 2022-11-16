@@ -37,7 +37,7 @@
   {/if}
 
   {#if files && files.length > 0}
-    <div class = "Card-light">
+    <div class="{ctaCardClasses}">
       <input class="Btn-solid" type="submit" value="Upload File">
       {#if $status.message}
         <span class="pl-2">{@html $status.message}</span>
@@ -93,8 +93,9 @@
   export let fileUpload = {}
   export let verbose = false
   export let showPreview = true
-  export let showHash = true
+  export let showHash = false
   export let classes = ''
+  export let ctaCardClasses = `Card-light`
   export let uploadLabel = 'File upload'
   export let dropClasses = `h-64 | rounded-lg border-2 | bg-gray-50  border-gray-300 border-dashed dark:hover:bg-gray-800 dark:bg-gray-700 hover:bg-gray-100 dark:border-gray-600 dark:hover:border-gray-500 dark:hover:bg-gray-600 `
   export let uploadHtmlText = `<span class="font-semibold">Click to upload</span> or drag and drop`

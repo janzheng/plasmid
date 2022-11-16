@@ -2,12 +2,20 @@
 	import Cropper from "svelte-easy-crop";
 	import getCroppedImg from "./canvasUtils";
 
+
+	import { createEventDispatcher } from 'svelte';
+	const dispatch = createEventDispatcher();
+  // on:uploaded={e => { console.log('uploaded', e.detail)}}
+	const cropFinished = () => dispatch('done', {croppedBlob, croppedImage});
+
+
 	export let crop = { x: 0, y: 0 };
 	let zoom = 1;
-	export let image, imgEl, fileinput, imageFile, pixelCrop, croppedImage, croppedBlob;
+	export let image=null, imgEl=null, fileinput=null, imageFile=null, pixelCrop=null, croppedImage=null, croppedBlob=null;
   export let cropperWidth = 150; 
   export let cropperHeight = 150;
   export let aspect = 1;
+  export let uploadCta = 'Use image';
   export let showPreview = false;
   export let autoSetCropped = true; // so you don't forget to save
 
@@ -143,10 +151,11 @@
     <div class="flex gap-2">
       <button class="Btn-light" type="button" on:click={reset}>Cancel</button> 
       <button class="Btn-solid" type="button" on:click={async () => {
-        cropImage();
-        cropBlob();
+        await cropImage();
+        await cropBlob();
+        cropFinished()
         image = null; // closes the preview
-      }}>Use image</button>
+      }}>{uploadCta}</button>
     </div>
   {/if}
 	

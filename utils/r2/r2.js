@@ -28,7 +28,7 @@ export const getToken = () => {
 
 
 
-export const uploadFileToR2 = async (file, statusStore) => {
+export const uploadFileToR2 = async (file, statusStore, filename=file?.name) => {
   try {
 
     if (!file) {
@@ -42,11 +42,11 @@ export const uploadFileToR2 = async (file, statusStore) => {
     // message = `Uploading ${files[0].name} ...`
     statusStore?.update(store => ({
       ...store,
-      message: `Uploading ${file.name} ...`
+      message: `Uploading ${filename} ...`
     }))
 
     const res = await fetch(
-      `${PUBLIC_PDR2_ENDPOINT}/${file.name}`, {
+      `${PUBLIC_PDR2_ENDPOINT}/${filename}`, {
       method: 'PUT',
       body: file,
       headers: {
@@ -56,13 +56,13 @@ export const uploadFileToR2 = async (file, statusStore) => {
 
     if (res.ok) {
       const resText = await res.text()
-      console.log('Uploaded!:', resText, 'link:', PUBLIC_PDR2_ENDPOINT + '/' + file.name)
-      const link = PUBLIC_PDR2_ENDPOINT + '/' + file.name
+      console.log('Uploaded!:', resText, 'link:', PUBLIC_PDR2_ENDPOINT + '/' + filename)
+      const link = PUBLIC_PDR2_ENDPOINT + '/' + filename
 
       let obj = {
         success: true,
         result: resText,
-        filename: file.name,
+        filename: filename,
         endpoint: PUBLIC_PDR2_ENDPOINT,
         url: link,
         message: `Uploaded: <a href="${link}">${link}</a>`,

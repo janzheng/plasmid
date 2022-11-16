@@ -7,8 +7,8 @@
 */
 import PocketBase from 'pocketbase';
 
-export let clientName = 'https://pocket.phage.directory'
-// export let clientName = 'https://redpond.phage.directory'
+// export let clientName = 'https://pocket.phage.directory'
+export let clientName = 'https://redpond.phage.directory'
 
 export const client = new PocketBase(clientName);
 
@@ -147,17 +147,23 @@ export const userSignup = async (_user) => {
 
  */
 export const updateProfile = async (user, profile, avatar) => {
-  // user must be logged in, e.g. client.Users needs to be authorized (elsewhere)
-  if (avatar) {
-    var avatarFile = new File([avatar], 'avatar.jpg', {
-      type: "image/jpeg",
-    });
-    const formData = new FormData();
-    formData.append("avatar", avatarFile);
-    return await client.Records.update("profiles", user.profile.id, formData);
-  }
+  try {
+    // user must be logged in, e.g. client.Users needs to be authorized (elsewhere)
+    if (avatar) {
+      var avatarFile = new File([avatar], 'avatar.jpg', {
+        type: "image/jpeg",
+      });
+      const formData = new FormData();
+      formData.append("avatar", avatarFile);
 
-  return await client.Records.update("profiles", user.profile.id, profile);
+      console.log('updateProfile avatar', user.profile.id, avatarFile, formData)
+      return await client.Records.update("profiles", user.profile.id, formData);
+    }
+  
+    return await client.Records.update("profiles", user.profile.id, profile);
+  } catch (e) {
+    console.error('[updateProfile] error', e, e.message)
+  }
 }
 
 
