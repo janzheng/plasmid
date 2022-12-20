@@ -527,6 +527,7 @@ export const checkPassword = async ({
 
     record = flattenRecord(record)
 
+    // console.log('CHECKING -->>> :', record[passField], plaintextPass)
     // check against hashed password if plaintext isn't matching
     if (isHashed && record[passField] && plaintextPass && await comparePasswords(plaintextPass, record[passField])) {
       return record
@@ -540,7 +541,7 @@ export const checkPassword = async ({
     // return record if the passphrase matches
     return false
   } catch (err) {
-    console.error('checkPassword error:', err?.message || err)
+    console.error('[checkPassword] error:', err?.message || err)
     // return { error: err?.message || err }
     return false
   }

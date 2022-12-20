@@ -931,7 +931,7 @@ class Cytosis {
 
     // multiple keywords will only work with `matchKeywordWithFields` option
     if (options && options.keywords && options.matchKeywordWithFields) {
-      console.log('advanced search:', options.keywords, options.matchKeywordWithFields)
+      // console.log('advanced search:', options.keywords, options.matchKeywordWithFields)
       let filters = []
       options.keywords.map(keyword => {
         if (!keyword || keyword.trim().length == 0)
