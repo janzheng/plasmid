@@ -18,7 +18,7 @@ import {
   getProfileByEmail,
   validateTurnstile,
   triggerEvent,
-} from '$instill-api/instill'
+} from '$instill-helpers/instill'
 
 import { hashPassword, comparePasswords, maskPassword } from "$plasmid/utils/auth/auth-helpers"
 
