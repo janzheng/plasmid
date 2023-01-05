@@ -1,0 +1,107 @@
+// Script settings - Click the gear icon for the Scripting app to surface these anytime
+// Surfaces options to select the table, view, and fields needed in the script
+let config = input.config({
+    title: '📎 Convert attachments to Permanent IPFS URLs',
+    description: 'Uploads all attachments in a field to IPFS, then gives the Cloudflare-cached URL. Upload service currently running on a free-tier Railway app. Based on the Universe script "Convert attachments to URLs".',
+    items: [
+        input.config.table('selectedTable', {
+            label: 'Table',
+            description: 'Select a table with records that have attachments you want URLs for',
+        }),
+        input.config.field('selectedField', {
+            label: 'Attachment field from the selected table',
+            parentTable: 'selectedTable',
+            description: 'Select the attachment field from the table above you want URLs for'
+        }),
+        input.config.view('selectedView', {
+            label: 'View from the selected table',
+            parentTable: 'selectedTable',
+        }),
+        input.config.field('fieldToEdit', {
+            label: 'Field to output the IPFS URLs',
+            parentTable: 'selectedTable',
+            description: 'A long text field is recommended. A comma-separated list of URLs will be generated here'
+        })
+    ]
+});
+// Codes the selections above to variables for the script
+let selectedTable = config.selectedTable;
+let selectedField = config.selectedField;
+let selectedView = config.selectedView;
+let fieldToEdit = config.fieldToEdit.name;
+
+async function convertAttachmentsToUrls() {
+    if (selectedField.type !== 'multipleAttachments') {
+        output.text(`"${selectedField.name}" is not an attachment field. Run the script again with an attachment field.`);
+        return;
+    }
+
+    // Loads the records and field from the selections above
+    let query = await selectedView.selectRecordsAsync({
+        fields: [selectedField]
+    });
+    let records = query.records;
+
+    // Array for records with attachments and their URLs
+    let attachmentURLs = [];
+    
+
+    const sleep = (ms) => new Promise((resolve) => setTimeout(resolve, ms));
+
+    // Loops through qualified records and pushes them to the attachmentURLs array
+    for (let i = 0; i < records.length; i++) {
+        let recID = records[i].id;
+        let attachments = records[i].getCellValue(selectedField);
+        if (attachments !== null) {
+
+            let attachmentLength = attachments.length;
+            let attachmentURL = '';
+
+            // insert IPFS thing!
+            for (let l = 0; l < attachmentLength; l++) {
+                let res = await remoteFetchAsync('https://svelte-ipfs-add-from-url-production-5cde.up.railway.app/add?src=' + attachments[l].url)
+                if(res.ok) {
+                    let json = await res.json()
+                    console.log('ipfs:', json)
+                    attachmentURL += json.cloudflare + ', ';
+                }
+
+                await sleep(5000);
+            }
+
+            attachmentURLs.push({
+                id: recID,
+                fields: {
+                    [fieldToEdit]: attachmentURL.slice(0, -2),
+                },
+            });
+        }
+    };
+    while (attachmentURLs.length > 0) {
+        await selectedTable.updateRecordsAsync(attachmentURLs.slice(0, 50));
+        attachmentURLs = attachmentURLs.slice(50);
+    }
+}
+
+
+await convertAttachmentsToUrls();
+// Output message to indicate when the script is done
+console.log('Records have been updated with attachment URLs');
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+

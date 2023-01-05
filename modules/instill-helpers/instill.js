@@ -47,12 +47,13 @@ export const filterBy = (arr, key, value) => {
 
 // returns OBJECT with {success, error}
 export const validateTurnstile = async (turnstile_response) => {
-  
+
+  console.log('[validatingTurnstile] Passed:', turnstile_response, env.TURNSTILE_API)
   const { success, error } = await validateToken(turnstile_response, env.TURNSTILE_API);
 
   console.log('[validateTurnstile] Passed:', success)
   if (!success) {
-    console.log('unsuccessful?', error)
+    console.log('[validateTurnstile] Unsuccessful:', error)
     if (error == 'missing-input-response') error = "Please refresh the page to complete the CAPTCHA"
     return {
       success: false,
@@ -420,7 +421,7 @@ export const getComments = async (rootId) => {
 }
 
 
-export const postComment = async ({ Username, Comment, Parent, Topic, Root, PostType, Keywords, Channels, PostStatuses, ImageUrl, Json }, Space) => {
+export const postComment = async ({ Username, Comment, Parent, Topic, Root, PostType, Keywords, Channels, PostStatuses, ImageUrl, Url, Json }, Space) => {
   try {
     let obj = {
       // recordId: data.recordId,
@@ -434,6 +435,7 @@ export const postComment = async ({ Username, Comment, Parent, Topic, Root, Post
         Topic,
         Comment,
         ImageUrl,
+        Url,
         Username,
         Root,
         Parent: Parent ? [Parent] : [],
@@ -442,8 +444,7 @@ export const postComment = async ({ Username, Comment, Parent, Topic, Root, Post
       _baseId: env?.[postsEnv],
     }
 
-
-    console.log('Posting Json:::', Json, typeof Json )
+    console.log('[postComment] Object:', obj )
 
     let _json
     try {
@@ -465,7 +466,7 @@ export const postComment = async ({ Username, Comment, Parent, Topic, Root, Post
       if (_json)
         obj.payload['Json'] = _json
     } catch(e) {
-      console.log('[postComment] Error parsing JSON', e)
+      console.log('[postComment] Error parsing JSON; ignoring!')
     }
     let res = await addRecord_v2(obj)
 
@@ -483,7 +484,7 @@ export const postComment = async ({ Username, Comment, Parent, Topic, Root, Post
 
 // separate from postComment to prevent accidental overwrites / edits
 // export const getRecord_v2 = async ({ keyword, tableName, fieldName, useCache = false, _apiEditorKey, _baseId }) => {
-export const editComment = async ({ Username, Comment, Parent, Topic, Root, PostType, Keywords, Channels, Space, PostStatuses }, recordId, sameUser=true) => {
+export const editComment = async ({ Username, Comment, Parent, Topic, Root, PostType, Keywords, Channels, Space, PostStatuses, ImageUrl, Url }, recordId, sameUser=true) => {
   try {
     let rec
     if(sameUser) {
@@ -515,6 +516,8 @@ export const editComment = async ({ Username, Comment, Parent, Topic, Root, Post
         Channels: Array.isArray(Channels) ? Channels : Channels?.split(',') || null, // handles an array of text, or a comma-separated string
         Parent: Parent ? [Parent] : [],
         Space: Space?.name,
+        ImageUrl, 
+        Url,
       },
       tableOptions: { insertOptions: ["typecast"] }, // required for Parent pointing w/o ID
       // _baseId: env[data?.baseEnvId] || data?.baseId || env.AIRTABLE_PRIVATE_BASE,
@@ -708,7 +711,10 @@ export const getProfile = async (slug, getPdProfile=false) => {
 
   let profile = profiles && Array.isArray(profiles) && profiles.length > 0 ? profiles[0] : null
 
-  if(profile) {
+  if (profile) {
+    delete profile?.['CoverImage'] // takes up data; unused
+    delete profile?.['ProfileImage'] // takes up data; unused
+    delete profile?.['Email']
     delete profile?.['Password']
     delete profile?.['Passphrase']
   }
@@ -739,18 +745,25 @@ export const getProfiles = async (spaceName) => {
     _baseId: env?.[profilesEnv],
   })
   let profiles = flattenTable(tables?.[profilesTable])
-  let posts = await getPosts(spaceName)
 
-  // if space, get all records w/ the space
-  // find all usernames
-  let usersBySpace = posts.map((post) => post.Username).filter(user => user)
-  // get unique array of usersBySpace
-  usersBySpace = [...new Set(usersBySpace)]
-
-  profiles = profiles.filter(profile => usersBySpace.includes(profile.Slug))
+  // filter further by space 
+  if(spaceName) {
+    let posts = await getPosts(spaceName)
+  
+    // if space, get all records w/ the space
+    // find all usernames
+    let usersBySpace = posts.map((post) => post.Username).filter(user => user)
+    // get unique array of usersBySpace
+    usersBySpace = [...new Set(usersBySpace)]
+  
+    profiles = profiles.filter(profile => usersBySpace.includes(profile.Slug))
+  }
   
   // delete passwords from all profiles
   profiles = profiles.map(profile => {
+    delete profile?.['CoverImage'] // takes up data; unused
+    delete profile?.['ProfileImage'] // takes up data; unused
+    delete profile?.['Email']
     delete profile?.['Password']
     delete profile?.['Passphrase']
     return profile

@@ -44,6 +44,21 @@ import { hashPassword, comparePasswords, maskPassword } from "$plasmid/utils/aut
 
 */
 
+// load layout data for Instill layout component
+export async function loadLayoutData({ params, url }) {
+  return params
+  // let paramsArray = params?.space?.split('/') || []
+  // let spaceName = paramsArray[0] || null
+
+  // // let comments = await getComments()
+  // let comments = await getPosts(spaceName)
+
+  // // console.log('getting all comments:', comments.length)
+
+  // // spaceName is also just the slug
+  // return { comments, spaceName, subpaths: paramsArray.slice(1) };
+}
+
 // load a space by the slug (name of the space as param)
 export async function loadSpaceSlug({ params, url }) {
   let paramsArray = params?.space?.split('/') || []
@@ -52,10 +67,14 @@ export async function loadSpaceSlug({ params, url }) {
   // let comments = await getComments()
   let comments = await getPosts(spaceName)
 
+  // get profiles by space, or all profiles
+  // getProfiles(spaceName)
+  let profileData = await getProfiles()
+
   // console.log('getting all comments:', comments.length)
 
   // spaceName is also just the slug
-  return { comments, spaceName, subpaths: paramsArray.slice(1) };
+  return { comments, spaceName, profiles: profileData.profiles, subpaths: paramsArray.slice(1) };
 }
 
 
@@ -69,7 +88,7 @@ export let spaceActions = {
 
       const space = formJson['Space'] ? JSON.parse(formJson['Space']) : null;
 
-      // console.log('[spaces] Data + settings', formJson, space )
+      console.log('[spaceActions] Data', formJson, 'poll?', PollVote, 'vote?', Vote, 'mark?', MarkAsAnswer )
 
       if (baseConfig.settings.useTurnstile) {
         let turnstileResp = await validateTurnstile(form.get('cf-turnstile-response'))
@@ -95,7 +114,7 @@ export let spaceActions = {
       if (PollVote) {
         let JsonArr = { Username: profile.Username, PollVote }
         let event = await triggerEvent({
-          EventType: 'MarkAsAnswer',
+          EventType: 'PollVote',
           DataType: 'Number',
           Username: 'arrayed',
           Posts: formJson.Posts,
@@ -109,7 +128,7 @@ export let spaceActions = {
       }
 
       // handle mark as answer votes
-      if (MarkAsAnswer) {
+      else if (MarkAsAnswer) {
         let event = await triggerEvent({
           EventType: 'MarkAsAnswer',
           DataType: 'Number',
@@ -125,7 +144,7 @@ export let spaceActions = {
 
 
       // handle mark as answer votes
-      if (Vote) {
+      else if (Vote) {
         let event = await triggerEvent({
           EventType: 'Vote',
           DataType: 'Number',
@@ -150,7 +169,7 @@ export let spaceActions = {
             error: comment.error,
           }
         }
-      } else {
+      } else if (formJson.PostType) { // w/o this you'll end up adding lots of erroneous post types
         formJson.Username = profile.Username
         comment = await postComment(formJson, space)
       }
@@ -202,7 +221,7 @@ export let profileActions = {
     const form = await request.formData();
     const formJson = Object.fromEntries(form.entries());
     const { Username, Password } = formJson;
-    console.log('passwordCheck', formJson, Username, Password)
+    // console.log('passwordCheck', formJson, Username, Password)
 
 
     let validatePass
@@ -303,7 +322,7 @@ export let profileActions = {
       return profile
     } else {
       return {
-        success: 'questionable',
+        success: true,
         profile,
         message: profile?.message
       }
@@ -324,8 +343,6 @@ export let profileActions = {
 //  SERVER-SIDE ROUTES
 // 
 // 
-
-
 
 /* 
 
@@ -499,6 +516,9 @@ export const profilesEndpoints = {
 
     if (space)
       return json(await getProfiles(space))
+
+    // returns all profiles associated with the Base / db
+    return json(await getProfiles())
   },
   PATCH: async ({ params, request }) => {
     try {
@@ -602,7 +622,7 @@ export const topicsEndpoints = {
       }
 
       let comment = await postComment({
-        Username, Comment, Topic, Root, PostType, Keywords, Channels, PostStatuses, ImageUrl, Json
+        Username, Comment, Topic, Root, PostType, Keywords, Channels, PostStatuses, ImageUrl, Url, Json
         // drop Parent
         // Comment acts as body
       }, data.Space)

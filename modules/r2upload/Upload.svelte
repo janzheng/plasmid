@@ -2,8 +2,7 @@
 
 <form class="Upload {classes}"
   on:submit|preventDefault={async ()=>{
-    fileUpload = await uploadFileToR2(files?.[0], status)
-    uploadFinished()
+    await uploadFile()
   }}
 >
 
@@ -36,16 +35,18 @@
     </div>
   {/if}
 
-  {#if files && files.length > 0}
+  {#if showUploadCard && files && files.length > 0}
     <div class="{ctaCardClasses}">
-      <input class="Btn-solid" type="submit" value="Upload File">
-      {#if $status.message}
-        <span class="pl-2">{@html $status.message}</span>
+      {#if showUploadBtn}
+        <input class="Btn-solid | mb-2" type="submit" value="Upload File">
+      {/if}
+      {#if showStatusMessage && $status.message}
+        <span class="pl-2 | my-2">{@html $status.message}</span>
       {/if}
 
       {#if showPreview}
         <!-- {#each Array.from(files) as file} -->
-        <div class="Card-flat p-4 mt-4">
+        <div class="{previewCardClasses}">
           {#if showHash}
             <p class="break-all">Content ID: {hash}</p>
           {/if}
@@ -64,11 +65,13 @@
     </div>
   {/if}
 
+  {#if urlPreview && !preview }
+    <div class="Card-flat p-4 mt-4">
+      <img src={urlPreview} alt="Preview" />
+    </div>
+  {/if}
+
 </form>
-
-
-
-
 
 
 
@@ -86,6 +89,8 @@
 
   // can either pass details back as a bind:fileUpload or use a store
   // status store receives all messages during upload
+  export let showUploadCard = true; // set to false when controlled by external form upload flow
+  export let showUploadBtn = true;
   export let files = []
   export let status = store.writable({})
   export let showLabel = true
@@ -93,9 +98,11 @@
   export let fileUpload = {}
   export let verbose = false
   export let showPreview = true
+  export let showStatusMessage = true
   export let showHash = false
   export let classes = ''
   export let ctaCardClasses = `Card-light`
+  export let previewCardClasses = `Card-flat`
   export let uploadLabel = 'File upload'
   export let dropClasses = `h-64 | rounded-lg border-2 | bg-gray-50  border-gray-300 border-dashed dark:hover:bg-gray-800 dark:bg-gray-700 hover:bg-gray-100 dark:border-gray-600 dark:hover:border-gray-500 dark:hover:bg-gray-600 `
   export let uploadHtmlText = `<span class="font-semibold">Click to upload</span> or drag and drop`
@@ -107,7 +114,8 @@
 	const uploadFinished = () => dispatch('uploaded', fileUpload);
 
   // file preview & CID hash
-  let preview, hash
+  export let preview, urlPreview; // can pass an external URL in for image preview
+  let hash;
   $:if(files && files[0]) {
     async function getPreview() {
       preview = await getFileImagePreview({file: files[0]})
@@ -119,12 +127,18 @@
       hash = await getFileHash({file: files[0]})
       $status['hash'] = hash
     }
-    getHash()
+    getHash();
   }
 
-
-
-
-
+  // can trigger this externally to upload files
+  export const uploadFile = async () => {
+    if(files && files[0]) {
+      console.log('...uploading file', files?.[0]);
+      fileUpload = await uploadFileToR2(files?.[0], status);
+      uploadFinished();
+      return fileUpload
+    }
+    return false
+  };
 
 </script>

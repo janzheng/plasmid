@@ -1,0 +1,8 @@
+
+SUBSTITUTE(Attachments, "dl.airtable.com", "dl.phage.directory")
+
+
+
+# this will isolate the file URL from the rest of the stuff, then replace it with PD's R2 worker
+
+SUBSTITUTE(IF({Profile},RIGHT(LEFT({Profile}, LEN({Profile}) - 1), LEN(LEFT({Profile}, LEN({Profile}) - 1)) - SEARCH("https://", {Profile}) + 1), ""), "dl.airtable.com", "dl.phage.directory")

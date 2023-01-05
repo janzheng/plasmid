@@ -1,0 +1,17 @@
+"https://airtable.com/embed/shr2X0cC6xAfHn4EB?" & 
+"prefill_recordId=" & ENCODE_URL_COMPONENT({recordId} & "") & "&hide_recordId=true" & "&" & 
+"prefill_Title=" & ENCODE_URL_COMPONENT({Title} & "")  & "&" & 
+"prefill_PostTitle=" & ENCODE_URL_COMPONENT({PostTitle} & "")  & "&" & 
+"prefill_Name=" & ENCODE_URL_COMPONENT({Name} & "")  & "&" & 
+"prefill_Location=" & ENCODE_URL_COMPONENT({Location} & "")  & "&" & 
+"prefill_Short%20Description=" & ENCODE_URL_COMPONENT({Short Description} & "")  & "&" & 
+"prefill_Description=" & ENCODE_URL_COMPONENT({Description} & "") & "&" & 
+"prefill_Category=" & ENCODE_URL_COMPONENT({Category} & "")  & "&" & 
+"prefill_ProfileImageURL=" & ENCODE_URL_COMPONENT({Profile Image URL} & "")  & "&" & 
+"prefill_Linked%20Profiles=" & SUBSTITUTE(ENCODE_URL_COMPONENT({Linked Profiles} & ""), "%2C%20",",") & "&" & 
+"prefill_Affiliation=" & ENCODE_URL_COMPONENT({Affiliation} & "")  & "&" & 
+"prefill_Position=" & ENCODE_URL_COMPONENT({Position} & "")  & "&" & 
+"prefill_Slug=" & ENCODE_URL_COMPONENT({Slug} & "")  & "&hide_Slug=true" & "&" & 
+"prefill_Website=" & ENCODE_URL_COMPONENT({Website} & "")  & "&" & 
+"prefill_Linkedin=" & ENCODE_URL_COMPONENT({Linkedin} & "")  & "&" & 
+"prefill_Twitter=" & ENCODE_URL_COMPONENT({Twitter} & "")
