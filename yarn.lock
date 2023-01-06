@@ -3611,6 +3611,11 @@ normalize-package-data@^3.0.0:
     semver "^7.3.4"
     validate-npm-package-license "^3.0.1"
 
+nprogress@^0.2.0:
+  version "0.2.0"
+  resolved "https://registry.yarnpkg.com/nprogress/-/nprogress-0.2.0.tgz#cb8f34c53213d895723fcbab907e9422adbcafb1"
+  integrity sha512-I19aIingLgR1fmhftnbWWO3dXc0hSxqHQHQb3H8m+K3TnEn/iSeTZZOyvKXWqQESMwuUVnatlCnZdLBZZt2VSA==
+
 object-inspect@^1.9.0:
   version "1.12.2"
   resolved "https://registry.yarnpkg.com/object-inspect/-/object-inspect-1.12.2.tgz#c0641f26394532f28ab8d796ab954e43c009a8ea"
@@ -4283,6 +4288,11 @@ svelte-lazy@^1.1.0:
   version "1.1.0"
   resolved "https://registry.yarnpkg.com/svelte-lazy/-/svelte-lazy-1.1.0.tgz#e984c77ed32c51eb3eadb091b1d198a8de82fbe7"
   integrity sha512-Vol0Px4tKNK13xTs187T9wgenAgXZVHr+HCZx1Wgd5NFvgRxXR/5BE6gZAeF/BkLxLgYIprfZmJlE65slFYqOA==
+
+svelte-turnstile@^0.3.1:
+  version "0.3.1"
+  resolved "https://registry.yarnpkg.com/svelte-turnstile/-/svelte-turnstile-0.3.1.tgz#13063b25a79230611f29b6fa3adcd1d08d83a8ff"
+  integrity sha512-b0A90zMMjm0U0S1zOP9R+msnG8+kBJNspBiLVzwaH7uOUmjFLt8ujArqlHWQhXj+bRZEMM2dXIYBykVDku7pXg==
 
 timeout-abort-controller@^3.0.0:
   version "3.0.0"

@@ -38,6 +38,7 @@
     "marked": "^4.0.12",
     "node-cache": "^5.1.2",
     "nodemailer": "^6.6.2",
+    "nprogress": "^0.2.0",
     "pocketbase": "^0.1.2",
     "query-string": "^7.1.1",
     "rehype-parse": "^8.0.4",
@@ -53,7 +54,8 @@
     "scrapingbee": "^1.6.1",
     "slugify": "^1.6.5",
     "svelte-easy-crop": "^1.0.7",
-    "svelte-lazy": "^1.1.0"
+    "svelte-lazy": "^1.1.0",
+    "svelte-turnstile": "^0.3.1"
   },
   "dependencies": {
     "@polka/send": "^0.4.0",
