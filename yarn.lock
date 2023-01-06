@@ -1433,6 +1433,11 @@
   dependencies:
     "@types/node" "*"
 
+"@yawnxyz/sveltekit-notion@^0.0.508":
+  version "0.0.508"
+  resolved "https://registry.yarnpkg.com/@yawnxyz/sveltekit-notion/-/sveltekit-notion-0.0.508.tgz#36e2970d06794dd68ab6a94346e5f16b862d5268"
+  integrity sha512-E/+5CVxwipop4IxOYyByhon3SUONlAMgQr8na7frPpahUp/zx+Pu7TbWUOhuOf4uDagJcmZHTlMudCSH/xYXww==
+
 abort-controller@^3.0.0:
   version "3.0.0"
   resolved "https://registry.yarnpkg.com/abort-controller/-/abort-controller-3.0.0.tgz#eaf54d53b62bae4138e809ca225c8439a6efb392"

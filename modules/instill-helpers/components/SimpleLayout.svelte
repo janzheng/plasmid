@@ -24,26 +24,31 @@
   // import { isCredentialed } from '$instill/instill-store'
   // import SimpleLogin from '$instill-helpers/components/SimpleLogin.svelte';
   import AccountLogin from '$instill-helpers/components/AccountLogin.svelte';
-  // export let data;
-
-	import { page } from '$app/stores';
-
+  export let path;
 
 	import NProgress from 'nprogress';
 	import { beforeNavigate, afterNavigate } from '$app/navigation';
 	// NProgress css
 	import 'nprogress/nprogress.css';
 
+
+  let loaded = false;
+  let narrowClass = '';
+
 	NProgress.configure({
 		// Full list: https://github.com/rstacruz/nprogress#configuration
-		minimum: 0.16
+		minimum: 0.4,
+    easing: 'ease', 
+    speed: 800
+		// minimum: 0.16
 	});
- 
 	beforeNavigate(() => {
     // console.log('before nav!')
     NProgress.start();
+    loaded = false
   });
 	afterNavigate(() => {
+    loaded = true
     NProgress.done();
   });
 
@@ -71,18 +76,12 @@
     </div>
   </div>
 
-  {#if $page.data.path.includes('/profiles/')}
-    <!-- use wide format for profiles -->
-      <div class="Instill-content | Instill-profile-layout">
-      <slot />
-    </div>
-  {:else}
-    <div class="Instill-content | _content-narrow">
-      <slot />
-    </div>
-  {/if}
-</div>
+  <!-- use wide format for profiles -->
 
+  <div class="Instill-content | {path.includes('/profiles/') ? '' : '_content-narrow'} ">
+    <slot />
+  </div>
+</div>
 
 
  
