@@ -72,7 +72,7 @@ export const uploadFileToR2 = async (file, statusStore, filename=file?.name) => 
         filename = resJson?.key
       }
 
-      console.log('Uploaded!:', resText, 'link:', PUBLIC_PDR2_ENDPOINT + '/' + filename)
+      console.log('Uploaded!:', resText||resJson, 'link:', PUBLIC_PDR2_ENDPOINT + '/' + filename)
       const link = PUBLIC_PDR2_ENDPOINT + '/' + filename
 
       let obj = {

@@ -5,7 +5,6 @@
 
 import { cachedjson, errorjson } from '$plasmid/utils/sveltekit-helpers'
 import { json } from '@sveltejs/kit';
-import { baseConfig } from '$instill/instill-config'
 import { 
   getPosts, 
   getComments,
@@ -23,6 +22,19 @@ import {
 import { hashPassword, comparePasswords, maskPassword } from "$plasmid/utils/auth/auth-helpers"
 
 
+
+// import { baseConfig } from '$instill/instill-config'
+import * as config from '$instill/instill-config'
+import * as configPreview from '$instill/instill-config-preview'
+import { dev } from '$app/environment';
+let baseConfig, orgSpaces
+if (dev) {
+  baseConfig = configPreview.baseConfig
+  orgSpaces = configPreview.orgSpaces
+} else {
+  baseConfig = config.baseConfig
+  orgSpaces = config.orgSpaces
+}
 
 
 

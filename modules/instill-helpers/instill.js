@@ -7,9 +7,21 @@ import { cacheClear, cacheXclear } from '$plasmid/utils/cache';
 import { hashPassword } from "$plasmid/utils/auth/auth-helpers"
 import { getRecordById, getTables, addRecord_v2, flattenRecord, flattenTable, checkPassword } from '$plasmid/utils/airfetch'
 // import Cytosis from '$plasmid/utils/cytosis'
-import { baseConfig } from '$instill/instill-config'
 import { getProfileBySlug } from '$routes/content/api/v3/profiles/+server.js'
 
+
+// import { baseConfig } from '$instill/instill-config'
+import * as config from '$instill/instill-config'
+import * as configPreview from '$instill/instill-config-preview'
+import { dev } from '$app/environment';
+let baseConfig, orgSpaces
+if (dev) {
+  baseConfig = configPreview.baseConfig
+  orgSpaces = configPreview.orgSpaces
+} else {
+  baseConfig = config.baseConfig
+  orgSpaces = config.orgSpaces
+}
 
 
 export const postsEnv = baseConfig?.posts.env || baseConfig?.posts.baseId || 'AIRTABLE_PRIVATE_BASE'
