@@ -14,7 +14,7 @@
 
 */
 
-import { PUBLIC_PDR2_AUTH, PUBLIC_PDR2_ENDPOINT } from '$env/static/public';
+import { PUBLIC_PDR2_AUTH, PUBLIC_PDR2_ENDPOINT, PUBLIC_PDR2_SCOPE } from '$env/static/public';
 
 // better to get from session instead
 // server-side: reveal deta key to endpoints
@@ -45,8 +45,13 @@ export const uploadFileToR2 = async (file, statusStore, filename=file?.name) => 
       message: `Uploading ${filename} ...`
     }))
 
+    let uploadUrl = `${PUBLIC_PDR2_ENDPOINT}/${PUBLIC_PDR2_SCOPE}/${filename}`
+    if (!PUBLIC_PDR2_SCOPE) {
+      url = `${PUBLIC_PDR2_ENDPOINT}/${filename}`
+    }
+
     const res = await fetch(
-      `${PUBLIC_PDR2_ENDPOINT}/${filename}`, {
+      uploadUrl, {
       method: 'PUT',
       body: file,
       headers: {
@@ -55,7 +60,18 @@ export const uploadFileToR2 = async (file, statusStore, filename=file?.name) => 
     })
 
     if (res.ok) {
-      const resText = await res.text()
+      let resText, resJson
+      try {
+        resJson = await res.json()
+      } catch(e) {
+        // not json, so try text
+        resText = await res.text()
+      }
+      if (resJson) {
+        // uses filofax PUT response
+        filename = resJson?.key
+      }
+
       console.log('Uploaded!:', resText, 'link:', PUBLIC_PDR2_ENDPOINT + '/' + filename)
       const link = PUBLIC_PDR2_ENDPOINT + '/' + filename
 
