@@ -1,4 +1,6 @@
 
+import { fetchPost, fetchJson } from "$plasmid/utils/fetch-helpers"
+import { cachedjson, errorjson } from '$plasmid/utils/sveltekit-helpers'
 
 import JSON5 from 'json5'
 import { env } from '$env/dynamic/private';
@@ -7,8 +9,16 @@ import { cacheClear, cacheXclear } from '$plasmid/utils/cache';
 import { hashPassword } from "$plasmid/utils/auth/auth-helpers"
 import { getRecordById, getTables, addRecord_v2, flattenRecord, flattenTable, checkPassword } from '$plasmid/utils/airfetch'
 // import Cytosis from '$plasmid/utils/cytosis'
-import { getProfileBySlug } from '$routes/content/api/v3/profiles/+server.js'
 
+export const getProfileBySlug = async (slug, origin) => {
+  try {
+    let data = await fetchJson(`${origin}/content/api/v3/query?query=${'People-profile'}&keyword=${slug}`, fetch)
+    let _result = data?.People?.map(m => m.fields)
+    return _result?.[0]
+  } catch (err) {
+    throw errorjson('[api/v3/capsid/getProfileBySlug]', err.message)
+  }
+}
 
 // import { baseConfig } from '$instill/instill-config'
 import * as config from '$instill/instill-config'

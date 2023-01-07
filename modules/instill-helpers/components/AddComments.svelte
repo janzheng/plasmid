@@ -85,7 +85,6 @@
         }
 
         if(gotoTopic && slug) {
-          // goto(`${$page.url.origin}/instill/spaces/${_space?.name}/${slug}`)
           goto(`${baseUrl}/spaces/${_space?.name}/${slug}`)
           // goto(slug) // doesn't work on edit mode
         } else {

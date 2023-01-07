@@ -15,7 +15,6 @@
     <div class="topic-main | flex-1">
       <h2 class="pt-0 pb-2">
         <a href="{baseUrl}/spaces/{topic.Space}/{topic.Slug}">{topic.Topic}</a>
-        <!-- <a data-sveltekit-reload href="/instill/spaces/{topic.Space}/{topic.Slug}">{topic.Topic}</a> -->
       </h2>
       {#if topic?.Json?.Description}
         <div class="topic-description">{@html marked(topic?.Json?.Description)}</div>

@@ -62,23 +62,17 @@
         {#if dev}
           <strong>dev</strong>
         {/if}
-        <a class="inline-block" href="/instill">instill home</a>
+        <a class="inline-block" href="{baseConfig.base_url}">instill home</a>
       </div>
       <div class="flex | flex-col | items-end">
-        <!-- signup / login here -->
-        <!-- is logged in? {isCredentialed()} -->
-        <!-- <SimpleLogin classes='--white' hideComponent={false} /> -->
         <AccountLogin {baseConfig} classes='--white' hideComponent={false} />
-        <!-- <div class="">
-          <a href="/instill/login">login</a>
-        </div> -->
       </div>
     </div>
   </div>
 
   <!-- use wide format for profiles -->
 
-  <div class="Instill-content | {path.includes('/profiles/') ? '' : '_content-narrow'} ">
+  <div class="Instill-content | {path?.includes('/profiles/') ? '' : '_content-narrow'} ">
     <slot />
   </div>
 </div>

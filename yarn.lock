@@ -3745,6 +3745,16 @@ postcss@^8.3.11:
     picocolors "^1.0.0"
     source-map-js "^1.0.2"
 
+prism-solarized-dark@^1.0.1:
+  version "1.0.1"
+  resolved "https://registry.yarnpkg.com/prism-solarized-dark/-/prism-solarized-dark-1.0.1.tgz#75b7847549a19212df8417b5372148521ca4d03f"
+  integrity sha512-Fz+Z8dojUqftQF30MQsQeNv8t/XI/Rd7rJTAdvIBjhTCBedqw14tqNkauiVRXfDkkf3PJG6RegovG/5bMUNiCA==
+
+prismjs@^1.29.0:
+  version "1.29.0"
+  resolved "https://registry.yarnpkg.com/prismjs/-/prismjs-1.29.0.tgz#f113555a8fa9b57c35e637bba27509dcf802dd12"
+  integrity sha512-Kx/1w86q/epKcmte75LNrEoT+lX8pBpavuAbvJWRXar7Hz8jrtF+e3vY751p0R8H9HdArwaCTNDDzHg/ScJK1Q==
+
 property-information@^6.0.0:
   version "6.1.1"
   resolved "https://registry.yarnpkg.com/property-information/-/property-information-6.1.1.tgz#5ca85510a3019726cb9afed4197b7b8ac5926a22"
