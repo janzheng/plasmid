@@ -62,7 +62,7 @@
         {#if dev}
           <strong>dev</strong>
         {/if}
-        <a class="inline-block" href="{baseConfig.base_url}">instill home</a>
+        <a class="inline-block" href="{baseConfig.base_url}">Directory</a>
       </div>
       <div class="flex | flex-col | items-end">
         <AccountLogin {baseConfig} classes='--white' hideComponent={false} />
