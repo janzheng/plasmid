@@ -35,14 +35,13 @@
     </div>
   {/if}
 
-
   <!-- PAGES -->
   <!-- handle subpaths, like /article/ , /new/ -->
   {#if subpaths?.length > 0}
     {#if subpaths?.[0] == 'new'}
       <!-- NEW THREAD -->
       <div class="my-8">
-        <a href="{baseUrl}/spaces/{_space?.name}">Back to {_space?.name}</a>
+        <a href="{baseUrl}/spaces/{_space?.name}">Back to {_space?.spaceName || _space?.name}</a>
       </div>
       <h2>Create a New Post</h2>  
       <AddComments isTopic={true} gotoTopic={true} ></AddComments>
@@ -135,7 +134,7 @@
 	import { getContext } from 'svelte';
   let _context = getContext('space')
   let { baseConfig } = _context
-  let baseUrl = baseConfig.base_url || '/instill';
+  let baseUrl = baseConfig.base_url || '';
 
   let {_comments, _allComments, _space, _topic} = _context || {}
   let loud = _space?.settings?.loud || false

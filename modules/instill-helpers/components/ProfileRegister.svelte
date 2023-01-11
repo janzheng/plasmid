@@ -13,7 +13,7 @@
         message = "Verifying email ..."
 
         return async ({ result, update }) => {
-          if (result.data.found === false) {
+          if (result.data?.found === false) {
             doContinue = true
           message = null
           } else {
@@ -113,14 +113,16 @@
   let error, message
 
   // let _context = getContext('space')
-  let baseUrl = baseConfig.base_url || '/instill';
+  let baseUrl = baseConfig.base_url == '' ? "" : '/instill';
+
+  console.log('register: ', baseConfig, baseConfig.base_url.length, baseConfig.base_url, '???', baseUrl)
 
   // FUTURE
   // these should be related to baseConfig, not space, probably
-  // export let emailCheckRoute = _context?._space?.settings?.emailCheckRoute || `${baseUrl}/register?/emailCheck`;
-  // export let registerRoute = _context?._space?.settings?.registerRoute || `${baseUrl}/register?/register`;
-  export let emailCheckRoute = `${baseUrl}/register?/emailCheck`;
-  export let registerRoute = `${baseUrl}/register?/register`;
+  // export let emailCheckRoute = _context?._space?.settings?.emailCheckRoute || `${baseUrl}/join?/emailCheck`;
+  // export let registerRoute = _context?._space?.settings?.registerRoute || `${baseUrl}/join?/join`;
+  export let emailCheckRoute = `${baseUrl}/join?/emailCheck`;
+  export let registerRoute = `${baseUrl}/join?/join`;
 
   function updateEditSlug(slug) {
     if (typeof window !== 'undefined') {

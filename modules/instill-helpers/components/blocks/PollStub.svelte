@@ -133,7 +133,7 @@
   
   export let topic, comments=[]
 
-  let baseUrl = baseConfig.base_url || '/instill';
+  let baseUrl = baseConfig.base_url == '' ? "" : '/instill';
   let url = topic?.Json?.url || topic.Url
   export let link = `${$page.url.pathname}/${topic.Slug}`
   let linkOrigin = url ? new URL(url).hostname : null

@@ -60,15 +60,23 @@
 		style="min-height: {minHeight}; max-height: {maxHeight}"
 	>{value + '\n'}</pre> -->
 
+  <!-- setting style to overflow:hidden causes issues for text areas longer than the window -->
 	<textarea {id} {name} {placeholder} class="{classes}" bind:value {required}
     bind:this={textarea}
     rows={minRows}
-    style="overflow: hidden;"
+    style=""
     on:keyup={(e)=>{
     // console.log('[Profile] Profile changed successfully!')
-      // console.log('textarea:', textarea.scrollHeight)
-      e.target.style.height = "auto"
-      e.target.style.height = (e.target.scrollHeight + 20) + "px"
+      console.log('textarea:', textarea.scrollHeight, e.target.style.height)
+
+      // if scrollheight is as tall as window height, set as window height:
+      if(textarea.scrollHeight > window.innerHeight) {
+        textarea.style.height = window.innerHeight + "px"
+
+      } else {
+        e.target.style.height = "auto"
+        e.target.style.height = (e.target.scrollHeight + 20) + "px"
+      }
     }} 
   ></textarea>	
 </div>

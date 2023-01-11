@@ -272,7 +272,7 @@
   let {baseConfig, _allComments, _tempComments, _space, _topic} = _context
   let hideLogin = false
 
-  let baseUrl = baseConfig.base_url || '/instill';
+  let baseUrl = baseConfig.base_url == '' ? "" : '/instill';
   export let actionRoute = _space.settings.actionRoute || `${baseUrl}/spaces`
   export let savingText = baseConfig?.settings?.savingText || 'Posting...'
   export let successCallbackFn = null; // triggered after successful form submission

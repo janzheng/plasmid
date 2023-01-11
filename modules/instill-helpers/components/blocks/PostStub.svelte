@@ -115,7 +115,7 @@
 	import { getContext } from 'svelte';
   let _context = getContext('space')
   let { baseConfig } = _context
-  let baseUrl = baseConfig.base_url || '/instill';
+  let baseUrl = baseConfig.base_url == '' ? "" : '/instill';
 
   export let showSpace = true;
   export let space = null; // pass it in from Profiles stub here

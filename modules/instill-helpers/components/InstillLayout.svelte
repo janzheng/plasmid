@@ -56,18 +56,26 @@
 </script>
 
 <div class="Instill-layout | " >
-  <div class="Instill-layout-header | bg-gray-100 p-2">
-    <div class="Card-lighter | _content-narrow | flex items-center">
-      <div class="flex-1">
-        {#if dev}
+  <div class="_content-narrow">
+    <div class="Instill-layout-header | flex items-center gap-4 grid-gap">
+      <a class="flex-1 mr-2" rel=prefetch href="/">
+        <img class="Header-img inline align-sub " src="/instill-text.png" alt="Instill Science" style="width: 120px;">
+      </a>
+      {#if dev}
           <strong>dev</strong>
         {/if}
-        <a class="inline-block" href="{"/"}">home</a>
-      </div>
-      <div class="flex | flex-col | items-end">
-        <AccountLogin {baseConfig} classes='--white' hideComponent={false} />
+      <div class="Card-lighter | self-end  | flex items-center | mb-0">
+        <div class="flex-1">
+          <a class="inline-block pr-1 {path == '/' ? 'font-bold':''}" href="{"/"}">home</a>
+          <a class="inline-block pr-1 {path.includes('/about') ? 'font-bold':''}" href="{"/about"}">about</a>
+          <a class="inline-block pr-1 {path.includes('/directory') ? 'font-bold':''}" href="{"/directory"}">spaces</a>
+        </div>
+        <div class="flex | flex-col | items-end | pl-4">
+          <AccountLogin {baseConfig} classes='--white' hideComponent={false} />
+        </div>
       </div>
     </div>
+
   </div>
 
   <!-- use wide format for profiles -->

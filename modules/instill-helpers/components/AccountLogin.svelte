@@ -5,19 +5,21 @@
   - is this janky? yes. does it work?! yes!
 
   todo: add verification on sign in, maybe add a session cookie?
+
+  most styling needs to be set outside of this component
 -->
 <!-- <div class="AccountLogin Card-solid {classes} {isHidden ? 'hidden':''} "> -->
 <div class="AccountLogin {classes} {isHidden ? 'hidden':''} ">
   <form>
     {#if hideLogin}
-      <div class="flex gap-2 px-4 text-sm">
+      <div class="flex gap-2">
         {#if $commentUser.Username && $commentUser.Password}
           <div class="self-center">{$commentUser.Username}: {maskPassword($commentUser.Password)}</div> 
-          <button class="Btn-link text-sm" on:click={()=>{openLogin()}}>change user</button>
-          <a href="{editProfileLink}" class="Btn-link text-sm">edit profile</a>
+          <button class="Btn-link " on:click={()=>{openLogin()}}>change user</button>
+          <a href="{editProfileLink}" class="Btn-link ">edit profile</a>
         {:else}
-          <a href="{baseConfig?.register_url}" class="Btn-link text-sm">sign up</a>
-          <button class="Btn-link text-sm" on:click={()=>{openLogin()}}>log in</button>
+          <a href="{baseConfig?.register_url}" class="Btn-link">sign up</a>
+          <button class="Btn-link " on:click={()=>{openLogin()}}>log in</button>
         {/if}
         <div class="hidden">
           <input name="Username" autocomplete="username" bind:value={$commentUser.Username} type="text" class="flex-1 | form-input mt-1 block w-full" placeholder="Username or Email address" required>
@@ -31,7 +33,7 @@
         <input name="Password" bind:value={$commentUser.Password} autocomplete="current-password" type="password" class="flex-1 | form-input mt-1 block w-full" placeholder="pass-phrase" required>
         <button class="Btn-link self-center" 
           on:click={()=>{closeLogin()}}
-        >log in</button>
+        >save</button>
       </div>
     {/if}
   </form>

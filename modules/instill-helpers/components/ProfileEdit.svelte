@@ -234,7 +234,7 @@
   export let password = $commentUser?.Password // convenience for validation; should be updated in future
   export let pageMode = 'edit' // preview
 
-  let baseUrl = baseConfig.base_url || '/instill';
+  let baseUrl = baseConfig.base_url == '' ? "" : '/instill';
   export let passwordCheckRoute = baseConfig.settings.passwordCheckRoute || `${baseUrl}/profiles?/passwordCheck`
   export let updateProfileRoute = baseConfig.settings.updateProfileRoute || `${baseUrl}/profiles?/updateProfile`
   

@@ -72,9 +72,11 @@ export async function loadLayoutData({ params, url }) {
 }
 
 // load a space by the slug (name of the space as param)
-export async function loadSpaceSlug({ params, url }) {
+export async function loadSpaceSlug({ params, url }, spaceName) {
   let paramsArray = params?.space?.split('/') || []
-  let spaceName = paramsArray[0] || null
+
+  if(!spaceName)
+    spaceName = paramsArray[0] || null
 
   // let comments = await getComments()
   let comments = await getPosts(spaceName)

@@ -118,7 +118,7 @@
       baseConfig,
     }
 
-    console.log('[SpaceView] Data:', spaceObj, {spaceName, subpaths, comments, profiles})
+    // console.log('[SpaceView] Data:', spaceObj, {spaceName, subpaths, comments, profiles})
 
     setContext( 'spaceData', {spaceName, subpaths, comments, profiles})
     setContext( 'space', spaceObj)

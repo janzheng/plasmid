@@ -30,6 +30,7 @@
 }
 %card--pad {
   @apply p-4 mb-2;
+  &.mb-0 { margin-bottom: 0; }
 }
 %card--shadow {
   @apply shadow-md;

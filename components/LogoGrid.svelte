@@ -3,8 +3,8 @@
 
   import Lazy from 'svelte-lazy';
 
-  export let items = []
-  export let type = 'logo' // logo | profile
+  export let items = [];
+  export let type = 'logo'; // logo | profile
 
 /* 
   rough schema of [item]

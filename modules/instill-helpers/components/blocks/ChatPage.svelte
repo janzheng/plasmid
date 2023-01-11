@@ -19,7 +19,7 @@
   </div>
 
   <!-- <div class="Comments-add | mt-4 mb-0 | sticky bottom-4 "> -->
-  <div class="Comments-add-container | mt-4 mb-0 | fixed bottom-0 left-0 px-8 w-full h-fit bg-white/90">
+  <div class="Comments-add-container | mt-4 mb-0 | z-50 fixed bottom-0 left-0 px-8 w-full h-fit bg-white/90">
     <div class="Comments-add | _content-narrow h-fit mx-auto">
       <AddComments {parentComment} commentLabel={false}></AddComments>
     </div>

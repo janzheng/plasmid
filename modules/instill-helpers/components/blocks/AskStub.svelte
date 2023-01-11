@@ -132,7 +132,7 @@
   export let previewMode = postTypeSettings?.preview?.mode
   export let previewComment = null
 
-  let baseUrl = baseConfig.base_url || '/instill';
+  let baseUrl = baseConfig.base_url == '' ? "" : '/instill';
 
 
 
