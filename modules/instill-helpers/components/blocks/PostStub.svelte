@@ -23,6 +23,9 @@
   <div class="topic-header | flex">
     <div class="topic-main | flex-1 relative">
       <h2 class="topic-title | inline-block relative z-10">
+        {#if topic.PostStatuses?.includes('Pinned')}
+          📌
+        {/if}
         <a class="topic-linkout z-40" on:click|stopPropagation={''} on:dragend|stopPropagation={''} href="{link}">{topic.Topic}</a>
         {#if linkOrigin}<a class="topic-linkorigin | text-slate-400" href="{linkOriginUrl.host}">({linkOriginUrl.host})</a>{/if}
       </h2>

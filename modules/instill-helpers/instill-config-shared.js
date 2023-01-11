@@ -18,7 +18,7 @@ export const sharedSpaces = [
       // actionRoute: "someactionroute/instill/spaces",
       defaultPostType: 'Article', // sets the default post type
       // postTypes: ['Article', 'Post', 'Ask', 'Link', 'Show', 'Poll'],
-      postTypes: ['Article', 'Link', 'Ask', 'Show', 'Suggestion', 'Poll'],
+      postTypes: ['Article', 'Link', 'Job', 'Ask', 'Show', 'Suggestion', 'Poll'],
       showPostTypeFilters: true,
 
       // v2 settings
@@ -126,6 +126,36 @@ export const sharedSpaces = [
           //   type: 'text',
           // }]
         },
+        Job: {
+          icon: 'job',
+          label: 'Job',
+          description: 'Post a new job',
+          postCta: "Post Job",
+          uploadImages: true,
+          keywords: {
+            label: 'Keywords',
+            placeholder: 'Enter keywords',
+          },
+          topic: {
+            label: 'Job Position',
+            placeholder: "Enter the job position or title",
+          },
+          preview: {
+            length: 'short', // full, short, none/false/undefined
+          },
+          comment: {
+            required: false,
+            rows: 3,
+            type: 'textarea',
+            label: "Job Description",
+            placeholder: "(Optional) Add the job description here. Alternately, share the link to the job post",
+          },
+          addLink: {
+            required: false,
+            label: "Link to Official Job Posting",
+            placeholder: "Enter a link (e.g. Job website, Linkedin jobs, etc.",
+          },
+        },
         Show: {
           icon: 'show',
           label: 'Show',
@@ -199,7 +229,7 @@ export const sharedSpaces = [
           // suggestions are just regular posts with some CTAs and explicitly enabled upvoting — this is useful for spaces w/o upvoting, but you want upvoting just for a specific post
           icon: 'suggestion',
           label: 'Suggestion',
-          description: 'A Suggestion post is similar to a poll, but focusd around upvoting the suggestion. Could be a new feature, an idea, etc.',
+          description: 'A Suggestion post is similar to a poll, but focused around upvoting the suggestion. Could be a new feature, an idea, etc.',
           postCta: "Create a Suggestion",
           uploadImages: {
             required: false,

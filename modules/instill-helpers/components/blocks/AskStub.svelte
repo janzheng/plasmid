@@ -17,6 +17,9 @@
           <span class="comment-isAnswer | text-green-900"><CircleCheck size={21} strokeColor="#14532D" /></span>
         {/if} -->
 
+        {#if topic.PostStatuses?.includes('Pinned')}
+          📌
+        {/if}
         <a class="topic-linkout" on:click|stopPropagation={''} on:dragend|stopPropagation={''} href="{link}">{topic.Topic}</a>
         {#if linkOrigin}<a class="topic-linkorigin | text-slate-400" href="{linkOriginUrl.host}">({linkOriginUrl.host})</a>{/if}
       </h2>

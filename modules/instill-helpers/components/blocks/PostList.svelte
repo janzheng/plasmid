@@ -191,7 +191,9 @@
     }
     if (sort == 'latest') {
       topics = topics?.sort((a,b) => new Date(b.Created) - new Date(a.Created))
+      topics = topics?.sort((a,b) => b.PostStatuses?.includes('Pinned') ? 1 : -1)
     }
+
   }
 
 </script>
