@@ -1,5 +1,5 @@
 
-import * as notionClient from "@notionhq/client";
+// import * as notionClient from "@notionhq/client";
 
 /* 
 
@@ -9,7 +9,29 @@ import * as notionClient from "@notionhq/client";
 
 
 
+/* 
 
+  Simple fetcher for Notion API
+
+*/
+
+
+export const loadNotionPages = async (notionPageIds) => {
+  try {
+    let notionData = {}
+
+    await Promise.all(notionPageIds.map(async (id) => {
+      let res = await fetch(`https://notion-cloudflare-worker.yawnxyz.workers.dev/v1/page/${id}`)
+      let json = await res.json();
+      let data = Object.values(json).map((el) => el.value);
+      notionData[id] = data
+    }))
+
+    return notionData
+  } catch (e) {
+    console.error('loadNotionPages error:', e)
+  }
+}
 
 
 

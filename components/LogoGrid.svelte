@@ -23,7 +23,6 @@
 */
 </script>
 
-
 <div class="LogoGrid | text-sm grid md:grid-cols-3 gap-4">
   {#each items as item}
 
