@@ -203,6 +203,13 @@
       <!-- image url: {$comment.ImageUrl} -->
     {/if}
 
+
+    {#if topicKeywords}
+      {#if topicKeywordsLabel}<label class="AddComments-keywords-label inline-block" for="Keywords">{topicKeywordsLabel}</label>
+      {/if}
+      <input id="Keywords" name="Keywords" bind:value={$comment.Keywords} type="text" class="AddComments-keywords-input | mt-1 block w-full" placeholder="{topicKeywordsPlaceholder}">
+    {/if}
+
     <!-- login block - don't pass comment in here -->
     <SimpleLogin />
 
@@ -290,6 +297,7 @@
   export let postTypeSettings = {}
   export let uploadImage, topicUploadImage, topicUploadImageCta='Add an image' // upload image for topics; overrides uploadImage
   export let addLink, addLinkRequired, topicAddLink, topicAddLinkLabel, topicAddLinkPlaceholder
+  export let topicKeywords, topicKeywordsLabel, topicKeywordsPlaceholder
 
   // export let topicUploadImages = _space.settings?.topicUploadImages // upload image for topics; overrides uploadImage
   export let ctaText = isTopic ? _space.settings?.topicCta || 'Post Topic' : _space.settings?.commentCta || 'Add Comment'
@@ -333,11 +341,12 @@
       Comment: initComment.Comment || $commentUser.Comment || '',
       Topic: initComment.Topic || $commentUser.Topic || null,
       PostType: initComment.PostType || $commentUser.PostType || defaultPostType || 'Post',
+      Keywords: initComment.Keywords || $commentUser.Keywords || '',
       Space: JSON.stringify(_space), // "spacejam"
       RecordId: initComment.RecordId || initComment.recordId || null, // for editing a post
       PostStatuses: initComment.PostStatuses, // for editing a post; a CSV
       ImageUrl: initComment.ImageUrl || null,
-      Url: initComment.Url || null,
+      Url: initComment.Url || $commentUser.Url || null,
       Json: initComment.Json || {},
       _postSuccessful: $commentUser._postSuccessful,
     }
@@ -373,6 +382,8 @@
         // Password: $comment.Password,
         Comment: $comment.Comment,
         Topic: $comment.Topic,
+        Keywords: $comment.Keywords,
+        Url: $comment.Url,
         // PostType: $comment.PostType,
         _postSuccessful: $comment._postSuccessful,
       }
@@ -397,6 +408,20 @@
 
 
 
+
+
+
+
+
+
+
+
+
+
+
+
+  // for NEW POSTS
+  // this is updated when we have a new post type set (e.g link or job)
   function updatePostType(postType = $comment.PostType) {
 
     // if $comment.Json[field.name] is equal to the default postTypeSettings?.topicFields fields value, remove it
@@ -439,6 +464,11 @@
     topicAddLinkLabel = postTypeSettings?.addLink?.label || 'Link'
     topicAddLinkPlaceholder = postTypeSettings?.addLink?.placeholder || 'Add a link'
 
+    topicKeywords = postTypeSettings?.keywords
+    topicKeywordsLabel = postTypeSettings?.keywords?.label
+    topicKeywordsPlaceholder = postTypeSettings?.keywords?.placeholder || 'Enter keywords'
+
+
     for (const field of postTypeSettings?.topicFields || []) {
       if (typeof field.value == 'object') {
         $comment.Json[field.name] = $comment.Json[field.name] || JSON.stringify(field.value,0,2)
@@ -468,6 +498,7 @@
       commentRows = postTypeSettings?.replies?.rows || 4
       // commentDescription = null // 'Enter comment'
     }
+
 
     // console.log('[AddComments] postTypeSettings:', postType, $comment.PostType, postTypeSettings, topicFields, commentLabel, $comment, _space.settings)
   }

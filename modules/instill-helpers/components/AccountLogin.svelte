@@ -14,9 +14,11 @@
     {#if hideLogin}
       <div class="flex gap-2">
         {#if $commentUser.Username && $commentUser.Password}
-          <div class="self-center">{$commentUser.Username}: {maskPassword($commentUser.Password)}</div> 
-          <button class="Btn-link " on:click={()=>{openLogin()}}>change user</button>
-          <a href="{editProfileLink}" class="Btn-link ">edit profile</a>
+          {#if showLoggedinInfo}
+            <div class="self-center">{$commentUser.Username}: {maskPassword($commentUser.Password)}</div> 
+          {/if}
+          <a href="{editProfileLink}" class="Btn-link ">profile</a>
+          <button class="Btn-link " on:click={()=>{openLogin()}}>log out</button>
         {:else}
           <a href="{baseConfig?.register_url}" class="Btn-link">sign up</a>
           <button class="Btn-link " on:click={()=>{openLogin()}}>log in</button>
@@ -65,6 +67,7 @@
   export let classes = '--white p-1 mt-4 mb-0';
   export let hideComponent = 'loggedIn'; // always
   export let isHidden = false;
+  export let showLoggedinInfo = true;
   
   if(hideComponent == 'loggedIn' && $isUserLoggedIn || hideComponent == 'always') {
     isHidden = true; // hides the entire thing, for "login-less" elements like upvotes

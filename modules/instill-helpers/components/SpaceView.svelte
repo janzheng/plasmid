@@ -6,7 +6,7 @@
 
 
 {#if loading}
-  <p>loading {spaceName}...</p>
+  <p>Loading {spaceName||'space'}...</p>
 {:else if (_space && !_space.name) || !_space}
   <h1>No space found at "{spaceName}"</h1>
 {:else}

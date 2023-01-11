@@ -66,12 +66,12 @@
         {/if}
       <div class="Card-lighter | self-end  | flex items-center | mb-0">
         <div class="flex-1">
-          <a class="inline-block pr-1 {path == '/' ? 'font-bold':''}" href="{"/"}">home</a>
-          <a class="inline-block pr-1 {path.includes('/about') ? 'font-bold':''}" href="{"/about"}">about</a>
-          <a class="inline-block pr-1 {path.includes('/directory') ? 'font-bold':''}" href="{"/directory"}">spaces</a>
+          <a class="inline-block pr-2 {path == '/' ? 'font-bold':''}" href="{"/"}">home</a>
+          <a class="inline-block pr-2 {path.includes('/about') ? 'font-bold':''}" href="{"/about"}">about</a>
+          <a class="inline-block pr-2 {path.includes('/directory') ? 'font-bold':''}" href="{"/directory"}">spaces</a>
         </div>
         <div class="flex | flex-col | items-end | pl-4">
-          <AccountLogin {baseConfig} classes='--white' hideComponent={false} />
+          <AccountLogin {baseConfig} showLoggedinInfo={false} classes='--white' hideComponent={false} />
         </div>
       </div>
     </div>
