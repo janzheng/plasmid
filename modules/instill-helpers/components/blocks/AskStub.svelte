@@ -113,7 +113,6 @@
 
   export let topic, comments=[]
   let url = topic?.Json?.url || topic.Url
-  export let link = `${$page.url.pathname}/${topic.Slug}` // link never lead out
   let linkOrigin = url ? new URL(url).hostname : null
   let linkOriginUrl = url ? new URL(url) : null
   let postType = topic?.PostType
@@ -136,6 +135,8 @@
   export let previewComment = null
 
   let baseUrl = `${baseConfig?.base_url}`
+  let spaceUrl = `${baseConfig?.space_url || 'spaces'}`
+  export let link = url ? `${url}` : `${baseUrl}/${spaceUrl}/${_space.name}/${topic.Slug}`
 
 
 
