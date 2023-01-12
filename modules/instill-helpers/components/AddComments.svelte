@@ -205,9 +205,11 @@
 
 
     {#if topicKeywords}
-      {#if topicKeywordsLabel}<label class="AddComments-keywords-label inline-block" for="Keywords">{topicKeywordsLabel}</label>
-      {/if}
-      <input id="Keywords" name="Keywords" bind:value={$comment.Keywords} type="text" class="AddComments-keywords-input | mt-1 block w-full" placeholder="{topicKeywordsPlaceholder}">
+      <div class="AddComments-comments-container | mt-6">
+        {#if topicKeywordsLabel}<label class="AddComments-keywords-label inline-block" for="Keywords">{topicKeywordsLabel}</label>
+        {/if}
+        <input id="Keywords" name="Keywords" bind:value={$comment.Keywords} type="text" class="AddComments-keywords-input | mt-1 block w-full" placeholder="{topicKeywordsPlaceholder}">
+      </div>  
     {/if}
 
     <!-- login block - don't pass comment in here -->
