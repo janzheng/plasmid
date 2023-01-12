@@ -25,7 +25,7 @@
 <!-- <ShowArticles></ShowArticles> -->
 
 
-<div class="PostList pb-16">
+<div class="PostList mb-16">
   {#if loud}
     <div class="Card-light p-2">
       PostList
@@ -71,9 +71,9 @@
   <!-- PREVIEW LIST / STUBS -->
   {:else}
     <div class="PostList-header | my-4">
-      <a href="{baseUrl}/spaces/{_space?.name}/new" class="btn btn-primary block">{topicCta}</a>
+      <a href="{baseUrl}/spaces/{_space?.name}/new" class="btn btn-primary">{topicCta}</a>
       {#if showPostTypeFilters && postTypes}
-        <span class="PostList-filters | ml-8">
+        <span class="PostList-filters | ml-4">
           Filter by: 
           {#each postTypes as postType}
             <button class="Btn-link mr-2 {filter==postType?' font-bold line-through ':''}" on:click={()=>{filter=filter==postType?null:postType}}>{postType}</button>
