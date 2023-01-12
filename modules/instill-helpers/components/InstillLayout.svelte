@@ -97,11 +97,9 @@
   </div>
 </div>
 
-{#if browser}
-  <svelte:head>
-    <script defer data-domain="instill.xyz" src="https://plausible.io/js/script.js"></script>
-  </svelte:head>  
-{/if}
+<svelte:head>
+  <script defer data-domain="instill.xyz" src="https://plausible.io/js/script.js"></script>
+</svelte:head>  
 
 
 
