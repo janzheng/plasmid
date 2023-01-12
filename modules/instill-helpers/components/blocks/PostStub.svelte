@@ -110,7 +110,6 @@
 
   export let topic, comments=[]
   let url = topic?.Json?.url || topic.Url
-  export let link = url ? `${url}` : `${$page.url.pathname}/${topic.Slug}`
   let linkOrigin = url ? new URL(url).hostname : null
   let linkOriginUrl = url ? new URL(url) : null
   let postType = topic?.PostType
@@ -118,14 +117,16 @@
 	import { getContext } from 'svelte';
   let _context = getContext('space')
   let { baseConfig } = _context
-  let baseUrl = baseConfig.base_url == '' ? "" : '/instill';
-
+  let baseUrl = `${baseConfig?.base_url}`
+  let spaceUrl = `${baseConfig?.space_url || 'spaces'}`
   export let showSpace = true;
   export let space = null; // pass it in from Profiles stub here
   let _space = _context?._space || space || {}
   let loud = _space?.settings?.loud || false
   export let classes = ''
   export let classMode = _space?.settings?.classMode || 'default'
+
+  export let link = url ? `${url}` : `${baseUrl}/${spaceUrl}/${_space.name}/${topic.Slug}`
 
   export let postTypeSettings = _space?.settings?.postTypeSettings?.[postType] || {}
   export let previewLength = postTypeSettings?.preview?.length == 'full' ? 20000 : postTypeSettings?.preview?.length == 'long' ? 400 : postTypeSettings?.preview?.length == 'short' ? 100 : 0

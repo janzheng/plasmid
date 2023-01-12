@@ -281,7 +281,7 @@
   let paramType = $page.url.searchParams.get('type') // /?type=Ask —> will set default topic type as Ask
 
   
-  let baseUrl = baseConfig.base_url == '' ? "" : '/instill';
+  let baseUrl = `${baseConfig?.base_url}`
   export let actionRoute = _space.settings.actionRoute || `${baseUrl}/spaces`
   export let savingText = baseConfig?.settings?.savingText || 'Posting...'
   export let successCallbackFn = null; // triggered after successful form submission

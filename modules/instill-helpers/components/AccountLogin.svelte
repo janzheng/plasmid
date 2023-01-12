@@ -96,7 +96,7 @@
   //     return n
   //   })
   // }
-  let baseUrl = baseConfig.base_url == '' ? "" : '/';
+  let baseUrl = `${baseConfig?.base_url}`
   export let loginCheckRoute = `${baseUrl}/login?/loginCheck`;
 
   export let classes = '--white p-1 mt-4 mb-0';

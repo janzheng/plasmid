@@ -113,7 +113,7 @@
   let error, message
 
   // let _context = getContext('space')
-  let baseUrl = baseConfig.base_url == '' ? "" : '/';
+  let baseUrl = `${baseConfig?.base_url}`
 
   console.log('register: ', baseConfig, baseConfig.base_url.length, baseConfig.base_url, '???', baseUrl)
 

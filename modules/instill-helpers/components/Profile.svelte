@@ -98,7 +98,7 @@
 
   export let profile = {}
   export let topics = {}
-  let baseUrl = baseConfig?.base_url || '/instill';
+  let baseUrl = `${baseConfig?.base_url}`
 
   // console.log('profile topics:', topics)
 

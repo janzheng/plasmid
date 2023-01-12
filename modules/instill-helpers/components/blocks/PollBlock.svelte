@@ -129,7 +129,7 @@
 
   let _context = getContext('space')
   let { baseConfig } = _context
-  let baseUrl = baseConfig.base_url == '' ? "" : '/instill';
+  let baseUrl = `${baseConfig?.base_url}`
   export let actionRoute = _context._space.settings.actionRoute || `${baseUrl}/spaces`
 
   import { Turnstile } from 'svelte-turnstile';

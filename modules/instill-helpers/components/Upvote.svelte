@@ -42,7 +42,7 @@
   let _context = getContext('space')
   export let topic = getContext('space')?._topic;
   let { baseConfig } = _context
-  let baseUrl = baseConfig.base_url == '' ? "" : '/instill';
+  let baseUrl = `${baseConfig?.base_url}`
 
 
   export let actionRoute = getContext('space')?._space?.settings.actionRoute || `${baseUrl}/spaces`

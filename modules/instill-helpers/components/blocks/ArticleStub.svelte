@@ -68,7 +68,7 @@
   export let space // pass it in from Profiles stub here
   let _space = _context?._space || space || {}
   let loud = _space?.settings?.loud || false
-  let baseUrl = baseConfig.base_url == '' ? "" : '/instill';
+  let baseUrl = `${baseConfig?.base_url}`
 
 
   let commentCount

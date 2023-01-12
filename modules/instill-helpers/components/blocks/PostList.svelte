@@ -134,7 +134,7 @@
 	import { getContext } from 'svelte';
   let _context = getContext('space')
   let { baseConfig } = _context
-  let baseUrl = baseConfig.base_url || '';
+  let baseUrl = `${baseConfig?.base_url}`
 
   let {_comments, _allComments, _space, _topic} = _context || {}
   let loud = _space?.settings?.loud || false
