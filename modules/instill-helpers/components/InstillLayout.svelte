@@ -12,6 +12,11 @@
   import * as config from '$instill/instill-config'
   import * as configPreview from '$instill/instill-config-preview'
   import { dev } from '$app/environment';
+
+
+  import Head from '$lib/components/shared/Head.svelte'
+  import { Head as ConfigHead } from '$lib/config.js'
+  
   let baseConfig, orgSpaces
   if (dev) {
     baseConfig = configPreview.baseConfig
@@ -55,6 +60,12 @@
 
 </script>
 
+
+{#key $ConfigHead}
+  <Head />
+{/key}
+
+
 <div class="Instill-layout | " >
   <div class="_content-narrow">
     <div class="Instill-layout-header | flex items-center gap-4 grid-gap">
@@ -84,6 +95,7 @@
     <slot />
   </div>
 </div>
+
 
 
  
