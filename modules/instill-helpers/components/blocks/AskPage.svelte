@@ -41,9 +41,9 @@
       
       {@html marked(topic.Comment || '')}
 
-      {#if answers}
+      {#if answers && answers.length > 0}
         <div class="AskPage-answers | Card-lighter">
-          <h3 class="pt-0">Marked Answer{#if answers.length>0}s{/if}</h3>
+          <h3 class="pt-0">Marked Answer{#if answers.length>1}s{/if}</h3>
           {#each answers as answer}
             <!-- <div class="AskPage-answer | my-4">{JSON.stringify($_comments, answer.id)}</div> -->
             <!-- <div class="AskPage-answer | my-4">{JSON.stringify(findCommentById($_comments, answer.id))}</div> -->

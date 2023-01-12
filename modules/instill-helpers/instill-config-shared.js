@@ -16,13 +16,42 @@ export const sharedSpaces = [
       // useTurnstile: false, // doesn't load by project
       topicCta: "Create Post",
       // actionRoute: "someactionroute/instill/spaces",
-      defaultPostType: 'Article', // sets the default post type
+      defaultPostType: 'Post', // sets the default post type
       // postTypes: ['Article', 'Post', 'Ask', 'Link', 'Show', 'Poll'],
-      postTypes: ['Article', 'Link', 'Job', 'Ask', 'Show', 'Suggestion', 'Poll'],
+      postTypes: ['Post', 'Article', 'Link', 'Job', 'Ask', 'Show', 'Suggestion', 'Poll'],
       showPostTypeFilters: true,
 
       // v2 settings
       postTypeSettings: {
+        Post: { 
+          icon: 'post',
+          label: 'Post',
+          description: 'A generic forum post',
+          postCta: "Create Post",
+          uploadImages: true,
+          topic: {
+            label: 'Post Title',
+            placeholder: "Enter post title",
+          },
+          preview: {
+            length: 'short', // full, long, short, none/false/undefined
+            // mode: 'markdown', // remove-markdown, markdown; if empty, just render text
+          },
+          comment: {
+            required: true,
+            rows: 8,
+            type: 'textarea',
+            label: "Post Text",
+            placeholder: "Enter text for your post (markdown supported)",
+          },
+          replies: {
+            rows: 4,
+            type: 'textarea',
+            label: "Add a reply",
+            placeholder: "Add a thoughtful comment",
+            // postCta: "Add a Reply",
+          },
+        },
         Article: { 
           icon: 'article',
           label: 'Article',
@@ -285,19 +314,57 @@ export const sharedSpaces = [
       // useTurnstile: false, // doesn't load by project
       topicCta: "Create Post",
       // actionRoute: "someactionroute/instill/spaces",
-      defaultPostType: 'Article', // sets the default post type
+      defaultPostType: 'Post', // sets the default post type
       // postTypes: ['Article', 'Post', 'Ask', 'Link', 'Show', 'Poll'],
-      postTypes: ['Article', 'Link', 'Ask', 'Show', 'Suggestion', 'Poll'],
+      postTypes: ['Post', 'Article', 'Link', 'Ask', 'Show', 'Suggestion', 'Poll'],
       showPostTypeFilters: true,
 
       // v2 settings
       postTypeSettings: {
+
+        Post: {
+          icon: 'post',
+          label: 'Post',
+          description: 'A generic forum post',
+          postCta: "Create Post",
+          uploadImages: true,
+          keywords: {
+            label: 'Keywords',
+            placeholder: 'Enter keywords',
+          },
+          topic: {
+            label: 'Post Title',
+            placeholder: "Enter post title",
+          },
+          preview: {
+            length: 'short', // full, long, short, none/false/undefined
+            // mode: 'markdown', // remove-markdown, markdown; if empty, just render text
+          },
+          comment: {
+            required: true,
+            rows: 8,
+            type: 'textarea',
+            label: "Post Text",
+            placeholder: "Enter text for your post (markdown supported)",
+          },
+          replies: {
+            rows: 4,
+            type: 'textarea',
+            label: "Add a reply",
+            placeholder: "Add a thoughtful comment",
+            // postCta: "Add a Reply",
+          },
+        },
         Article: {
           icon: 'article',
           label: 'Article',
           description: 'A long-form article',
           postCta: "Post Article",
           uploadImages: true,
+          keywords: {
+            label: 'Keywords',
+            placeholder: 'Enter keywords',
+          },
           topic: {
             label: 'Article Title',
             placeholder: "Enter article title",
@@ -332,6 +399,10 @@ export const sharedSpaces = [
           description: 'Ask the community with a poll-style question',
           postCta: "Create Poll",
           uploadImages: false,
+          keywords: {
+            label: 'Keywords',
+            placeholder: 'Enter keywords',
+          },
           // resultsMode: 'always', // always, optional
           topic: {
             label: 'Poll Title',
@@ -369,6 +440,10 @@ export const sharedSpaces = [
           description: 'Share a link to a blog, article or something fun!',
           postCta: "Share Link",
           uploadImages: false,
+          keywords: {
+            label: 'Keywords',
+            placeholder: 'Enter keywords',
+          },
           topic: {
             label: 'Link Title',
             placeholder: "Enter a title (article or a short, descriptive title)",
@@ -405,6 +480,10 @@ export const sharedSpaces = [
             label: '(Optional) Upload image',
             multiple: true,
           },
+          keywords: {
+            label: 'Keywords',
+            placeholder: 'Enter keywords',
+          },
           topic: {
             label: 'Title',
             placeholder: "Enter the title of your work (or a short, descriptive title)",
@@ -435,6 +514,10 @@ export const sharedSpaces = [
             required: false,
             label: '(Optional) Upload image',
             multiple: true,
+          },
+          keywords: {
+            label: 'Keywords',
+            placeholder: 'Enter keywords',
           },
           topic: {
             label: 'Question',
@@ -474,6 +557,10 @@ export const sharedSpaces = [
             required: false,
             label: '(Optional) Upload image',
             multiple: true,
+          },
+          keywords: {
+            label: 'Keywords',
+            placeholder: 'Enter keywords',
           },
           topic: {
             label: 'Suggestion',
