@@ -49,6 +49,13 @@
   import AddComments from '$instill-helpers/components/AddComments.svelte';
   import CommentList from '$instill-helpers/components/blocks/CommentList.svelte'; // basic comment component
 
+
+  marked.setOptions({
+    gfm: true,
+    breaks: true,
+    smartypants: true,
+  });
+
   let _context = getContext('space')
   let {_comments, _allComments, _space, _topic} = _context
   let topic = _topic

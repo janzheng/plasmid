@@ -73,7 +73,7 @@
 <script>
   import { niceDate } from '$plasmid/utils/date'
 	import { setContext, getContext } from 'svelte';
-  import {marked} from 'marked';
+  import { marked } from 'marked';
   import {getEventsOfType, findCommentById} from '$instill-helpers/instill-utils'
 
   import Comment from '$instill-helpers/components/Comment.svelte';
@@ -81,6 +81,11 @@
   import CommentList from '$instill-helpers/components/blocks/CommentList.svelte'; // basic comment component
   import PollBlock from '$instill-helpers/components/blocks/PollBlock.svelte'; // basic comment component
 
+  marked.setOptions({
+    gfm: true,
+    breaks: true,
+    smartypants: true,
+  });
 
   let _context = getContext('space')
 
