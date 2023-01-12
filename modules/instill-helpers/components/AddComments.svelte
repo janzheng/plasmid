@@ -55,6 +55,7 @@
         
         $commentUser['Comment'] = null
         $commentUser['Topic'] = null
+        $commentUser['Keywords'] = null
         $commentUser['_postSuccessful'] = true
         hideLogin = true // auto hide after each success
 
@@ -76,6 +77,7 @@
         }
         $comment['Comment'] = null
         $comment['Topic'] = null
+        $commentUser['Keywords'] = null
         $comment['_postSuccessful'] = true
 
         let slug = result?.data?.comment?.['Slug']

@@ -8,6 +8,7 @@
 
 <script>
 
+  import { browser } from '$app/environment';
   // import { baseConfig } from '$instill/instill-config'
   import * as config from '$instill/instill-config'
   import * as configPreview from '$instill/instill-config-preview'
@@ -95,6 +96,12 @@
     <slot />
   </div>
 </div>
+
+{#if browser}
+  <svelte:head>
+    <script defer data-domain="instill.xyz" src="https://plausible.io/js/script.js"></script>
+  </svelte:head>  
+{/if}
 
 
 
