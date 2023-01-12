@@ -18,7 +18,7 @@
             <div class="self-center">{$commentUser.Username}: {maskPassword($commentUser.Password)}</div> 
           {/if}
           <a href="{editProfileLink}" class="Btn-link ">profile</a>
-          <button class="Btn-link " on:click={()=>{openLogin()}}>log out</button>
+          <button class="Btn-link " on:click={()=>{openLogin()}}>change user</button>
         {:else}
           <a href="{baseConfig?.register_url}" class="Btn-link">sign up</a>
           <button class="Btn-link " on:click={()=>{openLogin()}}>log in</button>
@@ -31,24 +31,57 @@
     {:else}
       <!-- <div class="grid grid-cols-2 gap-2"> -->
       <div class="flex align-center gap-2">
-        <input name="Username" autocomplete="username" bind:value={$commentUser.Username} type="text" class="flex-1 | form-input mt-1 block w-full" placeholder="user-name" required>
-        <input name="Password" bind:value={$commentUser.Password} autocomplete="current-password" type="password" class="flex-1 | form-input mt-1 block w-full" placeholder="pass-phrase" required>
-        <button class="Btn-link self-center" 
-          on:click={()=>{closeLogin()}}
-        >save</button>
+        <form class="Email-check " method="POST" action="{loginCheckRoute}"
+          use:enhance={({ form, data, cancel }) => {
+            console.log('login check!!!', doLoginCheck)
+            if(doLoginCheck) {
+              error = null
+              message = "Signing in..."
+  
+              return async ({ result, update }) => {
+                if (result.data) {
+                  if(result.data.success) {
+                    console.log('result.data', result.data)
+                    message = null
+                    closeLogin()
+                  } else {
+                    message = "Not signed in"
+                    // $commentUser.Username = null
+                    // $commentUser.Password = null
+                  }
+                } 
+              }
+            } else {
+              closeLogin();
+            }
+          }}
+        >
+          <input name="Username" autocomplete="username" bind:value={$commentUser.Username} type="text" class="flex-1 | form-input mt-1 block w-full" placeholder="user-name" required>
+          <input name="Password" bind:value={$commentUser.Password} autocomplete="current-password" type="password" class="flex-1 | form-input mt-1 block w-full" placeholder="pass-phrase" required>
+          <input class="Btn-link self-center" type="submit" value="log in" >
+          <!-- <input class="Btn-link self-center" type="submit" value="save"
+            on:click={()=>{closeLogin()}}
+          > -->
+          {#if message}
+            <div class="text-sm text-gray-500">{message}</div>
+          {/if}
+        </form>
       </div>
     {/if}
   </form>
 </div>
 
 <script>
+	import { enhance } from '$app/forms';
   import { maskPassword } from "$plasmid/utils/auth/auth-helpers";
   import { isUserLoggedIn, commentUser } from '$instill/instill-store';
   
+  export let doLoginCheck = false
   export let baseConfig;
   export let hideLogin = true;
   export let registerLink = baseConfig?.register_url;
   export let editProfileLink = `${baseConfig?.base_url}/profiles/${$commentUser.Username}/edit`;
+  let error, message
   // let comment = $commentUser
 
   // $: if(!$commentUser.Username && !$commentUser.Password) {
@@ -63,6 +96,8 @@
   //     return n
   //   })
   // }
+  let baseUrl = baseConfig.base_url == '' ? "" : '/';
+  export let loginCheckRoute = `${baseUrl}/login?/loginCheck`;
 
   export let classes = '--white p-1 mt-4 mb-0';
   export let hideComponent = 'loggedIn'; // always

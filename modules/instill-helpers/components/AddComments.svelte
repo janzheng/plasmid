@@ -278,7 +278,9 @@
   let _context = getContext('space')
   let {baseConfig, _allComments, _tempComments, _space, _topic} = _context
   let hideLogin = false
+  let paramType = $page.url.searchParams.get('type') // /?type=Ask —> will set default topic type as Ask
 
+  
   let baseUrl = baseConfig.base_url == '' ? "" : '/instill';
   export let actionRoute = _space.settings.actionRoute || `${baseUrl}/spaces`
   export let savingText = baseConfig?.settings?.savingText || 'Posting...'
@@ -287,7 +289,7 @@
   export let parentComment=null; // pass in parent ID for threaded comments
   export let openReply=false; // opens / closes replies
   export let isTopic=false; // allows for Topic / Thread starters
-  export let defaultPostType = _space.settings?.defaultPostType || 'Post'; // Article, Post, Ask, etc.
+  export let defaultPostType = paramType || _space.settings?.defaultPostType || 'Post'; // Article, Post, Ask, etc.
   export let postTypes = _space.settings?.postTypes || null; // ['Article', 'Ask', 'Post'], etc.
   export let gotoTopic=false; // if true, will redirect to topic after posting 
   export let useOptimistic = _space.settings?.useOptimistic

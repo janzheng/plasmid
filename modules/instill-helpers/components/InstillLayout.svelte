@@ -62,8 +62,8 @@
         <img class="Header-img inline align-sub " src="/instill-text.png" alt="Instill Science" style="width: 120px;">
       </a>
       {#if dev}
-          <strong>dev</strong>
-        {/if}
+        <strong>dev</strong>
+      {/if}
       <div class="Card-lighter | self-end  | flex items-center | mb-0">
         <div class="flex-1">
           <a class="inline-block pr-2 {path == '/' ? 'font-bold':''}" href="{"/"}">home</a>
@@ -71,7 +71,7 @@
           <a class="inline-block pr-2 {path.includes('/directory') ? 'font-bold':''}" href="{"/directory"}">spaces</a>
         </div>
         <div class="flex | flex-col | items-end | pl-4">
-          <AccountLogin {baseConfig} showLoggedinInfo={false} classes='--white' hideComponent={false} />
+          <AccountLogin {baseConfig} doLoginCheck={true} showLoggedinInfo={false} classes='--white' hideComponent={false} />
         </div>
       </div>
     </div>

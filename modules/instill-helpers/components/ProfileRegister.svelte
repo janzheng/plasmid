@@ -8,19 +8,19 @@
 
     {#if !doContinue}
       <form class="Email-check " method="POST" action="{emailCheckRoute}"
-      use:enhance={({ form, data, cancel }) => {
-        error = null
-        message = "Verifying email ..."
+        use:enhance={({ form, data, cancel }) => {
+          error = null
+          message = "Verifying email ..."
 
-        return async ({ result, update }) => {
-          if (result.data?.found === false) {
-            doContinue = true
-          message = null
-          } else {
-            message = "Email already exists"
+          return async ({ result, update }) => {
+            if (result.data?.found === false) {
+              doContinue = true
+            message = null
+            } else {
+              message = "Email already exists"
+            }
           }
-        }
-      }}
+        }}
       >
         <!-- <div class="mb-4">A confirmation will be sent to your new email address</div> -->
         <label for='Email' class="block mt-6">
@@ -113,7 +113,7 @@
   let error, message
 
   // let _context = getContext('space')
-  let baseUrl = baseConfig.base_url == '' ? "" : '/instill';
+  let baseUrl = baseConfig.base_url == '' ? "" : '/';
 
   console.log('register: ', baseConfig, baseConfig.base_url.length, baseConfig.base_url, '???', baseUrl)
 

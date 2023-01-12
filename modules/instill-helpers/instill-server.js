@@ -309,6 +309,44 @@ export let profileActions = {
       found: true
     }
   },
+  loginCheck: async ({ request }) => {
+    console.log('[instill-server] performing loginCheck')
+    const form = await request.formData();
+    const formJson = Object.fromEntries(form.entries());
+    const { Username, Password } = formJson;
+
+    // todo: add turnstile to login area
+    // if (baseConfig.settings.useTurnstile) {
+    //   let turnstileResp = await validateTurnstile(form.get('cf-turnstile-response'))
+    //   if (turnstileResp.success === false) {
+    //     return turnstileResp
+    //   }
+    // }
+
+    let profile = await validatePassword({ id: Username, Passphrase: Password }, true)
+    if (!profile || profile === false) {
+      return {
+        success: false,
+        error: "Invalid username or password",
+        formJson, // return to re-populate form
+      }
+    }
+
+    // make sure formJson has the user's Username, not their email address
+    formJson.Username = profile.Username
+
+    if (!profile) {
+      return {
+        success: false
+      }
+    }
+
+    return {
+      success: true,
+      profile,
+    }
+  },
+
 
   register: async ({ request }) => {
     const form = await request.formData();
