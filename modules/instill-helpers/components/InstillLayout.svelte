@@ -97,11 +97,6 @@
   </div>
 </div>
 
-<svelte:head>
-  <script defer data-domain="instill.xyz" src="https://plausible.io/js/script.js"></script>
-</svelte:head>  
-
-
 
  
 <style lang="scss" global>
