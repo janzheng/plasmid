@@ -11,9 +11,12 @@
   // import { baseConfig } from '$instill/instill-config'
   import * as config from '$instill/instill-config'
   import * as configPreview from '$instill/instill-config-preview'
-  import { dev } from '$app/environment';
+
   let baseConfig, orgSpaces
-  if (dev) {
+
+  import { dev } from '$app/environment';
+  import { env } from '$env/dynamic/public';
+  if(dev||env.PUBLIC_PREVIEW==="true") {
     baseConfig = configPreview.baseConfig
     orgSpaces = configPreview.orgSpaces
   } else {
