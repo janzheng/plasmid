@@ -6,7 +6,7 @@
     error = null
     message = 'Logging in...'
 
-    if (profile.Username !== slug) {
+    if (profile.Slug !== slug) {
       error = 'Username does not match'
       message = null
       isLoggedIn = false

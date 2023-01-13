@@ -121,12 +121,12 @@ export let spaceActions = {
       }
 
       // make sure formJson has the user's Username, not their email address
-      formJson.Username = profile.Username
+      formJson.Username = profile.Slug
 
 
       // handle poll votes
       if (PollVote) {
-        let JsonArr = { Username: profile.Username, PollVote }
+        let JsonArr = { Username: profile.Slug, PollVote }
         let event = await triggerEvent({
           EventType: 'PollVote',
           DataType: 'Number',
@@ -184,7 +184,9 @@ export let spaceActions = {
           }
         }
       } else if (formJson.PostType) { // w/o this you'll end up adding lots of erroneous post types
-        formJson.Username = profile.Username
+        formJson.Username = profile.Slug
+
+        console.log('[spaceActions] creating post', formJson, profile)
         comment = await postComment(formJson, space)
       }
 
@@ -332,8 +334,8 @@ export let profileActions = {
       }
     }
 
-    // make sure formJson has the user's Username, not their email address
-    formJson.Username = profile.Username
+    // make sure formJson has the user's Username (custom or default), not their email address
+    formJson.Username = profile.Slug
 
     if (!profile) {
       return {
