@@ -1,6 +1,4 @@
 
-emailCheckRoute: {emailCheckRoute}
-registerRoute: {registerRoute}
 {#if !isCreated}
   <div class="Register my-8 | Card-light ">
 
