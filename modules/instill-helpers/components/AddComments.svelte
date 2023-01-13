@@ -56,6 +56,7 @@
         $commentUser['Comment'] = null
         $commentUser['Topic'] = null
         $commentUser['Keywords'] = null
+        $commentUser['Url'] = null
         $commentUser['_postSuccessful'] = true
         hideLogin = true // auto hide after each success
 
@@ -78,6 +79,7 @@
         $comment['Comment'] = null
         $comment['Topic'] = null
         $commentUser['Keywords'] = null
+        $commentUser['Url'] = null
         $comment['_postSuccessful'] = true
 
         let slug = result?.data?.comment?.['Slug']
@@ -138,7 +140,7 @@
       
       <div class="AddComments-topic-container | my-4">
         {#if isTopic && topicLabel}<label class="AddComments-topic-label inline-block" for="Topic">{topicLabel}</label>{/if}
-        <input id="Topic" name="Topic" bind:value={$comment.Topic} type="text" class="AddComments-topic-input form-input mt-1 block w-full" placeholder="{topicPlaceholder}" required={true}>
+        <input id="Topic" name="Topic" bind:value={$comment.Topic} type="text" class="AddComments-topic-input form-input mt-1 block w-full" placeholder="{topicPlaceholder}" required={!topicIsOptional}>
       </div>
       
       {#if addLink || (topicAddLink && isTopic)}
@@ -206,7 +208,8 @@
     {/if}
 
 
-    {#if topicKeywords}
+    <!-- only topics should be able to add keywords -->
+    {#if isTopic && topicKeywords}
       <div class="AddComments-comments-container | mt-6">
         {#if topicKeywordsLabel}<label class="AddComments-keywords-label inline-block" for="Keywords">{topicKeywordsLabel}</label>
         {/if}
@@ -310,6 +313,7 @@
   export let topicFields = null // _space.settings?.topicFields // extra fields for topics to be jsonified
   export let topicLabel = 'Title'
   export let topicPlaceholder = 'Enter a title'
+  export let topicIsOptional = false // if optional, slug is created from bod
   export let commentLabel = 'Text'
   export let commentDescription = null
   export let commentPlaceholder = 'Enter some text'
@@ -451,8 +455,9 @@
     topicFields = postTypeSettings?.topicFields // extra fields for topics to be jsonified
 
     ctaText = postTypeSettings?.postCta || ctaText
-    topicPlaceholder = postTypeSettings?.topic?.placeholder || 'Enter a post title'
     topicLabel = postTypeSettings?.topic?.label || 'Post Title'
+    topicIsOptional = postTypeSettings?.topic?.optional || false
+    topicPlaceholder = postTypeSettings?.topic?.placeholder || 'Enter a post title' + topicIsOptional ? ' (optional)' : ''
     // topicPlaceholder = _space.settings?.topicPlaceholders?.[comment?.PostType||postType] || 'Enter a title'
 
     commentLabel = postTypeSettings?.comment?.label || null // 'Text'

@@ -58,7 +58,7 @@
     if(mode == 'threaded') {
       commentsArr = commentsArr?.filter(cm => !cm.Parent) // don't show replies for threaded mode
     }
-    commentsArr = commentsArr?.filter(cm => !cm.Topic)  // don't show thread starters
+    commentsArr = commentsArr?.filter(cm => !cm.TopicId)  // don't show thread starters
 
     if (sort == 'latest') {
       commentsArr = commentsArr?.sort((a,b) => new Date(b.Created) - new Date(a.Created))

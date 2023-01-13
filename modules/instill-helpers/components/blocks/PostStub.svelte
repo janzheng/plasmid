@@ -22,13 +22,17 @@
   
   <div class="topic-header | flex">
     <div class="topic-main | flex-1 relative">
-      <h2 class="topic-title | inline-block relative z-10">
-        {#if topic.PostStatuses?.includes('Pinned')}
-          📌
-        {/if}
-        <a class="topic-linkout z-40" on:click|stopPropagation={''} on:dragend|stopPropagation={''} href="{link}">{topic.Topic}</a>
-        {#if linkOrigin}<a class="topic-linkorigin | text-slate-400" href="{linkOriginUrl.host}">({linkOriginUrl.host})</a>{/if}
-      </h2>
+      {#if topic.Topic}
+        <h2 class="topic-title | inline-block relative z-10">
+          {#if topic.PostStatuses?.includes('Pinned')}
+            📌
+          {/if}
+          <a class="topic-linkout z-40" on:click|stopPropagation={''} on:dragend|stopPropagation={''} href="{link}">{topic.Topic}</a>
+          {#if linkOrigin}<a class="topic-linkorigin | text-slate-400" href="{linkOriginUrl.host}">({linkOriginUrl.host})</a>{/if}
+        </h2>
+      {:else if topic.Comment}
+        {@html marked(topic.Comment || '')}
+      {/if}
       <!-- {@html marked(topic.Name || '')} -->
 
       {#if loud}
@@ -65,6 +69,9 @@
 
       {#if topic?.Json?.description}
         <div class="topic-description | text-sm text-gray-600">
+          {#if !topic.Topic && topic.PostStatuses?.includes('Pinned')}
+            📌
+          {/if}
           {topic?.Json?.description}
         </div>
       {/if}
@@ -79,6 +86,15 @@
             {/if}
             <!-- {previewComment} -->
           {/if}
+        </div>
+      {/if}
+
+      {#if topic.Keywords && topic.Keywords.length > 0}
+        <div class="topic-keywords">
+          {#each topic.Keywords as keyword}
+            <!-- <a class="topic-keyword | Btn --tag text-xs text-gray-600 border-gray-400 | mr-1 " href="{baseUrl}/search?query={keyword}">{keyword}</a> -->
+            <span class="topic-keyword | Btn --tag text-xs text-gray-600 bg-gray-100 | mr-1 " >{keyword}</span>
+          {/each}
         </div>
       {/if}
     </div>

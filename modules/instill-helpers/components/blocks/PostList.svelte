@@ -24,7 +24,6 @@
 <!-- <ShowComments></ShowComments> -->
 <!-- <ShowArticles></ShowArticles> -->
 
-
 <div class="PostList mb-16">
   {#if loud}
     <div class="Card-light p-2">
@@ -50,7 +49,7 @@
       <h2>Edit Post</h2>  
       <!-- http://localhost:3051/instill/spaces/postlist/postid-123/edit -->
       <AddComments isTopic={true} gotoTopic={true} initComment={comments?.find(c=>c['Slug'] == subpaths?.[0])}></AddComments>
-    {:else if !_topic?.Topic}
+    {:else if !_topic?.Topic && !_topic?.Comment  }
       <div class="my-4">
         Just empty space. <a href="{baseUrl}/spaces/{_space?.name}">Head back.</a>
       </div>
@@ -58,7 +57,7 @@
       <div>
         <div class="PostList-nav | Card-solid --light px-2 py-1 text-sm">
           <a href="{baseUrl}/spaces/{_space?.name}" class="">{_space?.spaceName || _space?.name}
-          </a> / {_topic?.Topic}
+          </a> / {_topic?.Topic ||_topic?.Slug }
         </div>
         <svelte:component this={pageType[_topic?.PostType] || pageType['Post']}/>
       </div>
@@ -177,22 +176,34 @@
   let topics = $_comments
   if($_comments) {
     topics = $_comments
-    topics = topics?.filter(cm => cm.Topic && cm.PostType != 'Root')  // only show thread starters
+    topics = topics?.filter(cm => cm.TopicId && cm.PostType != 'Root')  // only show thread starters
   }
   
   $: {
     if(filter) {
       topics = $_comments
-      topics = topics?.filter(cm => cm.Topic && cm.PostType != 'Root')  // only show thread starters
-      topics = topics?.filter(cm => cm.Topic && cm.PostType == filter)  // only show thread starters
+      topics = topics?.filter(cm => cm.TopicId && cm.PostType != 'Root')  // only show thread starters
+      topics = topics?.filter(cm => cm.TopicId && cm.PostType == filter)  // only show thread starters
     } else {
       topics = $_comments
-      topics = topics?.filter(cm => cm.Topic && cm.PostType != 'Root')  // only show thread starters
+      topics = topics?.filter(cm => cm.TopicId && cm.PostType != 'Root')  // only show thread starters
+      
     }
-    if (sort == 'latest') {
-      topics = topics?.sort((a,b) => new Date(b.Created) - new Date(a.Created))
-      topics = topics?.sort((a,b) => b.PostStatuses?.includes('Pinned') ? 1 : -1)
-    }
+    // if (sort == 'latest') {
+    //   topics = topics?.sort((a,b) => new Date(b.Created) - new Date(a.Created))
+    // }
+    // sort topics by pinned, then by latest
+    topics = topics?.sort((a,b) => {
+      if (sort == 'latest' && a.PostStatuses?.includes('Pinned') && b.PostStatuses?.includes('Pinned')) {
+        return new Date(b.Created) - new Date(a.Created)
+      } else if (a.PostStatuses?.includes('Pinned')) {
+        return -1
+      } else if (b.PostStatuses?.includes('Pinned')) {
+        return 1
+      } else {
+        return new Date(b.Created) - new Date(a.Created)
+      }
+    })
 
   }
 

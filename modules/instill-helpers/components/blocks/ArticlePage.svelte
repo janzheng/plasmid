@@ -68,7 +68,7 @@
   // find the first topic in the space / comments if it's not given
   if(!topic) { 
     // useful for populating single-offs 
-    topic = $_allComments.find(cm => cm.Topic)
+    topic = $_allComments.find(cm => cm.TopicId)
   }
 
 

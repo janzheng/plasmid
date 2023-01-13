@@ -335,6 +335,7 @@ export const sharedSpaces = [
           topic: {
             label: 'Post Title',
             placeholder: "Enter post title",
+            optional: true,
           },
           preview: {
             length: 'short', // full, long, short, none/false/undefined
@@ -447,6 +448,7 @@ export const sharedSpaces = [
           topic: {
             label: 'Link Title',
             placeholder: "Enter a title (article or a short, descriptive title)",
+            optional: true,
           },
           preview: {
             length: false, // full, short, none/false/undefined

@@ -14,14 +14,16 @@
 
   <div class="topic-header | flex">
     <div class="topic-main | flex-1 relative">
-      <h2 class="topic-title | inline-block relative z-10">
-        {#if topic.PostStatuses?.includes('Pinned')}
-          📌
-        {/if}
-        <a class="topic-linkout" on:click|stopPropagation={''} on:dragend|stopPropagation={''} href="{link}">{topic.Topic}</a>
-        {#if linkOrigin}<a class="topic-linkorigin | text-slate-400" href="{linkOriginUrl.host}">({linkOriginUrl.host})</a>{/if}
-      </h2>
-
+      {#if topic.Topic}
+        <h2 class="topic-title | inline-block relative z-10">
+          {#if topic.PostStatuses?.includes('Pinned')}
+            📌
+          {/if}
+          <a class="topic-linkout" on:click|stopPropagation={''} on:dragend|stopPropagation={''} href="{link}">{topic.Topic}</a>
+          {#if linkOrigin}<a class="topic-linkorigin | text-slate-400" href="{linkOriginUrl.host}">({linkOriginUrl.host})</a>{/if}
+        </h2>
+      {/if}
+          
       {#if loud}
         <div class="topic-debug | Card-light p-1">
           [Post Stub: /{topic.Slug}]
@@ -57,6 +59,9 @@
 
       {#if topic?.Json?.description}
         <div class="topic-description | text-sm text-gray-600">
+          {#if !topic.Topic && topic.PostStatuses?.includes('Pinned')}
+            📌
+          {/if}
           {topic?.Json?.description}
         </div>
       {/if}
@@ -144,7 +149,6 @@
 
   let baseUrl = `${baseConfig?.base_url}`
   let spaceUrl = `${baseConfig?.space_url || 'spaces'}`
-  export let link = url ? `${url}` : `${baseUrl}/${spaceUrl}/${_space.name}/${topic.Slug}`
 
   export let showSpace = true;
   export let space = null; // pass it in from Profiles stub here
@@ -152,6 +156,8 @@
   let loud = _space?.settings?.loud || false
   export let classes = ''
   export let classMode = _space?.settings?.classMode || 'default'
+
+  export let link = url ? `${url}` : `${baseUrl}/${spaceUrl}/${_space.name}/${topic.Slug}`
 
   export let postTypeSettings = _space?.settings?.postTypeSettings?.[postType] || {}
   export let previewLength = postTypeSettings?.preview?.length == 'full' ? 20000 : postTypeSettings?.preview?.length == 'long' ? 400 : postTypeSettings?.preview?.length == 'short' ? 100 : 0

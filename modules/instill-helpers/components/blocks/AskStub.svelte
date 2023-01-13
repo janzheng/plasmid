@@ -11,7 +11,8 @@
   
   <div class="topic-header | flex">
     <div class="topic-main | flex-1 relative">
-      <h2 class="topic-title | inline-block relative z-10">
+      {#if topic.Topic}
+        <h2 class="topic-title | inline-block relative z-10">
 
         <!-- {#if answers}
           <span class="comment-isAnswer | text-green-900"><CircleCheck size={21} strokeColor="#14532D" /></span>
@@ -20,9 +21,10 @@
         {#if topic.PostStatuses?.includes('Pinned')}
           📌
         {/if}
-        <a class="topic-linkout" on:click|stopPropagation={''} on:dragend|stopPropagation={''} href="{link}">{topic.Topic}</a>
-        {#if linkOrigin}<a class="topic-linkorigin | text-slate-400" href="{linkOriginUrl.host}">({linkOriginUrl.host})</a>{/if}
-      </h2>
+          <a class="topic-linkout" on:click|stopPropagation={''} on:dragend|stopPropagation={''} href="{link}">{topic.Topic}</a>
+          {#if linkOrigin}<a class="topic-linkorigin | text-slate-400" href="{linkOriginUrl.host}">({linkOriginUrl.host})</a>{/if}
+        </h2>
+      {/if}
       <!-- {@html marked(topic.Name || '')} -->
 
       {#if loud}
@@ -69,6 +71,9 @@
 
       {#if topic?.Json?.description}
         <div class="topic-description | text-sm text-gray-600">
+          {#if !topic.Topic && topic.PostStatuses?.includes('Pinned')}
+            📌
+          {/if}
           {topic?.Json?.description}
         </div>
       {/if}

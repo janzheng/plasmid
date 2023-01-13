@@ -14,6 +14,15 @@
 
   {#if topic}
     <div class="AskPage-content mt-8">
+
+      {#if isOwnerLoggedIn}
+        <div class="my-8">
+          <div class="Card-lighter">
+            <a href="{$page.url.pathname}/edit" class="Btn-outline">Edit post</a>
+          </div>
+        </div>
+      {/if}
+
       {#if topic.id}
         <div class="AskPage-header my-2 text-sm">
           <span class="topic-date">{niceDate(topic.Created)}</span> ∙ <span class="topic-user">{topic.Username || 'Anonymous'}</span>
@@ -71,15 +80,26 @@
 
 
 <script>
+	import { page } from '$app/stores';
   import { niceDate } from '$plasmid/utils/date'
 	import { setContext, getContext } from 'svelte';
   import { marked } from 'marked';
-  import {getEventsOfType, findCommentById} from '$instill-helpers/instill-utils'
+  import { getEventsOfType, findCommentById } from '$instill-helpers/instill-utils'
 
   import Comment from '$instill-helpers/components/Comment.svelte';
   import AddComments from '$instill-helpers/components/AddComments.svelte';
   import CommentList from '$instill-helpers/components/blocks/CommentList.svelte'; // basic comment component
-  import PollBlock from '$instill-helpers/components/blocks/PollBlock.svelte'; // basic comment component
+  // import PollBlock from '$instill-helpers/components/blocks/PollBlock.svelte'; // basic comment component
+
+
+  import { commentUser } from '$instill/instill-store'
+  let isOwnerLoggedIn = false
+  $: if($commentUser?.isLoggedIn && $commentUser.Username == topic.Username) {
+    console.log('AskPage commentUser', $commentUser, topic)
+    isOwnerLoggedIn = true
+  }
+
+
 
   marked.setOptions({
     gfm: true,
@@ -107,7 +127,7 @@
   // find the first topic in the space / comments if it's not given
   if(!topic) { 
     // useful for populating single-offs 
-    topic = $_allComments.find(cm => cm.Topic)
+    topic = $_allComments.find(cm => cm.TopicId)
   }
 
   // function getEventsOfType(comments, type='Vote') {

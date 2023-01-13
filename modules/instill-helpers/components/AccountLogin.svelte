@@ -33,7 +33,6 @@
       <div class="flex align-center gap-2">
         <form class="Email-check " method="POST" action="{loginCheckRoute}"
           use:enhance={({ form, data, cancel }) => {
-            console.log('login check!!!', doLoginCheck)
             if(doLoginCheck) {
               error = null
               message = "Signing in..."
@@ -42,6 +41,7 @@
                 if (result.data) {
                   if(result.data.success) {
                     console.log('result.data', result.data)
+                    $commentUser.isLoggedIn = true
                     message = null
                     closeLogin()
                   } else {
@@ -63,7 +63,7 @@
             on:click={()=>{closeLogin()}}
           > -->
           {#if message}
-            <div class="text-sm text-gray-500">{message}</div>
+            <span class="text-sm text-gray-500">{message}</span>
           {/if}
         </form>
       </div>
