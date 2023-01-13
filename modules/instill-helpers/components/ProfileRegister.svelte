@@ -1,4 +1,6 @@
 
+emailCheckRoute: {emailCheckRoute}
+registerRoute: {registerRoute}
 {#if !isCreated}
   <div class="Register my-8 | Card-light ">
 
@@ -122,7 +124,7 @@
   // export let emailCheckRoute = _context?._space?.settings?.emailCheckRoute || `${baseUrl}/join?/emailCheck`;
   // export let registerRoute = _context?._space?.settings?.registerRoute || `${baseUrl}/join?/join`;
   export let emailCheckRoute = `${baseUrl}/join?/emailCheck`;
-  export let registerRoute = `${baseUrl}/join?/join`;
+  export let registerRoute = `${baseUrl}/join?/register`;
 
   function updateEditSlug(slug) {
     if (typeof window !== 'undefined') {
