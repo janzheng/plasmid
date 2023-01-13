@@ -19,7 +19,7 @@
   import { dev } from '$app/environment';
   import { env } from '$env/dynamic/public';
   let baseConfig, orgSpaces
-  if(env.PUBLIC_PREVIEW==="true") {
+  if(dev||env.PUBLIC_PREVIEW==="true") {
     baseConfig = configPreview.baseConfig
     orgSpaces = configPreview.orgSpaces
   } else {
@@ -67,15 +67,13 @@
 {/key}
 
 
-env.PUBLIC_PREVIEW: {env.PUBLIC_PREVIEW}
-
 <div class="Instill-layout | " >
   <div class="_content-narrow">
     <div class="Instill-layout-header | flex items-center gap-4 grid-gap">
       <a class="flex-1 mr-2" rel=prefetch href="/">
         <img class="Header-img inline align-sub " src="/instill-text.png" alt="Instill Science" style="width: 120px;">
       </a>
-      {#if dev}
+      {#if dev||env.PUBLIC_PREVIEW==="true"}
         <strong>dev</strong>
       {/if}
       <div class="Card-lighter | self-end  | flex items-center | mb-0">
