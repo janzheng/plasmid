@@ -76,7 +76,8 @@
         </div>
       {/if}
       
-      {#if previewLength && previewLength > 0 && previewComment}
+      
+      {#if topic.Topic && previewLength && previewLength > 0 && previewComment}
         <div class="topic-preview">
           {#if previewMode == 'markdown'}
             {@html marked(previewComment || '')}

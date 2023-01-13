@@ -71,7 +71,7 @@
           </div>
         {/if}
 
-        {#if topic?.Topic}
+        {#if !url || topic?.Topic}
           <!-- if topic exists, we want to show the comment; otherwise it's promoted up to the title -->
           {@html marked(topic.Comment || '')}
         {/if}
