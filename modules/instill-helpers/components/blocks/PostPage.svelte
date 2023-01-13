@@ -73,7 +73,9 @@
 
         {#if !url || topic?.Topic}
           <!-- if topic exists, we want to show the comment; otherwise it's promoted up to the title -->
-          {@html marked(topic.Comment || '')}
+          <div class="topic-comment | my-4">
+            {@html marked(topic.Comment || '')}
+          </div>
         {/if}
         
         {#if topic?.Json?.Poll}
