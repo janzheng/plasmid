@@ -64,7 +64,7 @@
         {#if topic.id}
           <span class="topic-date">∙ {dateTo(topic.Created)}</span>
         {/if}
-        <span class="topic-comment-count">∙ <a class="topic-commentlink z-40" on:click|stopPropagation={''} on:dragend|stopPropagation={''} href="{baseUrl}/spaces/{topic.Space}/{topic.Slug}">{commentCount} comment{#if commentCount>1}s{/if}</a></span>
+        <span class="topic-comment-count">∙ <a class="topic-commentlink z-40" on:click|stopPropagation={''} on:dragend|stopPropagation={''} href="{baseUrl}/spaces/{topic.Space}/{topic.Slug}">{commentCount} comment{#if commentCount>1 || commentCount==0}s{/if}</a></span>
       </div>
 
       {#if topic?.Json?.description}
