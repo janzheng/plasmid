@@ -19,7 +19,7 @@
   import { dev } from '$app/environment';
   import { env } from '$env/dynamic/public';
   let baseConfig, orgSpaces
-  if(dev||env.PUBLIC_PREVIEW==="true") {
+  if(env.PUBLIC_PREVIEW==="true") {
     baseConfig = configPreview.baseConfig
     orgSpaces = configPreview.orgSpaces
   } else {
@@ -66,6 +66,8 @@
   <Head />
 {/key}
 
+
+env.PUBLIC_PREVIEW: {env.PUBLIC_PREVIEW}
 
 <div class="Instill-layout | " >
   <div class="_content-narrow">
