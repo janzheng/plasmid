@@ -132,6 +132,26 @@
   ;
 }
 
+%btn-textbg {
+  @extend %btn;
+  @apply 
+    border-2 border-transparent
+    shadow-none
+
+    bg-transparent hover:bg-gray-200
+    disabled:no-underline disabled:text-gray-400 disabled:hover:text-gray-400
+    disabled:bg-transparent disabled:border-transparent disabled:hover:bg-transparent disabled:hover:bg-transparent disabled:active:bg-transparent disabled:active:bg-transparent
+  ;
+
+  &.--blue {
+    @apply text-blue-600 hover:text-blue-800
+  }
+
+  &.--active {
+    @apply bg-gray-200;
+  }
+}
+
 %btn-link {
   // "link" buttons behave like inline links
   // @extend %btn;
@@ -289,6 +309,12 @@
   // .Btn-text, .btn-text
   &-text {
     @extend %btn-text !optional;
+  }
+
+  // .Btn-textbg
+  // like a text link, but with a background color and padding
+  &-textbg {
+    @extend %btn-textbg !optional;
   }
 
   // .Btn-link, .btn-link; .btn-link-light;

@@ -1,0 +1,126 @@
+let settings = input.config({
+    title: "Generate URLs from Attachments",
+    description: `This script will generate permalinks from an attachment field by uploading it to an R2 "Filophile" service.`,
+    items: [
+        input.config.select("skipExisting", {
+            label: 'Skip existing URLs that already exist?',
+            description: 'Skip generation for attachments that already have a URL?',
+            options: [
+                {label: 'Yes', value: 'yes'},
+                {label: 'No', value: 'no'},
+            ]
+        }),
+        input.config.select("makeThumbs", {
+            label: 'Generate thumbnails?',
+            description: 'This will generate thumbnails of each image, with "-sm" etc. attached to the file name, and appended to the list of URLs',
+            options: [
+                {label: 'Yes, generate thumbnails', value: 'yes'},
+                {label: 'No', value: 'no'},
+            ]
+        }),
+        input.config.table("table", { label: "Table" }),
+        input.config.field("attachmentField", {
+            parentTable: "table",
+            label: "Attachment field",
+            description: "URLs will be generated from files in this field",
+        }),
+        input.config.field("urlField", {
+            parentTable: "table",
+            label: "URLs will be written to this field",
+        }),
+    ],
+});
+
+async function convertAttachmentsToFilophileURLs() {
+    let { table, urlField, attachmentField, skipExisting, makeThumbs } = settings;
+
+    if (attachmentField.type !== "multipleAttachments") {
+        output.text(
+            `${attachmentField.name} is not a attachment field.\nRun the script again when you have an attachment field.`
+        );
+        return;
+    }
+    let skipAlreadySet = skipExisting == 'yes' ? true : false
+
+    let updates = [];
+    for (let record of (
+        await table.selectRecordsAsync({ fields: [urlField, attachmentField] })
+    ).records) {
+        let existingURLs = record.getCellValue(urlField) || '';
+        if (skipAlreadySet && existingURLs.length) continue;
+        let attachments = record.getCellValue(attachmentField);
+        if(!attachments || attachments.length < 1) continue;
+
+        let attachmentUrls = []
+        for (let attachment of attachments) {
+            attachmentUrls = [...attachmentUrls, ...await getUrlsFromAttachment(attachment, makeThumbs)]
+        }
+        updates.push({
+            id: record.id,
+            fields: {
+                [urlField.id]: attachmentUrls.join(', \n')
+            },
+        });
+    }
+
+    for (let i = 0; i < updates.length; i += 50) {
+        await table.updateRecordsAsync(updates.slice(i, i + 50));
+    }
+}
+await convertAttachmentsToFilophileURLs();
+
+
+
+
+
+// returns an array of Filophile R2 URLs
+// https://phagedirectory.notion.site/R2-Bucket-Filofax-Filophile-Storage-4b12f065ac3948f19c7466bd3d159077 
+async function getUrlsFromAttachment(attachment, makeThumbs) {
+    let scope = "airscripts"
+    let urls = [] // get URL function here
+
+    async function getUrls(attachment) {
+        let fileurl = attachment.url
+        let filename = attachment.filename
+        // use ?url to replace current image with another; the file name will be the permalink
+        let cmd = `https://f2.phage.directory/${scope}/uploads/?url=${fileurl}&name=${filename}`
+        // use ?add to create versioned files, which might get a bit large, so we don't do this; this returns a JSON response w/ permalink 
+        // let cmd = `https://f2.phage.directory/${scope}/uploads/?add=${fileurl}&name=${filename}`
+        // console.log('--> attachment:', attachment, ' --> cmd:', cmd)
+
+        try {
+            let res = await fetch(cmd)
+
+            // only is using ?url
+            let fname = `https://f2.phage.directory/${scope}/uploads/${filename}`
+            console.log(`[added] ${fname} from ${attachment.url}`)
+            urls.push(fname)
+
+            // only if using "?add"
+            // let jsonres = await res.json()
+            // console.log('[ok] -->', jsonres)
+            // urls.push(jsonres?.permalink)
+        } catch(e) {
+            console.error('R2 error:', e)
+        }
+    }
+
+    // console.log('thumbs:', makeThumbs)
+    // console.log('-->', attachment)
+    await getUrls(attachment)
+    if(makeThumbs == 'yes') {
+        let sizes = ['small','large','full']
+        for (let size of sizes) {
+            await getUrls({
+                url: attachment.thumbnails[size].url,
+                filename: attachment.filename.split('.')[0] + `-${size}.` + attachment.filename.split('.')[1]
+            })
+        }
+    }
+
+    
+    // handle thumbnails [small,large,full]
+    // use filename-sm/-lg/-full.png as file name
+    // push them into attachmentObjects separately
+    return urls
+}

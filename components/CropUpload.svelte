@@ -16,6 +16,7 @@
     // let filename = imageFile.name.split('.')[0] + '--' + crypto.randomUUID().slice(0, 4) + '.' + imageFile.name.split('.')[1]
     let filename = crypto.randomUUID().slice(0, 12) + '--' + encodeURIComponent(imageFile.name)
     fileUpload = await uploadFileToR2(blob, status, filename)
+    console.log('upload status:', fileUpload)
     uploadFinished()
     }}
 >

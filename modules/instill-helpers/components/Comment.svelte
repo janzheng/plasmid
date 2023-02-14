@@ -17,8 +17,7 @@
         <span class="comment-edited">∙ Edited {dateTo(comment.Edited)}</span>
       {/if}
 
-      {#if comment.id && editPosts && 
-        $isUserLoggedIn && $commentUser.Username == comment.Username
+      {#if comment.id && editPosts && isOwnerLoggedIn
       }∙ <button class="Btn-link-light inline-block border-0" on:click={()=>{closeReplyModes(); openEdit=true}} >edit post</button>{/if}
 
       {#if mode=="linear" && commentParent}
@@ -122,6 +121,13 @@
   
   // export let space = _space
 
+  let isOwnerLoggedIn = false
+  // $: if($commentUser?.isLoggedIn && $commentUser.Username == comment.Username) {
+  $: if($commentUser.Username == comment.Username) {
+    isOwnerLoggedIn = true
+  }
+
+  
   export let loud = _space?.settings?.loud;
   // export let type = 'Comments';
   export let mode = _space?.settings?.Comments?.mode || 'threaded';

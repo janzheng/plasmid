@@ -69,13 +69,13 @@
   <!-- handle the list of posts -->
   <!-- PREVIEW LIST / STUBS -->
   {:else}
-    <div class="PostList-header | my-4">
+    <div class="PostList-header | my-4 | flex items-center">
       <a href="{baseUrl}/spaces/{_space?.name}/new" class="btn btn-primary">{topicCta}</a>
       {#if showPostTypeFilters && postTypes}
-        <span class="PostList-filters | ml-4">
+        <span class="PostList-filters | ml-4 | flex-1 text-right">
           Filter by: 
           {#each postTypes as postType}
-            <button class="Btn-link mr-2 {filter==postType?' font-bold line-through ':''}" on:click={()=>{filter=filter==postType?null:postType}}>{postType}</button>
+            <button class="Btn-textbg --snug mr-2 {filter==postType?' --active':''}" on:click={()=>{filter=filter==postType?null:postType}}>{postType}</button>
           {/each}
         </span>
       {/if}

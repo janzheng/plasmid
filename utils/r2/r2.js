@@ -45,39 +45,56 @@ export const uploadFileToR2 = async (file, statusStore, filename=file?.name) => 
       message: `Uploading ${filename} ...`
     }))
 
-    let uploadUrl = `${PUBLIC_PDR2_ENDPOINT}/${PUBLIC_PDR2_SCOPE}/${filename}`
-    if (!PUBLIC_PDR2_SCOPE) {
-      url = `${PUBLIC_PDR2_ENDPOINT}/${filename}`
+    // let uploadUrl = `${PUBLIC_PDR2_ENDPOINT}/${PUBLIC_PDR2_SCOPE}/${filename}`
+    // if (!PUBLIC_PDR2_SCOPE) {
+    //   url = `${PUBLIC_PDR2_ENDPOINT}/${filename}`
+    // }
+
+    // THIS REQUIRES THE FILOFAX ENDPOINT AT f2.phage.directory!
+    let uploadUrl = `${PUBLIC_PDR2_ENDPOINT}`
+    let formData = new FormData(); // File to upload. 
+    let scope = PUBLIC_PDR2_SCOPE
+    formData.append('files', file, filename); 
+    formData.append('versioning', 'false'); 
+    formData.append('scope', scope); 
+
+    console.log('uploadUrl:', uploadUrl)
+    let res
+    try {
+      res = await fetch(
+        uploadUrl, {
+        method: 'POST',
+        body: formData,
+        // body: file,
+        headers: {
+          'X-Custom-Auth-Key': PUBLIC_PDR2_AUTH
+        },
+      })
+    } catch (err) {
+      console.error('[Upload failed]', err)
     }
 
-    const res = await fetch(
-      uploadUrl, {
-      method: 'PUT',
-      body: file,
-      headers: {
-        'X-Custom-Auth-Key': PUBLIC_PDR2_AUTH
-      },
-    })
+    console.log('uploadres:', res, res.ok)
 
     if (res.ok) {
-      let resText, resJson
+      let  resJson
       try {
         resJson = await res.json()
+        console.log('resJson', resJson)
       } catch(e) {
-        // not json, so try text
-        resText = await res.text()
+        console.log('error parsing json', e)
       }
       if (resJson) {
         // uses filofax PUT response
         filename = resJson?.key
       }
 
-      console.log('Uploaded!:', resText||resJson, 'link:', PUBLIC_PDR2_ENDPOINT + '/' + filename)
+      console.log('Uploaded!:', resJson, 'link:', PUBLIC_PDR2_ENDPOINT + '/' + filename)
       const link = PUBLIC_PDR2_ENDPOINT + '/' + filename
 
       let obj = {
         success: true,
-        result: resText,
+        result: resJson,
         filename: filename,
         endpoint: PUBLIC_PDR2_ENDPOINT,
         url: link,
@@ -91,6 +108,8 @@ export const uploadFileToR2 = async (file, statusStore, filename=file?.name) => 
       return obj
     } else {
 
+      console.error('[Upload failed]', res.message)
+
       statusStore?.update(store => ({
         ...store,
         success: false,
@@ -103,6 +122,7 @@ export const uploadFileToR2 = async (file, statusStore, filename=file?.name) => 
       }
     }
   } catch (err) {
+    console.error('[Upload failed]', err)
   }
 }
 

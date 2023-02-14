@@ -140,8 +140,8 @@
                 <CropUpload 
                   uploadLabel="Profile image"
                   on:uploaded={async e => {
-                    // console.log('cropped + uploaded', e.detail)
-                    $user['ProfileImage'] = e.detail.url
+                    console.log('cropped + uploaded', e.detail)
+                    $user['ProfileImage'] = e.detail?.url
                     }}>
                 </CropUpload>
                 <input name='ProfileImage' value={$user['ProfileImage']} class="hidden" >
@@ -161,7 +161,7 @@
                   uploadLabel="Cover photo"
                   on:uploaded={async e => {
                     // console.log('cropped + uploaded', e.detail)
-                    $user['CoverImage'] = e.detail.url
+                    $user['CoverImage'] = e.detail?.url
                     }}>
 
                   {#if cover}
