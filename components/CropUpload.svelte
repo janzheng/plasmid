@@ -6,7 +6,7 @@
   }} /> -->
 <Cropper 
   cropperHeight={height} cropperWidth={width} aspect={aspect} 
-  bind:imageFile={imageFile} bind:croppedImage={croppedImage} bind:croppedBlob={croppedBlob} {uploadCta}
+  bind:imageFile={imageFile} bind:croppedImage={croppedImage} bind:croppedBlob={croppedBlob} {uploadCta} bind:isSaving={isSaving}
   on:done={async e => {
     console.log('crop done', e.detail, imageFile)
     // comment.ImageUrl = e.detail.url || null
@@ -14,10 +14,12 @@
     // insert random string into filename to prevent caching
     
     // let filename = imageFile.name.split('.')[0] + '--' + crypto.randomUUID().slice(0, 4) + '.' + imageFile.name.split('.')[1]
+    isSaving = true
     let filename = crypto.randomUUID().slice(0, 12) + '--' + encodeURIComponent(imageFile.name)
     fileUpload = await uploadFileToR2(blob, status, filename)
     console.log('upload status:', fileUpload)
     uploadFinished()
+    isSaving = false
     }}
 >
   <div class="text-gray-700 mb-2">{uploadLabel}</div>
@@ -43,6 +45,7 @@
   export let status = store.writable({})
   export let uploadLabel = 'Change avatar'
   export let uploadCta = 'Use image'
+  export let isSaving = false
   let croppedImage, croppedBlob, imageFile
   export let fileUpload = null
   export let loud = false

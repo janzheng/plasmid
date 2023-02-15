@@ -55,7 +55,7 @@ export const uploadFileToR2 = async (file, statusStore, filename=file?.name) => 
     let formData = new FormData(); // File to upload. 
     let scope = PUBLIC_PDR2_SCOPE
     formData.append('files', file, filename); 
-    formData.append('versioning', 'false'); 
+    // formData.append('versioning', 'false'); 
     formData.append('scope', scope); 
 
     console.log('uploadUrl:', uploadUrl)
@@ -74,9 +74,9 @@ export const uploadFileToR2 = async (file, statusStore, filename=file?.name) => 
       console.error('[Upload failed]', err)
     }
 
-    console.log('uploadres:', res, res.ok)
+    // console.log('uploadres:', res, res.ok)
 
-    if (res.ok) {
+    if (res?.ok) {
       let  resJson
       try {
         resJson = await res.json()
@@ -89,8 +89,9 @@ export const uploadFileToR2 = async (file, statusStore, filename=file?.name) => 
         filename = resJson?.key
       }
 
+      // const link = PUBLIC_PDR2_ENDPOINT + '/' + filename
+      const link = resJson?.[0].permalink
       console.log('Uploaded!:', resJson, 'link:', PUBLIC_PDR2_ENDPOINT + '/' + filename)
-      const link = PUBLIC_PDR2_ENDPOINT + '/' + filename
 
       let obj = {
         success: true,

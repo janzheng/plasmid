@@ -19,6 +19,10 @@
   export let showPreview = false;
   export let autoSetCropped = true; // so you don't forget to save
 
+  export let isSaving = false
+  export let showSaving = true
+  export let savingMessage = 'Saving image...'
+
   let imageSize = {}
 
 	function onFileSelected(e) {
@@ -153,12 +157,19 @@
       <button class="Btn-solid" type="button" on:click={async () => {
         await cropImage();
         await cropBlob();
-        cropFinished()
+        cropFinished();
         image = null; // closes the preview
       }}>{uploadCta}</button>
     </div>
   {/if}
-	
+
+{/if}
+
+{#if isSaving && showSaving}
+  <div class="flex gap-2 | pt-2">
+    <!-- <button class="Btn-light" type="button" on:click={reset}>Cancel</button>  -->
+    <div>{savingMessage}</div>
+  </div>
 {/if}
 
 <style global>
