@@ -19,7 +19,8 @@
           {#if showLoggedinInfo}
             <div class="self-center">{$commentUser.Username}: {maskPassword($commentUser.Password)}</div> 
           {/if}
-          <a href="{editProfileLink}" class="Btn-link ">profile</a>
+          <!-- <a href="{editProfileLink}" class="Btn-link ">profile / {$commentUser.Username}</a> -->
+          <a href="{editProfileLink}" class="Btn-link ">{$commentUser.Username}</a>
           <button class="Btn-link " on:click={()=>{openLogin()}}>change user</button>
         {:else}
           <a href="{baseConfig?.register_url}" class="Btn-link">sign up</a>
@@ -44,10 +45,11 @@
                   if(result.data.success) {
                     console.log('result.data', result.data)
                     $commentUser.isLoggedIn = true
+                    console.log('--->', $commentUser)
                     message = null
                     closeLogin()
                   } else {
-                    message = "Not signed in"
+                    message = "Incorrect username or password."
                     // $commentUser.Username = null
                     // $commentUser.Password = null
                   }
@@ -85,6 +87,11 @@
   export let editProfileLink = `${baseConfig?.base_url}/profiles/${$commentUser.Username}/edit`;
   let error, message
   // let comment = $commentUser
+
+                    // console.log('--->', $commentUser.Username)
+  $: if($commentUser.Username) {
+    editProfileLink = `${baseConfig?.base_url}/profiles/${$commentUser.Username}/edit`;
+  }
 
   // $: if(!$commentUser.Username && !$commentUser.Password) {
   //   hideLogin = false;
