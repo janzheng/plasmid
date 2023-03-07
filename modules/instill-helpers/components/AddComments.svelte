@@ -392,7 +392,7 @@
         // Password: $comment.Password,
         Comment: $comment.Comment,
         Topic: $comment.Topic,
-        Keywords: $comment.Keywords,
+        // Keywords: $comment.Keywords, // annoyingly doesn't clear on submit, so dropping it here
         Url: $comment.Url,
         // PostType: $comment.PostType,
         _postSuccessful: $comment._postSuccessful,

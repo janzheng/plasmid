@@ -53,6 +53,7 @@
     "remark-parse": "^10.0.1",
     "remark-rehype": "^10.1.0",
     "remark-stringify": "^10.0.2",
+    "remark-toc": "^8.0.1",
     "sanitize-html": "^2.4.0",
     "scrapingbee": "^1.6.1",
     "slugify": "^1.6.5",
