@@ -131,7 +131,7 @@
 
 <script>
 	import { page } from '$app/stores';
-  import { goto, prefetch } from '$app/navigation';
+  import { goto } from '$app/navigation';
 	import { user } from '$lib/store'
   import { getAvatar, updateProfile, requestEmailChange, requestPasswordReset } from '$plasmid/modules/pocket/'
   import Cropper from '$plasmid/modules/cropper/Cropper.svelte'
