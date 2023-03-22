@@ -5,13 +5,22 @@
 
 // add pdf-parse?
 
-import { OpenAI, ChatOpenAI } from "langchain/llms";
+import { json } from '@sveltejs/kit';
+import { OpenAI } from "langchain/llms";
+import { ChatOpenAI } from "langchain/chat_models";
 import { HumanChatMessage, SystemChatMessage } from "langchain/schema";
 import { PromptTemplate } from "langchain/prompts";
 import { LLMChain } from "langchain/chains";
 import { Document } from "langchain/document";
 import { CharacterTextSplitter } from "langchain/text_splitter";
+import { BufferMemory } from "langchain/memory";
+import { ConversationChain } from "langchain/chains";
 
+import {
+  SystemMessagePromptTemplate,
+  HumanMessagePromptTemplate,
+  ChatPromptTemplate,
+} from "langchain/prompts";
 
 
 // TODO
@@ -34,8 +43,8 @@ export async function getReview(input) {
     //   model, max_tokens = 256, temperature = 0.7
     // } = await request.json()
 
-    const system = input?.system || "You're a decorated professor at the top of the field, reviewing research papers.";
-    const template = "{instructions} {persona} {textInput}";
+    let system = input?.system || "You're a decorated professor at the top of the field, reviewing research papers.";
+    let template = "{instructions} {persona} {textInput}";
 
     // variables
     const instructions = "If you don't know, admit you don't know. Do not break out of character and don't explain yourself. Answer as the following character: {persona}"
@@ -103,27 +112,54 @@ export async function getReview(input) {
     }
     const text = input?.text;
 
-    // const modelName = input?.text || "gpt-3.5-turbo"
-    const modelName = input?.text || "gpt-4"
-
     // const model = new OpenAIChat({ openAIApiKey: process.env.OPENAI_API_KEY, temperature: 0.9 });
 
-    const model = new OpenAI({
-      modelName: modelName,
+    // this uses Davinci
+    // const model = new OpenAI({
+    //   // modelName: modelName,
+    //   openAIApiKey: process.env.OPENAI_API_KEY,
+    //   temperature: 0.7
+    // });
+    // const prompt = new PromptTemplate({
+    //   system: system,
+    //   template: template,
+    //   inputVariables: ["instructions", "persona", "journal", "textInput"],
+    // });
+    // const chain = new LLMChain({ llm: model, prompt: prompt });
+
+
+    // this uses Chat
+
+    // instructions and persona input keys must be moved, since only supporting one key for now
+    let modelName = input?.modelName || "gpt-4"
+    system = input?.system || "You're a decorated professor at the top of the field, reviewing research papers. {instructions} {persona} ";
+    template = "{textInput}";
+    const model = new ChatOpenAI({
+      modelName: modelName || "gpt-3.5-turbo",
       openAIApiKey: process.env.OPENAI_API_KEY,
       temperature: 0.7
     });
-
-    const prompt = new PromptTemplate({
-      system: system,
-      template: template,
-      inputVariables: ["instructions", "persona", "journal", "textInput"],
+    const prompt = ChatPromptTemplate.fromPromptMessages([
+      SystemMessagePromptTemplate.fromTemplate(system),
+      // new MessagesPlaceholder("history"),
+      HumanMessagePromptTemplate.fromTemplate(template),
+    ]);
+    // don't need this for now
+    // const chain = new ConversationChain({
+    //   // memory: new BufferMemory({ returnMessages: true, memoryKey: "history" }),
+    //   prompt: prompt,
+    //   llm: model,
+    // });
+    const chain = new LLMChain({
+      prompt: prompt,
+      llm: model,
     });
+
+
 
 
 
     let res = { text: 'LLM Bypassed for testing' }
-    const chain = new LLMChain({ llm: model, prompt: prompt });
 
     // console.log('Calling reviewer:', persona)
     console.log('>>>> Getting answer from OpenAI...')
