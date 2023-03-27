@@ -1,21 +1,21 @@
 
 <div class="Calendars {classes}">
-  <div class="_font-small">{header}</div>
-  <div class=""><a class="_font-small" target="_blank" href="{iCalLink}">iCal (Apple / Outlook)</a></div>
-  <div class=""><a class="_font-small" target="_blank" href="{googleLink}">Google Calendar</a></div>
-  <div class=""><a class="_font-small" target="_blank" href="{yahooLink}">Yahoo</a></div>
-  <div class=""><a class="_font-small" target="_blank" href="{outlookLink}">Outlook</a></div>
+  <div class="{itemClasses}">{header}</div>
+  <div class="{itemClasses}"><a class="" target="_blank" href="{iCalLink}">iCal (Apple / Outlook)</a></div>
+  <div class="{itemClasses}"><a class="" target="_blank" href="{googleLink}">Google Calendar</a></div>
+  <div class="{itemClasses}"><a class="" target="_blank" href="{yahooLink}">Yahoo</a></div>
+  <div class="{itemClasses}"><a class="" target="_blank" href="{outlookLink}">Outlook</a></div>
 </div>
 
 <script>
   import { onMount } from 'svelte';
 
-  export let classes="_margin-top-2", header="Add to your calendar"
-  let iCalLink = '/api/event'
-  let googleLink, outlookLink, yahooLink
+  export let classes="mt-2", header="Add to your calendar";
+  export let itemClasses ="text-sm";
+  export let iCalLink = '/api/event';
+  export let googleLink, outlookLink, yahooLink;
 
   onMount(async () => {
-    // load payment key on site load — speeds things up
     const res = await fetch(
       `/api/event?links=true`, {
       method: 'GET',
@@ -26,6 +26,6 @@
       outlookLink = json['outlookLink']
       yahooLink = json['yahooLink']
     }
-  })
+  });
 
 </script>

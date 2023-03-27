@@ -32,6 +32,10 @@
   @apply p-4 mb-2;
   &.mb-0 { margin-bottom: 0; }
 }
+%card--halfpad {
+  @apply p-2 mb-2;
+  &.mb-0 { margin-bottom: 0; }
+}
 %card--shadow {
   @apply shadow-md;
 }
@@ -53,6 +57,7 @@
   // &.--p0 { @apply p-0; }
   // &.--m0 { @apply m-0; }
   &.--pad { @extend %card--pad; }
+  &.--halfpad { @extend %card--halfpad; }
   &.--thin {@extend %card--thin;}
   &.--shadow {@extend %card--shadow;}
   &.--shadow-lg {@extend %card--shadow-lg;}

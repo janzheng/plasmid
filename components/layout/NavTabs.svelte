@@ -12,7 +12,7 @@
 
   export let segment
   let top = _content('top') || ''
-  let caldate = _content('_caldate') || ''
+  let caldate = _content('_caldate') || '';
 
 </script>
 

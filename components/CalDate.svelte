@@ -1,16 +1,16 @@
 
-<div class="CalDate _shadow-2 {classes}" style="{styles} ">
+<div class="CalDate {classes}" style="{styles} ">
   <!-- <div class="CalDate-month">{@html marked(month||'')}</div> -->
   {#if month&&showMonth}<div class="CalDate-month">{month}</div>{/if}
   {#if day&&showDay}<div class="CalDate-day">{day}</div>{/if}
-  {#if dayname&&showDayname}<div class="CalDate-dayname">{@html marked(dayname||'')}</div>{/if}
+  {#if dayname&&showDayname}<div class="CalDate-dayname pfix">{@html marked(dayname||'')}</div>{/if}
   <!-- <div class="CalDate-year">2021</div> -->
   {#if time&&showTime}<div class="CalDate-time">{@html marked(time||'')}</div>{/if}
-  {#if insert&&showInsert}<div class="CalDate-insert _md-pfix">{@html marked(insert||'')}</div>{/if}
+  {#if insert&&showInsert}<div class="CalDate-insert pfix">{@html marked(insert||'')}</div>{/if}
 </div>
 
 <script>
-  import marked from 'marked';
+  import { marked } from 'marked';
 
   export let str = 'AUG; 2; Wednesday; 19:00 ET', classes='', styles='' // example
   let month='', day='', dayname='', time='', insert=''

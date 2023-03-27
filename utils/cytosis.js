@@ -1272,6 +1272,8 @@ class Cytosis {
     let element = Cytosis.findOne(findStr, table, fields)
     if (element && element.fields && element.fields[contentField])
       return element.fields[contentField]
+    else if (element && element[contentField]) // for flat items
+      return element[contentField]
     return undefined
   }
 

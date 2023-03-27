@@ -1,4 +1,8 @@
 
+
+// DEPRECATED — use utils/events/event.js instead
+
+
 // this ONLY gets ical of the event! You need server-side to serve the file. The other ones are generated as URLs
 
 import { config } from "dotenv";

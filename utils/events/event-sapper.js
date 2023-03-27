@@ -1,63 +1,30 @@
 
-// 3/26/23 — adapted to Sveltekit
+
+// old version of event.js — uses some old paradigms, don't want to break stuff
+
 // this ONLY gets ical of the event! You need server-side to serve the file. The other ones are generated as URLs
 
-import { json } from '@sveltejs/kit';
+
+// import cytosis from 'cytosis';
+// import { cacheGet, cacheSet, cacheClear } from "@/_utils/cache"
+// import { sendData } from "@/_utils/sapper-helpers"
 import { cytosis, getContent } from "$plasmid/utils/airfetch.js"
 
+// import send from '@polka/send';
+// const { google, outlook, office365, yahoo, ics, eventify } = require("calendar-link");
 
-// set as export const GET = _GET
-export const _GET = async ({ url }) => {
-  let links = url.searchParams.get('links')
-  let fileName = url.searchParams.get('fileName')
-
-  let evt = await getEvent(links, fileName)
-  // console.log('api/event:', evt)
-  return evt
-}
+import { config } from "dotenv";
+config(); // https://github.com/sveltejs/sapper/issues/122
 
 
-// wraps around a sveltekit response
-export async function getEvent(getLinks, fileName='event') {
-  try {
-    let event = await getEventFromContent()
-
-    if (getLinks) {
-      return json({
-        googleLink: google(event),
-        yahooLink: yahoo(event),
-        officeLink: office365(event),
-        outlook: outlook(event),
-      })
-    } else {
-      return new Response(decodeURIComponent(customIcs(event).split("charset=utf8,")[1]), {
-        headers: {
-          'Content-Type': 'text/calendar; charset=utf8',
-          'Content-Disposition': `attachment; filename="${fileName}.ics"`,
-        }
-      })
-    }
-  } catch (err) {
-    console.error('[ics] api/get error:', err)
-    throw new Error('[ics] Error', err)
-  }
-}
-
-
-
-
-
-
-
+// TODO: do a getEvent but w/ the event object passed in
 
 
 // get event from custom Airtable (look @ Evergreen example)
-export async function getEventFromContent(content) {
+export async function getEventFromContent() {
 
-  if(!content) {
-    const _results = await getContent()
-    content = _results['Content']
-  }
+  const _results = await getContent()
+  let content = _results['Content']
 
   /*
    event = {
@@ -123,10 +90,7 @@ export async function getIcsDecodedFromEvent(event) {
 
 
 export async function getEventLinks(event) {
-  if (!event) {
-    event = await getEventFromContent()
-  }
-
+  if (!event) await getEventFromContent()
   try {
     return {
       google: google(event),

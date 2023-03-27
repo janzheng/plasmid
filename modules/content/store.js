@@ -34,19 +34,29 @@ import * as store from 'svelte/store'
 
 // SiteData should mirror a cytosis.results setup
 // results['Content','Profiles']
-export const Store = store.writable({})
+export const Store = store.writable({}) // for better UX
+export const SiteData = Store
+
 
 // gets the record
 export const _get = (name, table = 'Content') => {
-  // console.log('get', name, store.get(Store), store.get(Store)[table])
+  // console.log('get', name, store.get(Store), store.get(Store)[table], store.get(Store)[table].find(e => e['Name'] == name))
   return store.get(Store) && store.get(Store)[table] && store.get(Store)[table].find(e => e['Name'] == name)
 }
 
 // shortcut: Content Table > Content Field
 export const _content = (name, fieldName = 'Content') => {
-  // return empty text if loading / prepping for markdown
-  return _get(name) && _get(name).fields && _get(name).fields[fieldName] || ''
+  try {
+    // return empty text if loading / prepping for markdown
+    // console.log('_content search name, _get(name))
+    // if flattened, won't have ".fields"
+    return _get(name) && _get(name).fields && _get(name).fields[fieldName] || _get(name)[fieldName] || ''
+  } catch(e) {
+    console.error('[content/store/_content] No content found, returning null')
+    return null
+  }
 }
+
 export const _contents = (names) => {
   let obj = {}
   names.forEach(name => {

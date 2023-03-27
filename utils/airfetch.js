@@ -376,8 +376,8 @@ export const getTables = async (bases = [{
 
   // console.log('[airfetch/getTables] _result:', _result)
 
-  if(useCache)
-    cacheSet(_cache, _result.results)
+  // if(useCache)
+  //   cacheSet(_cache, _result.results)
 
   return _result.results
 }
