@@ -154,7 +154,7 @@ export const sendGroupEmailToAttendees = async (templateName, view = 'Grid view'
       const replaced = keyReplace(template.fields['Markdown'], {
         ...user.fields,
         ticketprice: user.fields['Ticket Price'],
-        ticketId: user.fields['Ticket ID']
+        ticketId: user.fields['TicketId']
       })
       const md = marked(replaced)
 

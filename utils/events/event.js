@@ -111,7 +111,7 @@ export async function getEventFromContent(content) {
 }
 
 export async function getIcsFromEvent(event) {
-  if (!event) await getEventFromContent()
+  if (!event) event = await getEventFromContent()
   return customIcs(event)
 }
 
