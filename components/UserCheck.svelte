@@ -37,7 +37,7 @@
     await checkUser(id)
 
     // console.log('Profile check:', $Profile) 
-    if(!$Profile && !id || !isAttending($Profile) || !$Profile.ticketnumber) {
+    if(!$Profile && !id || !isAttending($Profile) || !$Profile.ticketId) {
       console.error('No user access')
       goto(`/start?path=${$page.path}`)
       return

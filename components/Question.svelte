@@ -3,7 +3,7 @@
   <form class="Formlet" on:submit={handleSubmit}>
 
     {#if !isSubmitting}
-      {#if !$Profile.ticketnumber && showEmail && !loadingTicket}
+      {#if !$Profile.ticketId && showEmail && !loadingTicket}
         <div class="Formlet Formlet-input _margin-bottom">
           <!-- <label for=email class="_form-label _inline">Email</label> (optional) -->
           <input id="email" name="email" on:change={handleChange} on:blur={handleChange} bind:value={$form.email}  placeholder="Your email (optional)" type="email" class="_form-input __width-full"> 
@@ -51,7 +51,7 @@
 
   checkUser()
 
-  $: if(!Profile && $Profile.ticketnumber) {
+  $: if(!Profile && $Profile.ticketId) {
     loadingTicket = false
   }
 

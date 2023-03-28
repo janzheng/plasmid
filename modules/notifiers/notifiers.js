@@ -14,6 +14,8 @@
 
   These are usually heavily project-centric, so copy this example into your _project folder
   
+  // not that this example is DEPRECATED
+  // see the new version in src/plasmid/utils/notifiers.js
 
 */
 
@@ -152,7 +154,7 @@ export const sendGroupEmailToAttendees = async (templateName, view = 'Grid view'
       const replaced = keyReplace(template.fields['Markdown'], {
         ...user.fields,
         ticketprice: user.fields['Ticket Price'],
-        ticketnumber: user.fields['Ticket Number']
+        ticketId: user.fields['Ticket ID']
       })
       const md = marked(replaced)
 
