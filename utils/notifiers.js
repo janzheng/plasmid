@@ -88,10 +88,11 @@ export const notifyFromTemplate = async ({
         dictionary = (() => {
           let obj = {}
           Object.keys(dictMap).forEach((key) => {
-            obj[key] = data[dictMap[key]] || ''
-            obj[dictMap[key]] = data[dictMap[key]] || '' // mirror old key so it also works
+            obj[key] = data[dictMap[key]] || ' ' // blank space prevents "undefined" to be spelled out
+            obj[dictMap[key]] = data[dictMap[key]] || ' ' // mirror old key so it also works
           })
           obj['json'] = JSON.stringify(data, null, 2)
+          // console.log('---> dictMap keyObj:', obj)
           return obj
         })
       }
