@@ -9,19 +9,19 @@ config(); // https://github.com/sveltejs/sapper/issues/122
 
 
 // add your Project Key
-export const _deta = Deta(process.env['PUBLIC_DETA_KEY']);
+export const _deta = process && process.env['PUBLIC_DETA_KEY'] && Deta(process.env['PUBLIC_DETA_KEY']);
 
 // server-side: reveal deta key to endpoints
 export const exposeDetaKey = () => {
-  return process.env['PUBLIC_DETA_KEY']
+  return process?.env['PUBLIC_DETA_KEY']
 }
 
 export const getDrive = (name = 'uploads') => {
-  return _deta.Drive(name)
+  return _deta?.Drive(name)
 }
 
 export const getBase = (name = 'testDB') => {
-  return _deta.Base(name)
+  return _deta?.Base(name)
 }
 
 
