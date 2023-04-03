@@ -200,7 +200,7 @@ export const mailto = async (data, secret, loud = false, trail = false) => {
 
     let msg
     if(process.env.MG_ENABLED === 'true') {
-      // msg = await mg.messages.create(process.env.MG_DOMAIN, mailData)
+      msg = await mg.messages.create(process.env.MG_DOMAIN, mailData)
       if(loud)
         console.log(`[mailto] Email sent to: ${to}`, msg , mailData)
     } else {

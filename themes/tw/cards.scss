@@ -198,6 +198,16 @@
   @extend %card--pad;
 }
 
+.Card-white,
+.Card-solid-white,
+.Card-white {
+  // = Card-solid --light 
+  @extend %card;
+  @extend %card-solid;
+  @extend %card-solid-white;
+  @extend %card--pad;
+}
+
 .Card-primary {
   @extend %card;
   @extend %card-solid;

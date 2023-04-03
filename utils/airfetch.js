@@ -140,7 +140,7 @@ export const checkExistence = async (keyword, tableName, fieldName = "Email", us
   if (cytosis.results[tableName].length > 0) {
     const record = cytosis.results[tableName][0]
 
-    if (useCache)
+    // if (useCache)
   		cacheSet(_cache, record) // short cache to pings
     return record
   }
@@ -178,7 +178,7 @@ export const getRecord_v2 = async ({ keyword, tableName, fieldName, useCache=fal
   if (cytosis.results[tableName].length > 0) {
     const record = cytosis.results[tableName][0]
 
-    if (useCache)
+    // if (useCache)
   		cacheSet(_cache, record) // short cache to pings
     return record
   }
@@ -197,7 +197,7 @@ export const getRecordById = async ({ recordId, tableName, useCache=false, _apiE
   })
   record = flattenRecord(record)
 
-  if (useCache)
+  // if (useCache)
     cacheSet(_cache, record) // short cache to pings
 
   return record
@@ -254,7 +254,7 @@ export const getTable = async (tableName, options, useCache = true, _apiEditorKe
     routeDetails: '[api/getters/getTable]',
   })
 
-  if (useCache)
+  // if (useCache)
     cacheSet(_cache, cytosis.results[tableName]) // short cache to pings
 
   return cytosis.results[tableName]
@@ -295,7 +295,7 @@ export const getTablePaged = async (
         options,
       }, (page) => {
 
-        if (useCache)
+        // if (useCache)
           cacheSet(_cache, page) // short cache to pings
           
         pageObj = page
@@ -377,7 +377,8 @@ export const getTables = async (bases = [{
   // console.log('[airfetch/getTables] _result:', _result)
 
   // if(useCache)
-  //   cacheSet(_cache, _result.results)
+  // always set the new cache, even if not using
+    cacheSet(_cache, _result.results)
 
   return _result.results
 }

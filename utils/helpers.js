@@ -176,6 +176,25 @@ export const keyRemap = (obj, map) => {
 
 
 
+// given a dictMap
+// e.g. {name: 'Name', email: 'Email'} (left is the new key in MD, right is the old key in Airtable)
+// inspired by the utils/notifiers
+export const dictMapReplacer = ({templateText, dictMap, data}) => {
+  let dictionary = (() => {
+    let obj = {}
+    Object.keys(dictMap).forEach((key) => {
+      obj[key] = data?.[dictMap?.[key]] || ' ' // blank space prevents "undefined" to be spelled out
+      if (dictMap && key && data)
+        obj[dictMap[key]] = data[dictMap[key]] || ' ' // mirror old key so it also works
+    })
+    obj['json'] = JSON.stringify(data, null, 2)
+    // console.log('---> dictMap keyObj:', obj)
+    return obj
+  })
+  return textReplacer(templateText, data, dictionary)
+}
+
+
 
 
 

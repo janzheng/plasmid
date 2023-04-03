@@ -10,6 +10,14 @@
     "@jridgewell/sourcemap-codec" "^1.4.9"
     "@jridgewell/trace-mapping" "^0.2.7"
 
+"@anthropic-ai/sdk@^0.4.2":
+  version "0.4.2"
+  resolved "https://registry.yarnpkg.com/@anthropic-ai/sdk/-/sdk-0.4.2.tgz#0a4cceea37c1d68b516ed17c2ae1fb510d662834"
+  integrity sha512-L/uhXDxPNWKIUV3V2v+97XyVVjY2P6vhxpdNFqmZEKUKy6FqVwcfPPHcckH6ixyQ5+j/Zq4A6eybc7ewc2+WjQ==
+  dependencies:
+    "@fortaine/fetch-event-source" "^3.0.6"
+    cross-fetch "^3.1.5"
+
 "@assemblyscript/loader@^0.9.4":
   version "0.9.4"
   resolved "https://registry.yarnpkg.com/@assemblyscript/loader/-/loader-0.9.4.tgz#a483c54c1253656bb33babd464e3154a173e1577"
@@ -941,6 +949,11 @@
     "@babel/helper-validator-identifier" "^7.16.7"
     to-fast-properties "^2.0.0"
 
+"@fortaine/fetch-event-source@^3.0.6":
+  version "3.0.6"
+  resolved "https://registry.yarnpkg.com/@fortaine/fetch-event-source/-/fetch-event-source-3.0.6.tgz#b8552a2ca2c5202f5699b93a92be0188d422b06e"
+  integrity sha512-621GAuLMvKtyZQ3IA6nlDWhV1V/7PGOTNIGLUifxt0KzM+dZIweJ6F3XvQF3QnqeNfS1N7WQ0Kil1Di/lhChEw==
+
 "@ipld/dag-cbor@^6.0.3":
   version "6.0.15"
   resolved "https://registry.yarnpkg.com/@ipld/dag-cbor/-/dag-cbor-6.0.15.tgz#aebe7a26c391cae98c32faedb681b1519e3d2372"
@@ -1485,11 +1498,6 @@ argparse@^2.0.1:
   resolved "https://registry.yarnpkg.com/argparse/-/argparse-2.0.1.tgz#246f50f3ca78a3240f6c997e8a9bd1eac49e4b38"
   integrity sha512-8+9WqebbFzpX9OR+Wa6O29asIogeRMzcGtAINdpMHHyAg10f05aSFVBbcEqGf/PXw1EjAZ+q2/bEBg3DvurK3Q==
 
-array-keyed-map@^2.1.3:
-  version "2.1.3"
-  resolved "https://registry.yarnpkg.com/array-keyed-map/-/array-keyed-map-2.1.3.tgz#0d5c06ed58ccba2755a4f5bfb7a935a31f395b18"
-  integrity sha512-JIUwuFakO+jHjxyp4YgSiKXSZeC0U+R1jR94bXWBcVlFRBycqXlb+kH9JHxBGcxnVuSqx5bnn0Qz9xtSeKOjiA==
-
 arrify@^1.0.1:
   version "1.0.1"
   resolved "https://registry.yarnpkg.com/arrify/-/arrify-1.0.1.tgz#898508da2226f380df904728456849c1501a4b0d"
@@ -1591,6 +1599,11 @@ bcryptjs@^2.4.3:
   version "2.4.3"
   resolved "https://registry.yarnpkg.com/bcryptjs/-/bcryptjs-2.4.3.tgz#9ab5627b93e60621ff7cdac5da9733027df1d0cb"
   integrity sha512-V/Hy/X9Vt7f3BbPJEi8BdVFMByHi+jNXrYkW3huaybV/kQ0KJg0Y6PkEMbn+zeT+i+SiKZ/HMqJGIIt4LZDqNQ==
+
+binary-extensions@^2.0.0:
+  version "2.2.0"
+  resolved "https://registry.yarnpkg.com/binary-extensions/-/binary-extensions-2.2.0.tgz#75f502eeaf9ffde42fc98829645be4ea76bd9e2d"
+  integrity sha512-jDctJ/IVQbZoJykoeHbhXpOlNBqGNcwXJKJog42E5HDPUwQTSdjCHdihjj0DlnheQ7blbT6dHOafNAiS8ooQKA==
 
 bl@^5.0.0:
   version "5.0.0"
@@ -1821,7 +1834,7 @@ core-js-compat@^3.20.2, core-js-compat@^3.21.0:
     browserslist "^4.19.1"
     semver "7.0.0"
 
-cross-fetch@^3.0.6, cross-fetch@^3.1.0:
+cross-fetch@^3.0.6, cross-fetch@^3.1.0, cross-fetch@^3.1.5:
   version "3.1.5"
   resolved "https://registry.yarnpkg.com/cross-fetch/-/cross-fetch-3.1.5.tgz#e1389f44d9e7ba767907f7af8454787952ab534f"
   integrity sha512-lvb1SBsI0Z7GDwmuid+mU3kWVBwTVUbe7S0H52yaaAdQOXq2YktTCZdlAcNKFzE6QtRz0snpw9bNiPeOIkkQvw==
@@ -2127,11 +2140,6 @@ eventemitter3@^4.0.7:
   resolved "https://registry.yarnpkg.com/eventemitter3/-/eventemitter3-4.0.7.tgz#2de9b68f6528d5644ef5c59526a1b4a07306169f"
   integrity sha512-8guHBZCwKnFhYdHr2ysuRWErTwhoN2X8XELRlrRwpmfeY2jjuUN4taQMsULKUVo1K4DvZl+0pgfyoysHxvmvEw==
 
-eventsource-parser@^0.1.0:
-  version "0.1.0"
-  resolved "https://registry.yarnpkg.com/eventsource-parser/-/eventsource-parser-0.1.0.tgz#4a6b84751ca8e704040e6f7f50e7d77344fa1b7c"
-  integrity sha512-M9QjFtEIkwytUarnx113HGmgtk52LSn3jNAtnWKi3V+b9rqSfQeVdLsaD5AG/O4IrGQwmAAHBIsqbmURPTd2rA==
-
 exponential-backoff@^3.1.0:
   version "3.1.1"
   resolved "https://registry.yarnpkg.com/exponential-backoff/-/exponential-backoff-3.1.1.tgz#64ac7526fe341ab18a39016cd22c787d01e00bf6"
@@ -2272,13 +2280,6 @@ globrex@^0.1.2:
   version "0.1.2"
   resolved "https://registry.yarnpkg.com/globrex/-/globrex-0.1.2.tgz#dd5d9ec826232730cd6793a5e33a9302985e6098"
   integrity sha512-uHJgbwAMwNFf5mLst7IWLNg14x1CkeqglJb/K3doi4dw6q2IvAAmM/Y81kevy83wP+Sst+nutFTYOGg3d1lsxg==
-
-gpt3-tokenizer@^1.1.5:
-  version "1.1.5"
-  resolved "https://registry.yarnpkg.com/gpt3-tokenizer/-/gpt3-tokenizer-1.1.5.tgz#79e5f96c435daf9c41a81117411ebce3bf475e78"
-  integrity sha512-O9iCL8MqGR0Oe9wTh0YftzIbysypNQmS5a5JG3cB3M4LMYjlAVvNnf8LUzVY9MrI7tj+YLY356uHtO2lLX2HpA==
-  dependencies:
-    array-keyed-map "^2.1.3"
 
 graceful-fs@^4.1.3:
   version "4.2.10"
@@ -2692,6 +2693,13 @@ is-arrayish@^0.2.1:
   resolved "https://registry.yarnpkg.com/is-arrayish/-/is-arrayish-0.2.1.tgz#77c99840527aa8ecb1a8ba697b80645a7a926a9d"
   integrity sha512-zz06S8t0ozoDXMG+ube26zeCTNXcKIPJZJi8hBrF4idCLms4CG9QtK7qBl1boi5ODzFpjswb5JPmHCbMpjaYzg==
 
+is-binary-path@^2.1.0:
+  version "2.1.0"
+  resolved "https://registry.yarnpkg.com/is-binary-path/-/is-binary-path-2.1.0.tgz#ea1f7f3b80f064236e83470f86c09c254fb45b09"
+  integrity sha512-ZMERYes6pDydyuGidse7OsHxtbI7WVeUEozgR/g7rd0xUimYNlvZRE/K2MgZTjWy725IfelLeVcEM97mmtRGXw==
+  dependencies:
+    binary-extensions "^2.0.0"
+
 is-buffer@^2.0.0:
   version "2.0.5"
   resolved "https://registry.yarnpkg.com/is-buffer/-/is-buffer-2.0.5.tgz#ebc252e400d22ff8d77fa09888821a24a658c191"
@@ -2894,16 +2902,18 @@ kleur@^4.0.3, kleur@^4.1.4, kleur@^4.1.5:
   resolved "https://registry.yarnpkg.com/kleur/-/kleur-4.1.5.tgz#95106101795f7050c6c650f350c683febddb1780"
   integrity sha512-o+NO+8WrRiQEE4/7nwRJhN1HWpVmJm511pBHUxPLtp0BUISzlBplORYSmTclCnJvQq2tKu/sgl3xVpkc7ZWuQQ==
 
-langchain@^0.0.38:
-  version "0.0.38"
-  resolved "https://registry.yarnpkg.com/langchain/-/langchain-0.0.38.tgz#4c78d09d21372007feeefad0ee12c3889ef0714b"
-  integrity sha512-VqUi1AgzJB3isQQOoupmD/gW6da/yzvPt7AjjavxOAgbqFYJsAozmLNKndRLXmDIV7xJs63eS+edy6GtE0XAzQ==
+langchain@^0.0.45:
+  version "0.0.45"
+  resolved "https://registry.yarnpkg.com/langchain/-/langchain-0.0.45.tgz#6b524bbc073c610b437a66a133cbf16372761f35"
+  integrity sha512-Uonl6W5ZgjTUQJeWhIpXrU2p94b9J/QBu9JKnM5lIcm+S2t9AIIRpgK/I3oRWtzeTtimfro+mMGySGb18n0RcA==
   dependencies:
+    "@anthropic-ai/sdk" "^0.4.2"
+    "@fortaine/fetch-event-source" "^3.0.6"
     browser-or-node "^2.1.1"
-    eventsource-parser "^0.1.0"
     exponential-backoff "^3.1.0"
     expr-eval "^2.0.2"
-    gpt3-tokenizer "^1.1.5"
+    flat "^5.0.2"
+    is-binary-path "^2.1.0"
     jsonpointer "^5.0.1"
     object-hash "^3.0.0"
     openai "^3.2.0"
