@@ -1,22 +1,15 @@
 /* 
 
   OpenAI GPT functions (no langchain)
-
-
-  // inspired by https://github.com/baobabKoodaa/future/blob/master/server.js  
+  - Generalized GPT playground used to understand vanilla GPT
+  - inspired by https://github.com/baobabKoodaa/future/blob/master/server.js  
   
-  
-  
-  
-  TODO
-
-  - implement various prompt / message formats, with examples
-    - Q&A from baobabKoodaa/future
-    - ReAct (Observation / Thought / Action) loop
-
-  - inject actions from API / scraper / database on Action stage
-  - add pdf-parse helper
-
+  - TODO
+    - implement various prompt / message formats, with examples
+      - Q&A from baobabKoodaa/future
+      - ReAct (Observation / Thought / Action) loop (without langchain)
+    - inject actions from API / scraper / database on Action stage
+    - add pdf-parse helper
 
 */
 
@@ -177,47 +170,9 @@ export async function getChat({ chatSettings, sessionHistory, useHistory = true,
 // import this in a +server.js file
 export async function _POST({ request }) {
   try {
-    // let {
-    //   system, promptInstructions, inputPrefix, exampleHistory, sessionHistory, input,
-    //   model, max_tokens = 256, temperature
-    // } = await request.json()
-    let {
-      system, promptInstructions, inputPrefix, exampleHistory, input,
-      model, max_tokens = 256, temperature = 0.7
-    } = await request.json()
-
-
-    return json(await getChat())
-    // let messages = getChatMessages({ system, promptInstructions, inputPrefix, exampleHistory, sessionHistory, input })
-
-    // if (!sessionHistory) {
-    //   sessionHistory = messages
-    // }
-
-    // // let output = 'woo'
-    // let output = await llm({ messages, model, max_tokens, temperature })
-
-    // sessionHistory.push({
-    //   u: input,
-    //   a: output
-    // })
-
-    // // let summaryMsg = getChatMessages({ system, sessionHistory, input: "get the summary of the conversation in one line" })
-    // // let summary = await llm({ messages: summaryMsg, model, max_tokens, temperature })
-
-    // // console.log('[POST] Received request: >> messages', messages, '>>> output >>>', output, ' >> history:len:', sessionHistory.length)
-
-    // return json({
-    //   sessionHistory,
-    //   output,
-    //   // summary: {
-    //   //   summaryMsg,
-    //   //   summary
-    //   // }
-    // })
+    let chatSettings = await request.json()
+    return json(await getChat({ chatSettings }))
   } catch (err) {
-    // _err(err)
     console.error('[api/llm]', err.message || err?.response?.data)
-    // throw error(500, err.message)
   }
 }

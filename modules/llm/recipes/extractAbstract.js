@@ -14,6 +14,7 @@ import {
   ChatPromptTemplate,
 } from "langchain/prompts";
 
+
 export function getReturnResponse(res) {
   // Handle JSON responses here
   // somehow RETRY if JSON parsing fails?
@@ -29,12 +30,13 @@ export function getReturnResponse(res) {
     output.result = data
   } catch (e) {
     // return the text if not json
-    console.log('[createReturnResponse] Faild JSON parsing ------<<<<', e)
     output.type = 'text/plain'
     output.result = res?.text
+    console.log('[getReturnResponse] Failed JSON parsing; returning as text:', e, res?.text)
   }
   return output
 }
+
 
 
 
@@ -114,7 +116,7 @@ Melo ^1,2"
       text: input,
     });
     console.timeEnd();
-    console.log('---------->>>>>\n\nOutput:', res, '\n\n<<<------------');
+    console.log('[GPT] \n---------->>>>>\n\nOutput:', res, '\n\n<<<------------');
 
     let output = getReturnResponse(res);
 
@@ -127,7 +129,7 @@ Melo ^1,2"
       if (bodyStartStrPos >= 0)
         bodyText = fullInput.substring(bodyStartStrPos);
 
-      output.result.bodyText = bodyText;
+      output.result.bodyTextRaw = bodyText;
     }
     return output
 
@@ -165,6 +167,7 @@ export async function extractAbstractBody(input, // <--- this is where you send 
 - Convert any HTML to Markdown
 - Body: Use Markdown for Body Text. No links, headers "##", or markdown links to citations. Convert any HTML to Markdown.
 - Add proper markdown styling for italicized words, bold, superscripts, and subscripts.
+- Don't add headers like "## Abstract". Just return the body text.
 
 Example:
 {{
@@ -196,13 +199,13 @@ Example:
 
     let res = { text: '(LLM answer will go here)' }
 
-    console.log('>>>> Getting answer from OpenAI...')
+    console.log('[abstract]: Calling GPT...')
     console.time();
     res = await chain.call({
       text: input,
     });
     console.timeEnd();
-    console.log('---------->>>>>\n\nOutput:', res?.text, '\n\n<<<------------');
+    console.log('[GPT] \n---------->>>>>\n\nOutput:', res, '\n\n<<<------------');
 
     let output = getReturnResponse(res);
     return output
