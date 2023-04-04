@@ -62,6 +62,35 @@ const configuration = new Configuration({
 const openai = new OpenAIApi(configuration);
 
 
+
+export async function getSummary(text, temperature = 0.8, top_p = 0.9, max_tokens = 200, frequency_penalty = 0.5, presence_penalty = 0.5,) {
+  try {
+    if (text.length > 4000) {
+      text = text.substring(0, 4000)
+    }
+    
+    const prompt = `Give a short summary from the following Markdown text: \n\n${text}`
+    const completion = await openai.createCompletion({
+      model: "text-davinci-002",
+      prompt,
+      temperature: temperature,
+      max_tokens: max_tokens,
+      top_p: top_p,
+      frequency_penalty: frequency_penalty,
+      presence_penalty: presence_penalty,
+    });
+
+
+    // console.log('completion:', completion.data)
+    console.log('[getSummary] Results:', completion.data, completion.data.choices[0].text)
+    return completion.data.choices[0].text
+  } catch (err) {
+    console.error(err.message || err)
+  }
+}
+
+
+
 export async function getBlurb(link, text, temperature = 0.8, top_p = 0.9, max_tokens = 200, frequency_penalty = 0.5, presence_penalty = 0.5,) {
   try {
     if (text.length > 8000) {
