@@ -15,7 +15,7 @@ for some odd reason, you can either only do server or client-side lol
   Sentry.captureMessage("Something went wrong");
 */
 // if this fails, try to install @sentry/node --dev locally in the project
-import * as Sentry from '@sentry/node';
+import * as Sentry from '@sentry/sveltekit';
 // import * as Sentry from '@sentry/serverless';
 // import * as Tracing from '@sentry/tracing';
 
