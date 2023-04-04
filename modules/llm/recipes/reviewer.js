@@ -6,15 +6,18 @@
 // add pdf-parse?
 
 import { json } from '@sveltejs/kit';
-import { OpenAI } from "langchain/llms";
 import { ChatOpenAI } from "langchain/chat_models";
-import { HumanChatMessage, SystemChatMessage } from "langchain/schema";
-import { PromptTemplate } from "langchain/prompts";
 import { LLMChain } from "langchain/chains";
-import { Document } from "langchain/document";
-import { CharacterTextSplitter } from "langchain/text_splitter";
-import { BufferMemory } from "langchain/memory";
-import { ConversationChain } from "langchain/chains";
+
+// import { OpenAI } from "langchain/llms";
+// import { HumanChatMessage, SystemChatMessage } from "langchain/schema";
+// import { PromptTemplate } from "langchain/prompts";
+// import { Document } from "langchain/document";
+// import { CharacterTextSplitter } from "langchain/text_splitter";
+// import { BufferMemory } from "langchain/memory";
+// import { ConversationChain } from "langchain/chains";
+
+import { getReturnResponse } from "$plasmid/modules/llm/";
 
 import {
   SystemMessagePromptTemplate,
@@ -172,14 +175,17 @@ export async function getReview(input) {
     console.timeEnd();
     console.log('---------->>>>>\n\nOutput:', res?.text, '\n\n<<<------------');
 
-    // only true for json responses
-    try {
-      return JSON.parse(res?.text);
-    } catch (e) {
-      // return the text if not json
-      console.log('!!!! failed JSON parsing ------<<<<')
-      return res?.text || 'Not available'
-    }
+
+    let output = getReturnResponse(res);
+    return output
+    // // only true for json responses
+    // try {
+    //   return JSON.parse(res?.text);
+    // } catch (e) {
+    //   // return the text if not json
+    //   console.log('!!!! failed JSON parsing ------<<<<')
+    //   return res?.text || 'Not available'
+    // }
   } catch (err) {
     // _err(err)
     console.error('[llm/reviewer]', err.message || err?.response?.data)
@@ -202,7 +208,7 @@ export async function _POST({ request }) {
     let res = await getReview({ persona, text })
 
     return json({
-      result: res,
+      data: res,
       persona,
       text
     })
