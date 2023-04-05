@@ -38,7 +38,7 @@ export async function extractAbstractMetadata(
 - No emails, citations, or links unless explicit in text.
 - Title: Apply italics, bold, superscript, subscripts, and GFM Markdown for gene/species/bacterial (e.g. Salmonella)/latin words/names. 
 - Convert any HTML to Markdown
-- Authors: Convert affiliations to numbers. Format: "Name ^1,2,3 *" (affiliations, * for corresponding author). Use numbers not letters (a,b) for multiple authors. 
+- Authors: Convert affiliations to numbers. Format: "Name ^1,2,3 *" (affiliations, * for corresponding author). Use numbers not letters (a,b) for multiple authors.
 - Affiliations: Numbered markdown list.
 - Correspondence: Use provided emails, else blank.
 - Add proper markdown styling for italicized words, bold, superscripts, and subscripts.
@@ -46,7 +46,7 @@ export async function extractAbstractMetadata(
 Example:
 {{
 "title": "A novel *Helicobacter* pylori phage..." (Output title as Markdown. Italicize species like Acinetobacter in Markdown.),
-"authors": "Ferreira, R. ^1,3
+"authors": "Ferreira, R. ^1,3 (If only one author, use "author name ^1*")
 Figueiredo, C. ^3,4,5
 Melo ^1,2"
 "affiliations": "1. CEB, University of Minho \n2. INSA, Lisbon \n3. i3S, Porto \n4. Ipatimup \n5. Faculty of Medicine, University of Porto" (remove "a" and "b" from affiliations and convert to numbers)
@@ -109,6 +109,12 @@ Melo ^1,2"
 
       output.result.bodyTextRaw = bodyText;
     }
+
+    if (output?.result?.authors) {
+      // authors end up looking like this: Sidney Hayes^1*"; use regex to add a space before ^ if missing
+      output.result.authors = output.result.authors.replace(/(\w)(\^)/g, '$1 $2');
+    }
+
     return output
 
   } catch (err) {
@@ -141,7 +147,6 @@ export async function extractAbstractBody(input, // <--- this is where you send 
     Extract this full abstract text in to a JSON object:
 - turn Salmonella to *Salmonella*
 - No emails, citations, or links unless explicit in text.
-- Title: Apply italics, bold, superscript, subscripts, and GFM Markdown for gene/species/bacterial (e.g. Salmonella)/latin words/names. 
 - Convert any HTML to Markdown
 - Body: Use Markdown for Body Text. No links, headers "##", or markdown links to citations. Convert any HTML to Markdown.
 - Add proper markdown styling for italicized words, bold, superscripts, and subscripts.

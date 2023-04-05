@@ -60,7 +60,7 @@ export function hjson(data, headers = {
     headers: {
       'Content-Type': 'application/json',
       'Access-Control-Allow-Origin': url,
-      "Access-Control-Allow-Origin": "*",
+      // "Access-Control-Allow-Origin": "*",
       "Access-Control-Allow-Headers": "*",
       'Access-Control-Allow-Credentials': true,
       "Access-Control-Allow-Methods": "GET,OPTIONS,PATCH,DELETE,POST,PUT",
