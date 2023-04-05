@@ -134,7 +134,7 @@ export async function getReview(input) {
     // this uses Chat
 
     // instructions and persona input keys must be moved, since only supporting one key for now
-    let modelName = input?.modelName || "gpt-4"
+    let modelName = input?.modelName || "gpt-3.5-turbo"
     system = input?.system || "You're a decorated professor at the top of the field, reviewing research papers. {instructions} {persona} ";
     template = "{textInput}";
     const model = new ChatOpenAI({
