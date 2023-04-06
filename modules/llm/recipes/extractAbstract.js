@@ -41,6 +41,7 @@ export async function extractAbstractMetadata(
 - Authors: Convert affiliations to numbers. Format: "Name ^1,2,3 *" (affiliations, * for corresponding author). Use numbers not letters (a,b) for multiple authors.
 - Affiliations: Numbered markdown list.
 - Correspondence: Use provided emails, else blank.
+- Keywords: Create a comma-separated list of keywords from the body text
 - Add proper markdown styling for italicized words, bold, superscripts, and subscripts.
 - For "bodyStartStr", provide the first 50 characters of the abstract body without any changes, HTML formatting, or Markdown conversion. Ensure this string matches the input exactly.
 Example:
@@ -51,6 +52,7 @@ Figueiredo, C. ^3,4,5
 Melo ^1,2"
 "affiliations": "1. CEB, University of Minho \n2. INSA, Lisbon \n3. i3S, Porto \n4. Ipatimup \n5. Faculty of Medicine, University of Porto" (remove "a" and "b" from affiliations and convert to numbers)
 "correspondence": "S. Hayes. Email: sidney.hayes@usask.ca"
+"keywords": "Helicobacter pylori, phage, virulence, antibiotic resistance, biofilm"
 "bodyStartStr": (Provide the first 50 characters of the abstract body exactly as in the input, without any changes, HTML formatting, or Markdown conversion.)
 }}
 
@@ -111,8 +113,14 @@ Melo ^1,2"
     }
 
     if (output?.result?.authors) {
+      // simplfying the output / UX of authors and affiliations
       // authors end up looking like this: Sidney Hayes^1*"; use regex to add a space before ^ if missing
-      output.result.authors = output.result.authors.replace(/(\w)(\^)/g, '$1 $2');
+      // update: we just replace the ^ with a space, then replace double spaces
+      output.result.authors = output.result.authors.replace(/\^/g, ' ');
+      output.result.authors = output.result.authors.replace(/  /g, ' ');
+      // if authors are comma-separated by accident (with optional space), replace with a new line \n
+      output.result.authors = output.result.authors.replace(/,\s/g, '\n');
+      output.result.affiliations = output.result.affiliations.replace(/\d\.\s/g, '');
     }
 
     return output
