@@ -11,6 +11,10 @@
   
 */
 
+
+// easy way to turn it off during testing
+const MG_ENABLED = true
+
 import { checkToken } from "$plasmid/utils/env-helpers"
 
 import Mailgun from 'mailgun.js'; // insecure, uses private API, but works better w/ Vercel
@@ -199,7 +203,7 @@ export const mailto = async (data, secret, loud = false, trail = false) => {
     }
 
     let msg
-    if(process.env.MG_ENABLED === 'true') {
+    if (MG_ENABLED == true && process.env.MG_ENABLED === 'true') {
       msg = await mg.messages.create(process.env.MG_DOMAIN, mailData)
       if(loud)
         console.log(`[mailto] Email sent to: ${to}`, msg , mailData)

@@ -108,13 +108,15 @@ select[multiple],
     @apply my-0;
     &:not(first-of-type):not(last-of-type) { // has to be first
       @apply rounded-t-none rounded-b-none relative -mt-1 hover:z-50;
+      // @apply rounded-t-none rounded-b-none relative -mt-1 hover:z-50;
       width: calc(100% - 2px); // reflects border-2; might change!
     }
     &:first-of-type {
       @apply rounded-t mt-1;
     }
     &:last-of-type {
-      @apply rounded-b bottom-2;
+      // @apply rounded-b bottom-1; // pushes the bottom element into elements above it??
+      @apply rounded-b;
     }
 
   }
