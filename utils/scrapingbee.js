@@ -7,6 +7,7 @@ export const getBee = async ({
   url,
   render_js = false,
   timeout = 10000,
+  premium_proxy = false,
   block_resources = true,
   extract_rules = `{"text":"body"}`,
 }, _fetch) => {
@@ -22,7 +23,7 @@ export const getBee = async ({
       return null
     }
 
-    const str = `https://app.scrapingbee.com/api/v1?api_key=${api_key}&url=${encodeURIComponent(url)}&render_js=${render_js}&block_resources=${block_resources}&timeout=${timeout}&extract_rules=${extract_rules}`
+    const str = `https://app.scrapingbee.com/api/v1?api_key=${api_key}&url=${encodeURIComponent(url)}&render_js=${render_js}&block_resources=${block_resources}&timeout=${timeout}&extract_rules=${extract_rules}&premium_proxy=${premium_proxy}&country_code=us`
     console.log('[scrapingbee] fetching', str)
     const response = await __fetch(str)
     
