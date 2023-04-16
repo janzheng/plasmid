@@ -118,6 +118,10 @@
     &.--text { @apply text-blue-600; }
     &.--btn { @extend %card-btn; @apply hover:bg-blue-100 hover:border-blue-100; }
   }
+  %card-solid-blue { @apply bg-blue-600 border-blue-600; 
+    &.--text { @apply text-white; }
+    &.--btn { @extend %card-btn; @apply hover:bg-blue-600 hover:border-blue-600; }
+  }
   %card-solid-success { @apply bg-green-100/50 border-green-100/50; 
     &.--text { @apply text-green-600; }
     &.--btn { @extend %card-btn; @apply hover:bg-green-100 hover:border-green-100; }
@@ -165,6 +169,7 @@
     &.--white { @extend %card-solid-white; }
     &.--hoverbox { @extend %card-solid-hoverbox; }
     &.--ghost { @extend %card-solid-ghost; }
+    &.--blue { @extend %card-solid-blue; }
     &.--primary { @extend %card-solid-primary; }
     &.--success { @extend %card-solid-success; }
     &.--warning { @extend %card-solid-warning; }
