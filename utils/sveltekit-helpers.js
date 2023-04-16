@@ -40,7 +40,7 @@ export async function send(data, headers = {}, status, statusText = 'ok') {
 export function errorjson(status = 500, data, headers = {}, ) {
   let json = JSON.stringify(data)
   return new Response(json, {
-    status,
+    status:500,
     headers: {
       'Content-Type': 'application/json',
       ...headers
