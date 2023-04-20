@@ -83,7 +83,9 @@
   %card-outline-primary-simple { @apply border-blue-600; }
   %card-outline-primary { @apply border-blue-600 text-blue-900 bg-blue-50; }
   %card-outline-light { @apply border-gray-200; }
-  %card-outline-lighter { @apply border-gray-100; }
+  %card-outline-lighter { @apply border-gray-100; 
+    &.--btn { @extend %card-btn; @apply hover:border-blue-600; }
+  }
   %card-outline-success { @apply border-green-600 text-green-900 bg-green-50; }
   %card-outline-warning { @apply border-orange-600 text-orange-900 bg-orange-50; }
   %card-outline-danger  { @apply border-red-600 text-red-900 bg-red-50; }
