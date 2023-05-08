@@ -38,11 +38,14 @@ export async function extractAbstractMetadata(
 - No emails, citations, or links unless explicit in text.
 - Title: Apply italics, bold, superscript, subscripts, and GFM Markdown for gene/species/bacterial (e.g. Salmonella)/latin words/names. 
 - Convert any HTML to Markdown
-- Authors: Convert affiliations to numbers. Format: "Name ^1,2,3 *" (affiliations, * for corresponding author). Use numbers not letters (a,b) for multiple authors.
+- Authors: Convert affiliations to numbers. Format: "Name ^1,2,3 *" (affiliations, * for corresponding author). Use numbers not letters (a,b) for multiple authors. Put each author on a new line. Don't use "and" to concatenate authors. Remove all "and" from affiliations.
+- Authors: "Eunshin Jo 1 and Sangryeol Ryu 1,2 *" becomes:
+    Eunshin Jo 1
+    Sangryeol Ryu 1,2 *
 - Affiliations: Numbered markdown list.
 - Correspondence: Use provided emails, else blank.
 - Keywords: Create a comma-separated list of keywords from the body text
-- Add proper markdown styling for italicized words, bold, superscripts, and subscripts.
+- Add Github-flavored markdown styling for italicized words, bold, superscripts, and subscripts.
 - For "bodyStartStr", provide the first 50 characters of the abstract body without any changes, HTML formatting, or Markdown conversion. Ensure this string matches the input exactly.
 Example:
 {{
