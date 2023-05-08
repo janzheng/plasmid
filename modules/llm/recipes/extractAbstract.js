@@ -44,7 +44,7 @@ export async function extractAbstractMetadata(
     Sangryeol Ryu 1,2 *
 - Affiliations: Numbered markdown list.
 - Correspondence: Use provided emails, else blank.
-- Keywords: Create a comma-separated list of keywords from the body text
+- Keywords: Create a comma-separated list of keywords from the body text. Remove any duplicates. Remove markdown symbols.
 - Add Github-flavored markdown styling for italicized words, bold, superscripts, and subscripts.
 - For "bodyStartStr", provide the first 50 characters of the abstract body without any changes, HTML formatting, or Markdown conversion. Ensure this string matches the input exactly.
 Example:
