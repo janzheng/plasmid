@@ -1,12 +1,12 @@
 {
   "name": "plasmid",
-  "version": "0.0.6",
+  "version": "0.0.7",
   "description": "",
   "type": "module",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
     "patch": "yarn version patch",
-    "commit": "yarn patch; git add . -A; git commit; git push origin main"
+    "commit": "yarn version patch; git add . -A; git commit; git push origin main"
   },
   "author": "",
   "license": "ISC",
