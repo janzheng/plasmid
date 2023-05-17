@@ -40,7 +40,7 @@ Signature: The visa letter should be signed by an authorized representative of t
       <div class="| pt-0 pb-0 pfix | "> 
         <dl class="grid grid-cols-1-4">
           {#each Object.entries(attendee) as [key, value]}
-            {#if key != 'pairs'}
+            {#if ![ 'pairs', 'notes' ].includes(key)}
               <dt class="capitalize">{key}:</dt>
               <dd>{value}</dd>
             {/if}

@@ -36,8 +36,7 @@
       <div class="invoice-description">{@html marked(invoice.description)}</div>
       <div class="invoice-payment">{@html marked(invoice.payment)}</div>
     </div>
-
-
+    
   </div>
 </div>
 
@@ -46,6 +45,10 @@
   marked.use({
     breaks: true,
   })
+
+  $: if(invoice) {
+    console.log('Invoice update:', invoice)
+  }
 
   export let invoice = {
     logoUrl: "https://f2.phage.directory/airscripts/-evergreen-2023-live/content/rectaUjlWh18lEZzG/evg23-full-logo.png",
@@ -63,6 +66,7 @@ If the above options are unfeasible, contact us to arrange an alternative method
     description: `This invoice is for [Evergreen ticket name] + ticket details 
     `,
   };
+
   
   export let payee = {
     details: `Jan Zheng (Phage Directory) 
@@ -81,58 +85,3 @@ cfalvey@liebertpub.com`,
   };
 
 </script>
-<!-- 
-
-<div>
-  <div class="grid grid-cols-3">
-    <h1>Logo</h1>
-    <div class="col-span-2">
-      <h5>Project</h5>
-      <h3>5200 Praire Dr <span class="Card-solid text-sm px-1">2021-293</span></h3>
-    </div>
-    <div>
-      <h5>Bill from</h5>
-      <h4>Architects, Inc.</h4>
-      <p>
-        1000 Market St
-        <br />
-        San Francisco, CA 94102
-      </p>
-    </div>
-    <div>
-      <h5>Bill to</h5>
-      <h4>The Client, LLC</h4>
-      <p>
-        48 California St
-        <br />
-        San Francisco, CA 94119
-      </p>
-    </div>
-
-    <div>
-      <h5>Issue date</h5>
-      <p>Aug 9, 2021</p>
-    </div>
-    <div>
-      <h5>Terms</h5>
-      <p>Net 30</p>
-    </div>
-    <div>
-      <h5>Due date</h5>
-      <p>Sep 3, 2021</p>
-    </div>
-
-    <div>
-      <h5>Services through</h5>
-      <p>Jul 1, 2021 - Jul 31, 2021</p>
-    </div>
-    <div>
-      <h5>Reference number</h5>
-      <p>PA-2381</p>
-    </div>
-    <div>
-      <h5>Invoice number</h5>
-      <p>2021-0048</p>
-    </div>
-  </div>
-</div> -->
