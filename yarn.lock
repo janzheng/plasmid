@@ -1151,6 +1151,16 @@ __metadata:
   languageName: node
   linkType: hard
 
+"@babel/polyfill@npm:^7.10.1":
+  version: 7.12.1
+  resolution: "@babel/polyfill@npm:7.12.1"
+  dependencies:
+    core-js: ^2.6.5
+    regenerator-runtime: ^0.13.4
+  checksum: 3f59a9d85a41b390b044a1be13e11ae6d8efbfcf4e07217964585c7cef337b828eecfc5e164083227189146d2b6efc1affae8f59c831438eb40b848ab6fe5f39
+  languageName: node
+  linkType: hard
+
 "@babel/preset-env@npm:^7.14.7":
   version: 7.21.4
   resolution: "@babel/preset-env@npm:7.21.4"
@@ -1264,6 +1274,15 @@ __metadata:
   dependencies:
     regenerator-runtime: ^0.13.11
   checksum: 7b33e25bfa9e0e1b9e8828bb61b2d32bdd46b41b07ba7cb43319ad08efc6fda8eb89445193e67d6541814627df0ca59122c0ea795e412b99c5183a0540d338ab
+  languageName: node
+  linkType: hard
+
+"@babel/runtime@npm:^7.17.8":
+  version: 7.21.5
+  resolution: "@babel/runtime@npm:7.21.5"
+  dependencies:
+    regenerator-runtime: ^0.13.11
+  checksum: 358f2779d3187f5c67ad302e8f8d435412925d0b991d133c7d4a7b1ddd5a3fda1b6f34537cb64628dfd96a27ae46df105bed3895b8d754b88cacdded8d1129dd
   languageName: node
   linkType: hard
 
@@ -3024,6 +3043,13 @@ __metadata:
   languageName: node
   linkType: hard
 
+"clear-cut@npm:^2.0.2":
+  version: 2.0.2
+  resolution: "clear-cut@npm:2.0.2"
+  checksum: 1f2797e3fb3e3971439bd7f061c4393fb38074a01347b3e7dd9bb11b89d4da6c6158f28732424027f70946bee107e80add1fb7e993df20579ea24b859b723822
+  languageName: node
+  linkType: hard
+
 "clone-regexp@npm:^3.0.0":
   version: 3.0.0
   resolution: "clone-regexp@npm:3.0.0"
@@ -3178,6 +3204,13 @@ __metadata:
   languageName: node
   linkType: hard
 
+"core-js@npm:^2.6.5":
+  version: 2.6.12
+  resolution: "core-js@npm:2.6.12"
+  checksum: 44fa9934a85f8c78d61e0c8b7b22436330471ffe59ec5076fe7f324d6e8cf7f824b14b1c81ca73608b13bdb0fef035bd820989bf059767ad6fa13123bb8bd016
+  languageName: node
+  linkType: hard
+
 "core-util-is@npm:~1.0.0":
   version: 1.0.3
   resolution: "core-util-is@npm:1.0.3"
@@ -3221,6 +3254,16 @@ __metadata:
     domutils: 1.5.1
     nth-check: ~1.0.1
   checksum: 607cca60d2f5c56701fe5f800bbe668b114395c503d4e4808edbbbe70b8be3c96a6407428dc0227fcbdf335b20468e6a9e7fd689185edfb57d402e1e4837c9b7
+  languageName: node
+  linkType: hard
+
+"css-tree@npm:^1.1.3":
+  version: 1.1.3
+  resolution: "css-tree@npm:1.1.3"
+  dependencies:
+    mdn-data: 2.0.14
+    source-map: ^0.6.1
+  checksum: 79f9b81803991b6977b7fcb1588799270438274d89066ce08f117f5cdb5e20019b446d766c61506dd772c839df84caa16042d6076f20c97187f5abe3b50e7d1f
   languageName: node
   linkType: hard
 
@@ -3651,7 +3694,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"es5-ext@npm:^0.10.35, es5-ext@npm:^0.10.50":
+"es5-ext@npm:^0.10.35, es5-ext@npm:^0.10.50, es5-ext@npm:~0.10.14":
   version: 0.10.62
   resolution: "es5-ext@npm:0.10.62"
   dependencies:
@@ -3806,6 +3849,16 @@ __metadata:
   version: 2.0.3
   resolution: "esutils@npm:2.0.3"
   checksum: 22b5b08f74737379a840b8ed2036a5fb35826c709ab000683b092d9054e5c2a82c27818f12604bfc2a9a76b90b6834ef081edbc1c7ae30d1627012e067c6ec87
+  languageName: node
+  linkType: hard
+
+"event-emitter@npm:^0.3.5":
+  version: 0.3.5
+  resolution: "event-emitter@npm:0.3.5"
+  dependencies:
+    d: 1
+    es5-ext: ~0.10.14
+  checksum: 27c1399557d9cd7e0aa0b366c37c38a4c17293e3a10258e8b692a847dd5ba9fb90429c3a5a1eeff96f31f6fa03ccbd31d8ad15e00540b22b22f01557be706030
   languageName: node
   linkType: hard
 
@@ -5782,6 +5835,13 @@ __metadata:
   languageName: node
   linkType: hard
 
+"mdn-data@npm:2.0.14":
+  version: 2.0.14
+  resolution: "mdn-data@npm:2.0.14"
+  checksum: 9d0128ed425a89f4cba8f787dca27ad9408b5cb1b220af2d938e2a0629d17d879a34d2cb19318bdb26c3f14c77dd5dfbae67211f5caaf07b61b1f2c5c8c7dc16
+  languageName: node
+  linkType: hard
+
 "mdurl@npm:^1.0.1":
   version: 1.0.1
   resolution: "mdurl@npm:1.0.1"
@@ -6790,6 +6850,19 @@ __metadata:
   languageName: node
   linkType: hard
 
+"pagedjs@npm:^0.4.1":
+  version: 0.4.1
+  resolution: "pagedjs@npm:0.4.1"
+  dependencies:
+    "@babel/polyfill": ^7.10.1
+    "@babel/runtime": ^7.17.8
+    clear-cut: ^2.0.2
+    css-tree: ^1.1.3
+    event-emitter: ^0.3.5
+  checksum: 4601c66d9a64bbc7731c39a12a55e822a248754517bfd9bfec2f887676e6fc77b3b85aa219e1faec4bb03505b2d74a1e09657d3eb225522e2a70bc425c53c31c
+  languageName: node
+  linkType: hard
+
 "pako@npm:~0.2.5":
   version: 0.2.9
   resolution: "pako@npm:0.2.9"
@@ -7010,6 +7083,7 @@ __metadata:
     nodemailer: ^6.6.2
     nprogress: ^0.2.0
     openai: ^3.2.1
+    pagedjs: ^0.4.1
     pocketbase: ^0.1.2
     prism-solarized-dark: ^1.0.1
     prismjs: ^1.29.0
@@ -7343,7 +7417,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"regenerator-runtime@npm:^0.13.11":
+"regenerator-runtime@npm:^0.13.11, regenerator-runtime@npm:^0.13.4":
   version: 0.13.11
   resolution: "regenerator-runtime@npm:0.13.11"
   checksum: 27481628d22a1c4e3ff551096a683b424242a216fee44685467307f14d58020af1e19660bf2e26064de946bad7eff28950eae9f8209d55723e2d9351e632bbb4
@@ -7843,6 +7917,13 @@ __metadata:
   version: 1.0.2
   resolution: "source-map-js@npm:1.0.2"
   checksum: c049a7fc4deb9a7e9b481ae3d424cc793cb4845daa690bc5a05d428bf41bf231ced49b4cf0c9e77f9d42fdb3d20d6187619fc586605f5eabe995a316da8d377c
+  languageName: node
+  linkType: hard
+
+"source-map@npm:^0.6.1":
+  version: 0.6.1
+  resolution: "source-map@npm:0.6.1"
+  checksum: 59ce8640cf3f3124f64ac289012c2b8bd377c238e316fb323ea22fbfe83da07d81e000071d7242cad7a23cd91c7de98e4df8830ec3f133cb6133a5f6e9f67bc2
   languageName: node
   linkType: hard
 

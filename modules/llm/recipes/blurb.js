@@ -158,7 +158,8 @@ export async function getChatBlurb(input) {
     `;
     let template = "{textInput}";
     let modelName = input?.modelName || "gpt-3.5-turbo" || "gpt-4"
-    const textInput = `Link: ${input?.link} | Text: ${input?.text}`;
+    let textInput = `Link: ${input?.link} | Text: ${input?.text}`;
+    textInput = textInput.substring(0, 4000)
 
     // this example actually messes the output up
     const examples = `
@@ -174,7 +175,7 @@ Examples JSON object. Not how the links are generated mid-summary:
       // modelName: modelName || "gpt-3.5-turbo",
       modelName: modelName,
       openAIApiKey: process.env.OPENAI_API_KEY,
-      temperature: input?.temperature || 0.4,
+      temperature: input?.temperature || 0.2,
     });
     const prompt = ChatPromptTemplate.fromPromptMessages([
       SystemMessagePromptTemplate.fromTemplate(system),
@@ -189,14 +190,14 @@ Examples JSON object. Not how the links are generated mid-summary:
     let res = { text: '(results)' }
 
     // console.log('Calling reviewer:', persona)
-    console.log('[blurb]: Calling GPT...')
+    console.log('[chat-blurb]: Calling GPT...')
     console.time();
     res = await chain.call({
       instructions: instructions, // + ' ' + examples,
       textInput,
     });
     console.timeEnd();
-    console.log('[blurb]: GPT Response:', res?.text);
+    console.log('[chat-blurb]: GPT Response:', res?.text);
 
 
     let output = getReturnResponse(res);
@@ -215,7 +216,7 @@ Examples JSON object. Not how the links are generated mid-summary:
     }
   } catch (err) {
     // _err(err)
-    console.error('[blurb]', err.message || err?.response?.data)
+    console.error('[chat-blurb]', err.message || err?.response?.data)
     // throw error(500, err.message)
   }
 }

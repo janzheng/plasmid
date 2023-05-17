@@ -1,6 +1,6 @@
 {
   "name": "plasmid",
-  "version": "0.0.8",
+  "version": "0.0.9",
   "description": "",
   "type": "module",
   "scripts": {
@@ -43,6 +43,7 @@
     "nodemailer": "^6.6.2",
     "nprogress": "^0.2.0",
     "openai": "^3.2.1",
+    "pagedjs": "^0.4.1",
     "pocketbase": "^0.1.2",
     "prism-solarized-dark": "^1.0.1",
     "prismjs": "^1.29.0",
