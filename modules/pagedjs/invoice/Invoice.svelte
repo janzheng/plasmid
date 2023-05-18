@@ -60,10 +60,9 @@
     amount: "950",
     symbol: "$",
     currency: "USD",
-    payment: `Please pay using Transferwise to
-Transferwise details here
+    payment: `NOTE: We are currently setting up a different bank transfer platform. Please hold off, as we’re still working on this. Credit Card payments through Stripe are currently available.
 If the above options are unfeasible, contact us to arrange an alternative method of payment.`,
-    description: `This invoice is for [Evergreen ticket name] + ticket details 
+    description: `This invoice is for one Evergreen ticket. 
     `,
   };
 
