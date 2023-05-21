@@ -27,38 +27,46 @@ Signature: The visa letter should be signed by an authorized representative of t
     {/if}
     
     <div class="event-name">
-      <h1 class="text-2xl pt-8 pb-2 pfix">{@html marked(event.name)}</h1>
+      <h1 class="text-2xl pt-6 pb-2 pfix">{@html marked(event.name)}</h1>
     </div>
-    <div class="event-date">
+    <!-- <div class="event-date">
       <div class="text-xl | pt-0 pfix">{@html marked(event.date)}</div>
-    </div>
+    </div> -->
     <div class="event-organizer">
-      <div class="| pt-0 pb-0 pfix">{@html marked(event.organizer)}</div>
-      <div class="">Issuing Country: {event.country}</div>
+      <div class="| pt-0 pb-0 pfix | text-sm">{@html marked(event.organizer)}</div>
+      <!-- <div class="">Issuing Country: {event.country}</div> -->
     </div>
-    <div class="event-attendee-info | my-4">
+    <div class="event-attendee-info | my-4 text-sm">
       <div class="| pt-0 pb-0 pfix | "> 
-        <dl class="grid grid-cols-1-4">
-          {#each Object.entries(attendee) as [key, value]}
-            {#if ![ 'pairs', 'notes' ].includes(key)}
-              <dt class="capitalize">{key}:</dt>
-              <dd>{value}</dd>
-            {/if}
-          {/each}
-
-          {#each splitPairs(attendee.pairs) as pair}
-            <dt class="capitalize">{pair.key}:</dt>
-            <dd>{pair.value}</dd>
-          {/each}
-        </dl>
+        <div class="flex gap-8 | ">
+          <!-- left half -->
+          <div>
+            <!-- get first half of array length of getPairs() -->
+            {#each getPairs().slice(0, Math.floor(getPairs().length / 2)) as [key, value]}
+              <dl class="grid grid-cols-1-2 gap-x-2">
+                <dt class="capitalize">{key}:</dt>
+                <dd>{value}</dd>
+              </dl>
+            {/each}
+          </div>
+          <!-- right half -->
+          <div>
+            {#each getPairs().slice(Math.floor(getPairs().length / 2)) as [key, value]}
+              <dl class="grid grid-cols-1-2 gap-x-2">
+                <dt class="capitalize">{key}:</dt>
+                <dd>{value}</dd>
+              </dl>
+            {/each}
+          </div>
+        </div>
       </div>
       {#if attendee.notes}
-        <div class="event-attendee-notes | mt-4">{@html marked(attendee.notes)}</div>
+        <div class="event-attendee-notes | mt-2">{@html marked(attendee.notes)}</div>
       {/if}
     </div>
     
     <div class="event-invitation | my-4">
-      <div class="">Dear {attendee?.fname || attendee?.name},</div>
+      <!-- <div class="">Dear {attendee?.fname || attendee?.name},</div> -->
       <div class="| pt-0 pb-0 pfix">{@html marked(event.invitation)}</div>
     </div>
 
@@ -79,14 +87,11 @@ Signature: The visa letter should be signed by an authorized representative of t
     logoWidth: "120px",
 
     name: `25<sup>th</sup> Biennial Evergreen International Phage Meeting`,
-    date: `August 6-11, 2023`,
-    country: `United States of America`,
+    // date: `August 6-11, 2023`,
     organizer: `
-The Biennial Evergreen International Phage Meeting is a conference where participants present their latest research in bacteriophage biology and applications.
-
-**The Evergreen State College Olympia, WA 98505**
-Dr. Elizabeth Kutter, Organizing Committee Chair | Evergreen Phage Lab
-https://evergreen.phage.directory — tescphage@gmail.com
+August 6-11, 2023 — The Biennial Evergreen International Phage Meeting is a conference where participants present their latest research in bacteriophage biology and applications.
+<div class=""> The Evergreen State College Olympia, WA 98505</div>
+Dr. Elizabeth Kutter, Organizing Committee Chair | Evergreen Phage Lab | tescphage@gmail.com
     `,
     invitation: `
 As you know, the 25th Biennial Evergreen International Phage Meeting will be held August 6-11 at The Evergreen State College. We invite you to attend and encourage you to present any related research in the field of bacteriophage. Bring a poster presentation to be displayed throughout the meeting, facilitating discussions about all aspects of your work and furthering efforts to develop international collaborations. If you wish for your work to be considered for a speaking slot in this meeting, please submit a draft abstract to tescphage@gmail.com by May 15th, 2023.
@@ -103,28 +108,38 @@ Let us know if you need anything further from us to support your application to 
 
   export let attendee = {
     name: "John Doe",
-    affiliation: "University of Washington",
+    affiliation: "UNSW, Sydney",
     email: "jondoe@gmail.com",
-    "Date of Birth": "January 1, 1980",
     pairs: `Passport #: 123-4567-89
 Passport Expiration: Jan 1, 2025
+Date of Birth: January 1, 1980
+Place of Birth: Sydney, Australia
     `,
     notes: "This is a test note",
+    country: `Australia`,
   };
+
+  function getPairs() {
+    let pairs = []
+    pairs.push(...Object.entries(attendee))
+    pairs.push(...splitPairs(attendee.pairs).map(pair=>[pair.key, pair.value]))
+    pairs = pairs.filter(p=>![ 'pairs', 'notes' ].includes(p[0]))
+    // console.log('---> pairs:', pairs)
+    return pairs
+  }
 
 
   function splitPairs(pairs) {
     const lines = pairs.split('\n');
     const keyValuePairs = lines.map(line => {
       line = line.trim()
-      console.log(`line: [${line}]`, line.length)
+      // console.log(`line: [${line}]`, line.length)
       if(line && line.length > 0) {
-        console.log('what?!', line.length)
         const [key, value] = line.split(':');
         return { key: key?.trim(), value: value?.trim() };
       }
     });
-    console.log('pairs:', keyValuePairs)
+    // console.log('pairs:', keyValuePairs)
     return keyValuePairs.filter(x=>x); // filter out null
   }
 </script>

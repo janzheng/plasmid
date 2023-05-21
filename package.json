@@ -1,6 +1,6 @@
 {
   "name": "plasmid",
-  "version": "0.0.11",
+  "version": "0.0.12",
   "description": "",
   "type": "module",
   "scripts": {
@@ -31,9 +31,11 @@
     "deta-base-orm": "^0.5.3",
     "dotenv": "^11.0.0",
     "form-data": "^4.0.0",
+    "html-to-image": "^1.11.11",
     "ical": "^0.8.0",
     "ipfs-http-client": "^57.0.3",
     "ipfs-only-hash": "^4.0.0",
+    "jspdf": "^2.5.1",
     "langchain": "^0.0.45",
     "leven": "^4.0.0",
     "markdown-it": "^12.1.0",

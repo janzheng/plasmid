@@ -26,7 +26,7 @@
     </div>
 
     
-    <div class="invoice-payee-payer | grid grid-cols-2 | my-8">
+    <div class="invoice-payee-payer | grid grid-cols-2 gap-4 | my-8">
       <div class="invoice-payee">{@html marked(payee.details)}</div>
       <div class="invoice-payer">{@html marked(payer.details)}</div>
     </div>
