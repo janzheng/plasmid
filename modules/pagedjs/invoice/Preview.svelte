@@ -28,7 +28,7 @@
 
   async function print() {
     if(!browser) return;
-    await preview(sourceElem)
+    // await preview(sourceElem) // doing this removes any changes made to preview
     window.print()
   }
 

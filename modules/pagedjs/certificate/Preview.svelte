@@ -15,7 +15,7 @@
   import { toPng } from 'html-to-image';
   import { jsPDF } from 'jspdf';
 
-  import VisaLetter from './VisaLetter.svelte'
+  import Certificate from './Certificate.svelte'
   
   export let previewElem, sourceElem, editable=false;
   export let event, attendee;
@@ -100,11 +100,6 @@
     })
   };
 
-  async function download() {
-    let pdf = await getPDF()
-    pdf.save(`visaletter-${attendee.name}.pdf`);
-  }
-
   async function print() {
     if(!browser) return;
     // await preview(sourceHtml)
@@ -140,31 +135,25 @@
 
 
 
-
-
-
-
-
-
 <div class="_content | container">
   <div class="Menubar {menubarClasses}">
     <div class="menu">
       <button class="Btn-outline" on:click={()=>print()}>{printCta}</button>
-      <button class="Btn-outline" on:click={()=>download()}>{"Download"}</button>
+      <!-- <button class="Btn-outline" on:click={()=>download()}>{"Download"}</button> -->
     </div>
     <div id="editor" 
-      class="hidden"
+      class=""
       contenteditable={editable}
       bind:this={sourceElem}
       on:blur={()=>preview(sourceElem)}
       >
-        <VisaLetter {event} {attendee} />
+        <Certificate {event} {attendee} />
     </div>
   </div>
 </div>
 
 
-<div id="preview-container" class="preview-container | _content mx-auto">
+<div id="preview-container" class="preview-container | _content mx-auto |">
   <div class="preview-box | container ">
     <div class="text-xs text-gray-500 uppercase | pb-2">Preview</div>
   </div>
