@@ -75,11 +75,21 @@
 }
 
 ._form-input {
-  @apply block w-full rounded-md bg-gray-100 border-transparent border-2 border-transparent hover:border-blue-500 hover:border-2 focus:outline-none focus:ring-0 transition ease-in-out
+  // @apply block w-full rounded-md bg-gray-100 border-transparent border-2 border-transparent hover:border-blue-500 hover:border-2 focus:outline-none focus:ring-0 transition ease-in-out
+  @apply block w-full rounded-md border-transparent border-2 border-transparent hover:border-blue-500 hover:border-2 focus:outline-none focus:ring-0 transition ease-in-out;
+
+  // not .--transparent:
+  &:not(.--transparent) {
+    @apply bg-gray-100;
+  }
 }
 
 ._form-textarea {
-  @apply w-full rounded-md bg-gray-100 border-transparent border-2 border-transparent hover:border-blue-500 hover:border-2 focus:outline-none focus:ring-0 transition ease-in-out
+  @apply w-full rounded-md border-transparent border-2 border-transparent hover:border-blue-500 hover:border-2 focus:outline-none focus:ring-0 transition ease-in-out;
+
+  &:not(.--transparent) {
+    @apply bg-gray-100;
+  }
 }
 
 
