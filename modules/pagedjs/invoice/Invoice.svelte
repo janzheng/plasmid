@@ -32,7 +32,7 @@
     </div>
     
     <div class="invoice-main mt-4">
-      <div class="invoice-due text-lg font-bold">Total amount due: {invoice.symbol}{invoice.amount} {invoice.currency}</div>
+      <div class="invoice-due text-lg font-bold">Total amount due: {invoice.symbol}{invoice.amount || "(unspecified)"} {invoice.currency}</div>
       <div class="invoice-description">{@html marked(invoice.description)}</div>
       <div class="invoice-payment">{@html marked(invoice.payment)}</div>
     </div>

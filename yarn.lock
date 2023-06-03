@@ -1342,6 +1342,13 @@ __metadata:
   languageName: node
   linkType: hard
 
+"@dqbd/tiktoken@npm:^1.0.6":
+  version: 1.0.7
+  resolution: "@dqbd/tiktoken@npm:1.0.7"
+  checksum: 81049797dcffa101c57b68a78be19b11958edf6e6cfffab7ccd3ec2e5290e3b27bc25f1060a1c34e1cb94f22e0f46d9aafa925d383fb4559738b644aa01c0fb1
+  languageName: node
+  linkType: hard
+
 "@esbuild/android-arm64@npm:0.17.17":
   version: 0.17.17
   resolution: "@esbuild/android-arm64@npm:0.17.17"
@@ -3441,6 +3448,13 @@ __metadata:
   languageName: node
   linkType: hard
 
+"decimal.js@npm:^10.4.3":
+  version: 10.4.3
+  resolution: "decimal.js@npm:10.4.3"
+  checksum: 796404dcfa9d1dbfdc48870229d57f788b48c21c603c3f6554a1c17c10195fc1024de338b0cf9e1efe0c7c167eeb18f04548979bcc5fdfabebb7cc0ae3287bae
+  languageName: node
+  linkType: hard
+
 "decode-named-character-reference@npm:^1.0.0":
   version: 1.0.2
   resolution: "decode-named-character-reference@npm:1.0.2"
@@ -4305,6 +4319,16 @@ __metadata:
     unzip-response: ^1.0.2
     url-parse-lax: ^1.0.0
   checksum: bd8e0d0b28e27bc34b81ce98a7ff116b2dec77ac70dda9cf624000eca303ebff51a7c00c1113bede3038afa2e865a61e6a5a6d2c645c5adf68ac8ed5e5b8d064
+  languageName: node
+  linkType: hard
+
+"gpt-tokens@npm:^1.0.7":
+  version: 1.0.7
+  resolution: "gpt-tokens@npm:1.0.7"
+  dependencies:
+    "@dqbd/tiktoken": ^1.0.6
+    decimal.js: ^10.4.3
+  checksum: 800da05d961826978e32b49b9072a83d2a11586cd15d33f6401b2965d14b0d00860df59f6a6c35a39260ff17fda83dfd6027a4edc873ab7269cb5a42e1eeda4f
   languageName: node
   linkType: hard
 
@@ -7197,6 +7221,7 @@ __metadata:
     dotenv: ^11.0.0
     file-type: ^17.1.1
     form-data: ^4.0.0
+    gpt-tokens: ^1.0.7
     html-to-image: ^1.11.11
     ical: ^0.8.0
     ipfs-http-client: ^57.0.3
