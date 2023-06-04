@@ -16,11 +16,13 @@ import {
 
 export async function prompt(
   {
-    prompt, // the user message
+    prompt, user, input, // the user message
     system = "You are a helpful assistant",
     modelName = "gpt-3.5-turbo",
-    temperature = 0.7
+    temperature = 0.7,
+    streaming = false,
   } = {}) {
+    
 
   try {
     const model = new ChatOpenAI({
@@ -28,6 +30,8 @@ export async function prompt(
       openAIApiKey: process.env.OPENAI_API_KEY,
       temperature,
     });
+
+    prompt = user || input || prompt // support multi keywords
 
     const chatPromptTemplate = ChatPromptTemplate.fromPromptMessages([
       SystemMessagePromptTemplate.fromTemplate(system),
@@ -50,5 +54,65 @@ export async function prompt(
 
   } catch (err) {
     console.error('[llm/prompt]', err.message || err?.response?.data)
+  }
+}
+
+
+
+
+
+
+
+
+
+
+
+
+
+// use this with SSE, e.g. /demo/chatty
+
+export async function promptStream (
+  {
+    prompt, user, input, // the user message
+    system = "You are a helpful assistant",
+    modelName = "gpt-3.5-turbo",
+    temperature = 0.7,
+    streaming = false,
+  } = {}) {
+
+
+  try {
+    const model = new ChatOpenAI({
+      modelName,
+      openAIApiKey: process.env.OPENAI_API_KEY,
+      temperature,
+      streaming,
+      callbacks: [
+        {
+          handleLLMNewToken(token) {
+            process.stdout.write(token);
+          },
+        },
+      ],
+    });
+
+    prompt = user || input || prompt // support multi keywords
+
+    const chatPromptTemplate = ChatPromptTemplate.fromPromptMessages([
+      SystemMessagePromptTemplate.fromTemplate(system),
+      HumanMessagePromptTemplate.fromTemplate(prompt),
+    ]);
+
+    const chain = new LLMChain({
+      llm: model,
+      prompt: chatPromptTemplate,
+    });
+
+    let output = await chain.call()
+
+    return output?.text
+
+  } catch (err) {
+    console.error('[llm/promptStream]', err.message || err?.response?.data)
   }
 }

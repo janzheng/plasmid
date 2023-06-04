@@ -100,7 +100,6 @@ export const getChatMessages = ({ system = "You are a helpful assistant", prompt
 
 
 export const llm = async ({ messages, model = "gpt-3.5-turbo", max_tokens = 256, temperature = 0.4 }) => {
-
   try {
     const response = await openai.createChatCompletion({
       model,
@@ -124,11 +123,11 @@ export const llm = async ({ messages, model = "gpt-3.5-turbo", max_tokens = 256,
 export async function getChat({ chatSettings, sessionHistory, useHistory = true, showSummary = false }) {
   try {
     let {
-      system, promptInstructions, inputPrefix, exampleHistory, input,
+      system, promptInstructions, inputPrefix, exampleHistory, input, user,
       model, max_tokens = 256, temperature
     } = chatSettings
 
-    let messages = getChatMessages({ system, promptInstructions, inputPrefix, exampleHistory, sessionHistory, input })
+    let messages = getChatMessages({ system, promptInstructions, inputPrefix, exampleHistory, sessionHistory, input: input||user })
 
     if (useHistory && !sessionHistory) {
       sessionHistory = messages
@@ -154,7 +153,7 @@ export async function getChat({ chatSettings, sessionHistory, useHistory = true,
       output,
       summary: showSummary && {
         summaryMsg,
-        summary
+        summary,
       }
     }
   } catch (err) {
@@ -171,6 +170,7 @@ export async function getChat({ chatSettings, sessionHistory, useHistory = true,
 export async function _POST({ request }) {
   try {
     let chatSettings = await request.json()
+    console.log("responding to options", chatSettings)
     return json(await getChat({ chatSettings }))
   } catch (err) {
     console.error('[api/llm]', err.message || err?.response?.data)

@@ -4,7 +4,7 @@
 
 import { GPTTokens } from 'gpt-tokens'
 
-export let getTokens = async ({
+export let getTokens = ({
   model = 'gpt-3.5-turbo',
   messages,
   system = 'You are a helpful assistant',
@@ -23,4 +23,21 @@ export let getTokens = async ({
     usd: gptTokens.usedUSD,
     tokens: gptTokens.usedTokens,
   }
+}
+
+
+export let getTokenStrLen = (str, model = 'gpt-3.5-turbo') => {
+
+  const gptTokens = new GPTTokens({
+    model,
+    messages: [
+      { 'role': 'user', 'content': str },
+    ],
+  })
+
+  return gptTokens.usedTokens
+  // return {
+  //   usd: gptTokens.usedUSD,
+  //   tokens: gptTokens.usedTokens,
+  // }
 }
