@@ -2673,7 +2673,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"base64-js@npm:^1.3.1":
+"base64-js@npm:^1.3.1, base64-js@npm:^1.5.1":
   version: 1.5.1
   resolution: "base64-js@npm:1.5.1"
   checksum: 669632eb3745404c2f822a18fc3a0122d2f9a7a13f7fb8b5823ee19d1d2ff9ee5b52c53367176ea4ad093c332fd5ab4bd0ebae5a8e27917a4105a4cfc86b1005
@@ -5320,6 +5320,15 @@ __metadata:
   languageName: node
   linkType: hard
 
+"js-tiktoken@npm:^1.0.6":
+  version: 1.0.6
+  resolution: "js-tiktoken@npm:1.0.6"
+  dependencies:
+    base64-js: ^1.5.1
+  checksum: 05a1b3f895447194a0ac17a56229e47eae3816cd851f12ee947b5cdc2f4439773ed52938f4f6459f5c45dc0f4a15ac1a882cde61e47e31b6a84b7129fe1f63c2
+  languageName: node
+  linkType: hard
+
 "js-tokens@npm:^4.0.0":
   version: 4.0.0
   resolution: "js-tokens@npm:4.0.0"
@@ -7226,6 +7235,7 @@ __metadata:
     ical: ^0.8.0
     ipfs-http-client: ^57.0.3
     ipfs-only-hash: ^4.0.0
+    js-tiktoken: ^1.0.6
     jspdf: ^2.5.1
     langchain: ^0.0.45
     leven: ^4.0.0
