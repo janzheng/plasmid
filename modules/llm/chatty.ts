@@ -9,12 +9,14 @@
 
 */
 
-import { OPENAI_API_KEY } from '$env/static/private'
+// import { OPENAI_API_KEY } from '$env/static/private'
 import type { CreateChatCompletionRequest, ChatCompletionRequestMessage } from 'openai'
 import type { RequestHandler } from './$types'
 import { getTokenStrLen } from './tokens.js'
 import { json } from '@sveltejs/kit'
 // import type { Config } from '@sveltejs/adapter-vercel'
+
+const OPENAI_API_KEY = process.env.OPENAI_API_KEY
 
 // export const config: Config = {
 //   runtime: 'edge'
