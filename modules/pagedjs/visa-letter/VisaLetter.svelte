@@ -43,7 +43,7 @@ Signature: The visa letter should be signed by an authorized representative of t
           <div>
             <!-- get first half of array length of getPairs() -->
             {#each getPairs().slice(0, Math.floor(getPairs().length / 2)) as [key, value]}
-              <dl class="grid grid-cols-2-3 gap-x-2">
+              <dl class="grid grid-cols-1-3 gap-x-2">
                 <dt class="capitalize">{key}:</dt>
                 <dd>{value}</dd>
               </dl>
@@ -52,7 +52,7 @@ Signature: The visa letter should be signed by an authorized representative of t
           <!-- right half -->
           <div>
             {#each getPairs().slice(Math.floor(getPairs().length / 2)) as [key, value]}
-              <dl class="grid grid-cols-2-3 gap-x-2">
+              <dl class="grid grid-cols-1-3 gap-x-2">
                 <dt class="capitalize">{key}:</dt>
                 <dd>{value}</dd>
               </dl>
