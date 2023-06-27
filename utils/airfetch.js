@@ -78,6 +78,8 @@ export const getContent = async (
       options: { 'view': view }
     }], 
     useCache=true,
+    flatten=false,
+    settings=null
     // jsonLocation = '../../../static/data/content.json'
   ) => {
 
@@ -98,8 +100,11 @@ export const getContent = async (
   //   console.log('[Content] Using Airtable as CMS')
   // }
 
-  // TODO: get from Notion?
-  return await getTables(bases, useCache)
+  let tables = await getTables(bases, useCache, settings)
+  if(flatten) {
+    tables = flattenTables(tables)
+  }
+  return tables
 }
 
 
@@ -117,12 +122,12 @@ export const getContent = async (
 
 // check if a field (e.g. email) exists in the Email field in a specified
 // for not adding duplicates
-export const checkExistence = async (keyword, tableName, fieldName = "Email", useCache = true) => {
+export const checkExistence = async (keyword, tableName, fieldName = "Email", useCache = true, _apiEditorKey) => {
   const _cache = `checkExistence-${keyword}-${tableName}-${fieldName}`
   if (useCache && cacheCheck(_cache)) return cacheCheck(_cache)
 
   const cytosis = await new Cytosis({
-    apiKey: apiEditorKey,
+    apiKey: _apiEditorKey || apiEditorKey,
     baseId: baseId,
     bases: [
       {
@@ -362,6 +367,7 @@ export const getTablePaged = async (
 export const getTables = async (bases = [{
   tables:  ['Content'], 
   options: {'view': view},
+  flatten: false,
 }], useCache = true, settings) => {
 
   const _cache = `getTables-${view}-${JSON.stringify(bases)}-${JSON.stringify(settings)}`
@@ -468,6 +474,15 @@ export const flattenTable = (table) => {
     newtable.push(flattenRecord(record))
   })
   return newtable
+}
+
+// flattens many tables, as returned by getContent / getTables
+export const flattenTables = (tables) => {
+  let flatTables = {}
+  Object.keys(tables).forEach((table) => {
+    flatTables[table] = flattenTable(tables[table])
+  })
+  return flatTables
 }
 
 export const flattenRecord = (record) => {
