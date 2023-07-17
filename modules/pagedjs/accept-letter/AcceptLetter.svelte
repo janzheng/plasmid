@@ -15,7 +15,7 @@
     
     <div class="letter-header pt-4">
       <!-- <div class="text-sm mt-4 mb-2">Evergreen 2023 Acceptance Letter</div> -->
-      <div class=" mt-4 mb-2">{@html marked(contentData.text || '')}</div>
+      <div class=" mt-4 mb-2">{@html marked(contentData.acceptanceText || '')}</div>
     </div>
 
     <div class="letter-signature | mt-4">
