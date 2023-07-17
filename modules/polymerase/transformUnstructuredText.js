@@ -15,7 +15,7 @@
 
 import * as R from 'ramda';
 import * as RA from 'ramda-async';
-import { z } from "zod";
+// import { z } from "zod";
 
 
 
@@ -104,6 +104,8 @@ export const extractStructuredDataFromText = async ({
 
 
     (async () => {
+
+      const sampleNameSchemaStr = "name, email, appleColor, fruitPreference"
 
       const unstructuredText = "My name is John Smith. My email is jon.smith@example.com and my address is 123 Street, Atlanta, Georgia. I like red apples";
       // const structuredTextData = await transformUnstructuredText(

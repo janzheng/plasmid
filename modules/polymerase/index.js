@@ -137,7 +137,7 @@ export const demos = () => {
     })();
 
   */
-  /*
+  
 
     // Demo of transformUnstructuredText
 
@@ -186,7 +186,7 @@ export const demos = () => {
 
     })();
 
- */
+
 
 
   /*
@@ -245,34 +245,34 @@ export const demos = () => {
     // console.log("[generateRamdaStrFromText demo] curryParseResult:", curryParseResult);
 
     // example of using parseLine to process a list of strings
-    (async () => {
-      try {
-        const strings = [
-          "Jon Doe, 123 Alpha St, Alpharetta, GA, 4432831723, Signed up last night, needs to be emailed first and added to roster",
-          "Jane Doe, 456 Beta St, Betaville, GB, 5555555555, Signed up this morning, needs to be called and added to roster",
-          "Sam Smith, 789 Gamma St, Gammaville, GC, 6666666666, Signed up yesterday, needs to be texted and added to roster",
-          "Tom Thumb, 101112 Delta St, Deltaville, GD, 7777777777, Signed up last week, needs to be mailed and added to roster",
-          "Jerry Johnson, 131415 Epsilon St, Epsilonville, GE, 8888888888, Signed up last month, needs to be faxed and added to roster"
-        ];
+    // (async () => {
+    //   try {
+    //     const strings = [
+    //       "Jon Doe, 123 Alpha St, Alpharetta, GA, 4432831723, Signed up last night, needs to be emailed first and added to roster",
+    //       "Jane Doe, 456 Beta St, Betaville, GB, 5555555555, Signed up this morning, needs to be called and added to roster",
+    //       "Sam Smith, 789 Gamma St, Gammaville, GC, 6666666666, Signed up yesterday, needs to be texted and added to roster",
+    //       "Tom Thumb, 101112 Delta St, Deltaville, GD, 7777777777, Signed up last week, needs to be mailed and added to roster",
+    //       "Jerry Johnson, 131415 Epsilon St, Epsilonville, GE, 8888888888, Signed up last month, needs to be faxed and added to roster"
+    //     ];
 
-        // Inefficient!! Don't do this!
-        // const results = await Promise.all(
-        //   strings.map(str => 
-        //     parseLine(
-        //       "Jon Doe, 123 Alpha St, Alpharetta, GA, 4432831723, Signed up last night, needs to be emailed first and added to roster",
-        //       R.pick(['street']),
-        //       str
-        //     )
-        //   )
-        // );
+    //     // Inefficient!! Don't do this!
+    //     // const results = await Promise.all(
+    //     //   strings.map(str => 
+    //     //     parseLine(
+    //     //       "Jon Doe, 123 Alpha St, Alpharetta, GA, 4432831723, Signed up last night, needs to be emailed first and added to roster",
+    //     //       R.pick(['street']),
+    //     //       str
+    //     //     )
+    //     //   )
+    //     // );
 
-        let results = await parseLines(strings)
+    //     let results = await parseLines(strings)
         
-        console.log("[generateRamdaStrFromText strings array demo] results:", results);  // Logs: [ { street: '123 Alpha St' }, { street: '456 Beta St' }, ... ]
-      } catch (error) {
-        console.error(error);
-      }
-    })();
+    //     console.log("[parseLines / generateRamdaStrFromText strings array demo] results:", results);  // Logs: [ { street: '123 Alpha St' }, { street: '456 Beta St' }, ... ]
+    //   } catch (error) {
+    //     console.error(error);
+    //   }
+    // })();
   })();
  
     

@@ -11,9 +11,6 @@ Official letterhead: The visa letter should be printed on the official letterhea
 - Contact information: Provide the contact details of the conference organizer, including the name, address, email address, and phone number. This allows the embassy or consulate to verify the authenticity of the invitation if necessary.
 Signature: The visa letter should be signed by an authorized representative of the conference host or organizing institution.
 
-
-
-
  -->
 
 

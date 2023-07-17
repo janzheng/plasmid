@@ -1,0 +1,63 @@
+body {
+  font-family: sans-serif;
+  background: #f6f8f9;
+  padding: 0;
+  margin: 0;
+}
+
+@page {
+  margin: 0.5in 0.5in;
+
+  // @bottom-right {
+  //   content: "Page " counter(page) " of " counter(pages);
+  //   font-size: 9px;
+  //   color: #606d78;
+  // }
+}
+
+.no-break {
+  break-inside: avoid;
+}
+
+
+
+
+
+#preview {
+  display: table-cell;
+  vertical-align: top;
+  border: 0;
+   padding: 0;
+   margin: 0;
+}
+
+#svelte-announcer {
+  display: none;
+}
+.container {
+  display: block;
+}
+
+@media print {
+  #svelte-announcer, 
+  .container {
+    display: none;
+  }
+  #printPreview {
+    display: block;
+  }
+  #preview-container {
+    padding: 0 !important;
+    margin-left: 0 !important;
+    margin-right: 0 !important;
+    left: 0;
+    max-width: inherit;
+  }
+}
+
+@media screen {
+  #svelte-announcer, 
+  .container {
+    display: block !important;
+  }
+}

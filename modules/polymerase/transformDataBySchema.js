@@ -3,7 +3,7 @@
 
 /* 
 
-  Transform the data according to the pased in schema
+  Transform the data according to the passed in schema
   
   Useful for
   - flattening Airtable or other returned results
