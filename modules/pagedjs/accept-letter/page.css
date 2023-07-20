@@ -55,3 +55,11 @@ body {
     display: block !important;
   }
 }
+
+
+:root {
+  --pagedjs-margin-top: .5in;
+  --pagedjs-margin-right: .5in;
+  --pagedjs-margin-left: .5in;
+  --pagedjs-margin-bottom: .5in;
+}
