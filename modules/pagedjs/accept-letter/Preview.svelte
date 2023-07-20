@@ -122,8 +122,10 @@
     // update preview if sourceElem changes
     (async () => {
       await tick();
-      // tick required to update invoice before sourceElem is updated
-      await preview(sourceElem)
+      if(showPreview) {
+        // tick required to update invoice before sourceElem is updated
+        await preview(sourceElem)
+      }
     })()
   } 
 
@@ -194,6 +196,8 @@
 
 
 <style lang="scss" global>
+  @import "./page.css?inline";
+
   h3 {
     @apply text-xl font-bold pt-0 pb-1;
     padding-top: 0 !important;

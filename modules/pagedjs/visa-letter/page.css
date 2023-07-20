@@ -7,12 +7,6 @@ body {
 
 @page {
   margin: 0.5in 0.5in;
-
-  // @bottom-right {
-  //   content: "Page " counter(page) " of " counter(pages);
-  //   font-size: 9px;
-  //   color: #606d78;
-  // }
 }
 
 .no-break {

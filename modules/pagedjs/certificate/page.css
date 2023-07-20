@@ -9,12 +9,6 @@ body {
   margin: 0in 0in;
   margin-left: 0in;
   background: #DBF4E9;
-
-  // @bottom-right {
-  //   content: "Page " counter(page) " of " counter(pages);
-  //   font-size: 9px;
-  //   color: #606d78;
-  // }
 }
 
 @page:left {
