@@ -30,87 +30,91 @@
 
   async function print() {
     if(!browser) return;
+    showPreview = true;
+    await preview(sourceElem);
+
     // await preview(sourceElem) // doing this removes any changes made to preview
     window.print()
+    showPreview = false;
   }
 
 
   // from: https://github.com/nikitasemenchenko6/invoice-generator/blob/master/src/components/InvoiceModal.jsx
-  const getPDF = async () => {
-    // const dom = document.getElementById('printPreview');
-    let dom = document.querySelector('.pagedjs_pages');
-    let width = 5.5;
-    let height = 8.5;
-    let unit = 'in'
-    let zoom = 1.2
+  // const getPDF = async () => {
+  //   // const dom = document.getElementById('printPreview');
+  //   let dom = document.querySelector('.pagedjs_pages');
+  //   let width = 5.5;
+  //   let height = 8.5;
+  //   let unit = 'in'
+  //   let zoom = 1.2
 
-    return new Promise((resolve, reject) => {
-      toPng(dom).then((dataUrl) => {
-        const img = new Image();
-        img.crossOrigin = 'anonymous';
-        img.src = dataUrl;
-        img.onload = () => {
-          // Initialize the PDF.
-          const pdf = new jsPDF({
-            orientation: 'portrait',
-            unit: unit,
-            format: [width, height],
-          });
+  //   return new Promise((resolve, reject) => {
+  //     toPng(dom).then((dataUrl) => {
+  //       const img = new Image();
+  //       img.crossOrigin = 'anonymous';
+  //       img.src = dataUrl;
+  //       img.onload = () => {
+  //         // Initialize the PDF.
+  //         const pdf = new jsPDF({
+  //           orientation: 'portrait',
+  //           unit: unit,
+  //           format: [width, height],
+  //         });
 
-          // Define reused data
-          const imgProps = pdf.getImageProperties(img);
-          const imageType = imgProps.fileType;
-          const pdfWidth = pdf.internal.pageSize.getWidth();
+  //         // Define reused data
+  //         const imgProps = pdf.getImageProperties(img);
+  //         const imageType = imgProps.fileType;
+  //         const pdfWidth = pdf.internal.pageSize.getWidth();
 
-          // Calculate the number of pages.
-          const pxFullHeight = imgProps.height;
-          const pxPageHeight = Math.floor((imgProps.width * height) / width);
-          const nPages = Math.ceil(pxFullHeight / pxPageHeight);
+  //         // Calculate the number of pages.
+  //         const pxFullHeight = imgProps.height;
+  //         const pxPageHeight = Math.floor((imgProps.width * height) / width);
+  //         const nPages = Math.ceil(pxFullHeight / pxPageHeight);
 
-          // Define pageHeight separately so it can be trimmed on the final page.
-          let pageHeight = pdf.internal.pageSize.getHeight();
+  //         // Define pageHeight separately so it can be trimmed on the final page.
+  //         let pageHeight = pdf.internal.pageSize.getHeight();
 
-          // Create a one-page canvas to split up the full image.
-          const pageCanvas = document.createElement('canvas');
-          const pageCtx = pageCanvas.getContext('2d');
-          pageCanvas.width = imgProps.width;
-          pageCanvas.height = pxPageHeight;
+  //         // Create a one-page canvas to split up the full image.
+  //         const pageCanvas = document.createElement('canvas');
+  //         const pageCtx = pageCanvas.getContext('2d');
+  //         pageCanvas.width = imgProps.width;
+  //         pageCanvas.height = pxPageHeight;
 
-          for (let page = 0; page < nPages; page++) {
-            // Trim the final page to reduce file size.
-            if (page === nPages - 1 && pxFullHeight % pxPageHeight !== 0) {
-              pageCanvas.height = pxFullHeight % pxPageHeight;
-              pageHeight = (pageCanvas.height * pdfWidth) / pageCanvas.width;
-            }
-            // Display the page.
-            const w = pageCanvas.width;
-            const h = pageCanvas.height;
-            pageCtx.fillStyle = 'white';
-            pageCtx.fillRect(0, 0, w, h);
-            pageCtx.drawImage(img, 0, page * pxPageHeight, w, h, 0, 0, w, h);
+  //         for (let page = 0; page < nPages; page++) {
+  //           // Trim the final page to reduce file size.
+  //           if (page === nPages - 1 && pxFullHeight % pxPageHeight !== 0) {
+  //             pageCanvas.height = pxFullHeight % pxPageHeight;
+  //             pageHeight = (pageCanvas.height * pdfWidth) / pageCanvas.width;
+  //           }
+  //           // Display the page.
+  //           const w = pageCanvas.width;
+  //           const h = pageCanvas.height;
+  //           pageCtx.fillStyle = 'white';
+  //           pageCtx.fillRect(0, 0, w, h);
+  //           pageCtx.drawImage(img, 0, page * pxPageHeight, w, h, 0, 0, w, h);
 
-            // Add the page to the PDF.
-            if (page) pdf.addPage();
+  //           // Add the page to the PDF.
+  //           if (page) pdf.addPage();
 
-            const imgData = pageCanvas.toDataURL(`image/${imageType}`, 1);
-            pdf.addImage(imgData, imageType, 0, 0, pdfWidth*zoom, pageHeight*zoom);
-          }
+  //           const imgData = pageCanvas.toDataURL(`image/${imageType}`, 1);
+  //           pdf.addImage(imgData, imageType, 0, 0, pdfWidth*zoom, pageHeight*zoom);
+  //         }
 
-          return resolve(pdf)
-        };
-      })
-      .catch((error) => {
-        console.error('[getPDF] Something went wrong!', error);
-      });
-    })
-  };
+  //         return resolve(pdf)
+  //       };
+  //     })
+  //     .catch((error) => {
+  //       console.error('[getPDF] Something went wrong!', error);
+  //     });
+  //   })
+  // };
 
-  async function download() {
-    let pdf = await getPDF()
-    // Output / Save
-    // window.open(pdf.output('pdf')); // to debug
-    pdf.save(`invoice-evg.pdf`);
-  }
+  // async function download() {
+  //   let pdf = await getPDF()
+  //   // Output / Save
+  //   // window.open(pdf.output('pdf')); // to debug
+  //   pdf.save(`accept-evg.pdf`);
+  // }
 
 
   // $: if(sourceElem && contentData) {
@@ -153,7 +157,7 @@
   <!-- <div class="p-4"> -->
     <button class="Btn-outline" on:click={()=>{preview(sourceElem); showPreview=!showPreview}}>{showPreview?"Hide Preview":"Show Preview"}</button>
     <button class="Btn-outline" on:click={()=>print()}>{printCta}</button>
-    <button class="Btn-outline" on:click={()=>download()}>{"Download"}</button>
+    <!-- <button class="Btn-outline" on:click={()=>download()}>{"Download"}</button> -->
   <!-- </div> -->
 </div>
 

@@ -1,8 +1,6 @@
 <!-- 
 
   
-
-
  -->
 
 <div class="font-serif">
@@ -36,15 +34,10 @@
 
 
 
-
-
-
   contentData = {
     ...contentData,
-
     logoUrl: "https://f2.phage.directory/airscripts/-evergreen-2023-live/content/rectaUjlWh18lEZzG/evg23-full-logo.png",
     logoWidth: "240px",
-
 
     signature: `<img src="/betty_sig.png" width="380px" />
 
