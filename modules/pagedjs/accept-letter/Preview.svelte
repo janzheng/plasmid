@@ -7,7 +7,7 @@
 
 <script>
 
-  import _css from "./page.css";
+  import pagestyle from "./page.css?inline";
   import { Previewer } from "pagedjs";
   import { browser } from '$app/environment';
   import { onMount, tick } from 'svelte';
@@ -20,7 +20,9 @@
   export let previewElem, sourceElem, editable=false;
   export let contentData;
   export let menubarClasses = `Card-solid px-2 py-1`;
+  export let menuClasses = ``;
   export let printCta = "Print"
+  export let showPreview = true
 
 
 
@@ -129,7 +131,7 @@
     if (html && previewElem) {
       // previewer.preview(html, [{ _: css }], previewElem)
       const previewer = new Previewer();
-      let flow = await previewer.preview(html.innerHTML || html, [{ _: _css }], previewElem)
+      let flow = await previewer.preview(html.innerHTML || html, [{ _: pagestyle }], previewElem)
       console.log("[Preview] Rendered: total pages", flow.total, { flow });
       console.log("[Preview] Performance: ", flow.performance)
       console.log("[Preview] Final HTML: ", previewElem)
@@ -146,32 +148,44 @@
 
 </script>
 
-<div class="_content | container" id="preview">
-  <div class="Menubar {menubarClasses}">
-    <div class="menu p-4">
-      <button class="Btn-outline" on:click={()=>print()}>{printCta}</button>
-      <button class="Btn-outline" on:click={()=>download()}>{"Download"}</button>
-    </div>
-    <div id="editor" 
-      class="hidden"
-      contenteditable={editable}
-      bind:this={sourceElem}
-      on:blur={()=>preview(sourceElem)}
-      >
-        <Letter {contentData} />
-    </div>
-  </div>
+<div class="printMenu {menuClasses}">
+  <slot name="PrintSlot" />
+  <!-- <div class="p-4"> -->
+    <button class="Btn-outline" on:click={()=>{preview(sourceElem); showPreview=!showPreview}}>{showPreview?"Hide Preview":"Show Preview"}</button>
+    <button class="Btn-outline" on:click={()=>print()}>{printCta}</button>
+    <button class="Btn-outline" on:click={()=>download()}>{"Download"}</button>
+  <!-- </div> -->
 </div>
 
-
-<div id="preview-container" class="preview-container | _content mx-auto">
-  <div class="preview-box | container ">
-    <div class="text-xs text-gray-500 uppercase | pb-2">Preview</div>
+<div class="AcceptLetter">
+  <div class="_content | container" id="preview">
+    <div class="Menubar {menubarClasses}">
+      <!-- <div class="menu p-4">
+        <button class="Btn-outline" on:click={()=>print()}>{printCta}</button>
+        <button class="Btn-outline" on:click={()=>download()}>{"Download"}</button>
+      </div> -->
+      <div id="editor" 
+        class="hidden"
+        contenteditable={editable}
+        bind:this={sourceElem}
+        on:blur={()=>preview(sourceElem)}
+        >
+          <Letter {contentData} />
+      </div>
+    </div>
   </div>
-  <div id="printPreview" 
-    contenteditable={editable}
-    class="" bind:this={previewElem} 
-    />
+
+  <div class="Preview" class:hidePreview={!showPreview}>
+    <div id="preview-container" class="preview-container | _content mx-auto">
+      <div class="preview-box | container ">
+        <div class="text-xs text-gray-500 uppercase | pb-2">Preview</div>
+      </div>
+      <div id="printPreview" 
+        contenteditable={editable}
+        class="" bind:this={previewElem} 
+        />
+    </div>
+  </div>
 </div>
 
 
@@ -180,8 +194,18 @@
     @apply text-xl font-bold pt-0 pb-1;
     padding-top: 0 !important;
   }
-
+  @media print {
+    .hidePreview, .Preview, .AcceptLetter {
+      display: block !important;
+    }
+    .printMenu {
+      display: none !important;
+    }
+  }
   @media screen {
+    .hidePreview {
+      display: none;
+    }
     // .pagedjs_page {
     #printPreview {
       background: white;
