@@ -21,8 +21,9 @@
   export let contentData;
   export let menubarClasses = `Card-solid px-2 py-1`;
   export let menuClasses = ``;
-  export let printCta = "Print"
-  export let showPreview = true
+  export let printCta = "Print";
+  export let showPreview = true;
+  let pageFlow, previewer;
 
 
 
@@ -136,12 +137,12 @@
     previewElem.innerHTML = ""
     if (html && previewElem) {
       // previewer.preview(html, [{ _: css }], previewElem)
-      const previewer = new Previewer();
-      let flow = await previewer.preview(html.innerHTML || html, [{ _: pagestyle }], previewElem)
-      console.log("[Preview] Rendered: total pages", flow.total, { flow });
-      console.log("[Preview] Performance: ", flow.performance)
+      previewer = new Previewer();
+      pageFlow = await previewer.preview(html.innerHTML || html, [{ _: pagestyle }], previewElem)
+      console.log("[Preview] Rendered: total pages", pageFlow.total, { pageFlow });
+      console.log("[Preview] Performance: ", pageFlow.performance)
       console.log("[Preview] Final HTML: ", previewElem)
-      return flow
+      return pageFlow
     }
     return null
   };
@@ -223,4 +224,10 @@
     }
   }
 
+  .pagedjs_page {
+    --pagedjs-margin-top: .5in;
+    --pagedjs-margin-right: .5in;
+    --pagedjs-margin-left: .5in;
+    --pagedjs-margin-bottom: .5in;
+  }
 </style>
