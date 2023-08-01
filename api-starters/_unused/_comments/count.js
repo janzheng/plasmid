@@ -65,7 +65,6 @@ export async function post(req, res, next) {
 			// })
 			// await Promise.all(_counts)
 			count = await getCounts(locIds)
-			// console.log(' Counts ?!?!?!?!?!?!!?!?!', count)
 		}
 
 		return sendData(count, res)
