@@ -487,8 +487,8 @@ export const flattenTables = (tables) => {
 
 export const flattenRecord = (record) => {
   return {
-    ...record.fields,
-    id: record.id,
+    ...record?.fields,
+    id: record?.id,
   }
 }
 
