@@ -2,9 +2,6 @@
 
 <div class="outer font-serif">
   <div class="frame">
-    <div class="bg">
-
-    </div>
     <div class="text-center">
       {#if event.logoUrl}
         <div class="logo w-full mx-auto">
