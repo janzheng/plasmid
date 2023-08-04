@@ -1,0 +1,229 @@
+
+
+.pagebreak {
+  break-before: page;
+}
+
+
+.session-title {
+  string-set: sessionTitle content(text);
+}
+#footer-message {
+  string-set: footerMessage content(text);
+}
+
+
+
+
+
+
+
+
+
+
+.reset-toc-page {
+  counter-reset: page 42;
+}
+
+body {
+  font-family: sans-serif;
+  background: #fff;
+  padding: 0;
+  margin: 0;
+}
+
+@page {
+  size: 5.5in 8.5in;
+  margin: 0.25in 0.25in;
+  margin-bottom: 18mm;
+  background: #fff;
+
+  @bottom-center {
+    /* content: string(sessionTitle); */
+    color: #aaa;
+    content: string(footerMessage);
+  }
+
+}
+
+@page:left {
+
+  @bottom-left {
+    content: counter(page);
+  }
+}
+
+@page:right {
+
+  @bottom-right {
+    content: counter(page);
+  }
+}
+
+.no-break {
+  break-inside: avoid;
+}
+
+
+
+
+
+
+
+
+
+
+
+
+#preview {
+  display: table-cell;
+  vertical-align: top;
+  border: 0;
+   padding: 0;
+   margin: 0;
+}
+
+#svelte-announcer {
+  display: none;
+}
+.container {
+  display: block;
+}
+
+@media print {
+  #svelte-announcer, 
+  .container {
+    display: none;
+  }
+  #printPreview {
+    display: block;
+  }
+  #preview-container {
+    padding: 0 !important;
+    margin-left: 0 !important;
+    margin-right: 0 !important;
+    left: 0;
+    max-width: inherit;
+  }
+}
+
+@media screen {
+  #svelte-announcer, 
+  .container {
+    display: block !important;
+  }
+}
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+/* TABLE OF CONTENT ---------------------------------------------------------------- */
+
+
+#toc a[href]::after {
+  content: target-counter(attr(href), page);
+  float: right;
+
+  position: absolute;
+  top: 0;
+  right: 0;
+  background: white;
+}
+
+#toc li a::after, .toc li a::after{
+  right: 0;
+  /* background-color: #f8f2ec; */
+  padding-left: 2px;
+   
+  /* right: 62px; */
+  /* position: static !important; */
+  position: absolute;
+  background: white;
+}
+
+
+
+#toc li, .toc li{
+  overflow-x: hidden;
+  display: flex; 
+}
+
+#toc li::after, .toc li::after{
+  content: ".................................................................................................................................................";
+  float: left;
+  width: 0;
+  padding-left: 0px;
+  letter-spacing: 2px;
+
+  right: 0px;
+  position: relative;
+}
+
+ 
+#toc li a{
+  right: 0;
+}
+
+
+
+
+#author-index a[href]::after {
+  /* content: " (p." target-counter(attr(href), page) ")"; */
+  /* content: " (p." target-counter(attr(href), page) ") "; */
+  /* content: "(p" target-counter(attr(href), page) ")"; */
+  /* content: " (" target-counter(attr(href), page) ")"; */
+  content: target-counter(attr(href), page);
+  /* content: "p" target-counter(attr(href), page); */
+  /* float: right; */
+}
+  .author-index-name::after{
+    content: "\00a0\00a0\00a0\00a0\00a0\00a0.................................................................................................................................................";
+    float: left;
+    width: 0;
+    padding-left: 0px;
+    letter-spacing: 2px;
+  }
+  #author-index li {
+    overflow: hidden;
+  }
+  .author-index-links  {
+    float: right;
+  }
+  .author-index-link:nth-child(n+2) {
+    /* background: blue !important; */
+  }
+  ._second-link::before {
+    content: ", "
+  }
+  .author-index-link, .author-index-name {
+    background: white;
+  }
+
+
+/* list-counter */
+#toc { counter-reset: numtoc; }
+#toc .chap { counter-increment: numtoc; }
+#toc .chap::before { 
+    content: counter(numtoc, upper-roman) ". "; 
+    padding-right: 5px;
+    /* display: inline-block;
+    width: 45px; */
+
+}
+
+#toc li, .toc li{ margin-bottom: calc(var(--baseline)*0.19); }
+
+#toc-introduction{ margin-bottom: calc(var(--baseline)*1.5)!important; }
+#toc-colophon{ margin-top: calc(var(--baseline)*1.5)!important; }
