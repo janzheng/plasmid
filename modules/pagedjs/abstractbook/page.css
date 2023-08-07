@@ -14,8 +14,13 @@
 
 
 
+h1, h2, h3, h4, .font-serif, h1 p {
+  font-family: "Fraunces";
+}
 
-
+.font-bold {
+  font-weight: 900;
+}
 
 
 
@@ -26,7 +31,7 @@
 }
 
 body {
-  font-family: sans-serif;
+  /* font-family: sans-serif; affects header printing?!*/
   background: #fff;
   padding: 0;
   margin: 0;
@@ -47,18 +52,17 @@ body {
 }
 
 @page:left {
-
   @bottom-left {
     content: counter(page);
   }
 }
 
 @page:right {
-
   @bottom-right {
     content: counter(page);
   }
 }
+
 
 .no-break {
   break-inside: avoid;
@@ -67,7 +71,23 @@ body {
 
 
 
+.frontmatter {
+  page: frontmatter;
+}
 
+@page frontmatter {
+  break-before: none;
+
+  @bottom-right {
+    content: "";
+  }
+  @bottom-left {
+    content: "";
+  }
+  @bottom-center {
+    content: "";
+  }
+}
 
 
 

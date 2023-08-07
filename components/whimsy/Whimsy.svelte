@@ -13,7 +13,7 @@
   
   const { page } = stores()
   // slugs are things like /about
-  export let project, path, slug = '/', pageBlocks = {}, socialProfiles
+  export let project, path, slug = '/', pageBlocks = {}, socialProfiles, siteSrc
 
   // should be a page endpoint
   // support collections in the future
@@ -31,10 +31,10 @@
 
   $: if(projPage) {
     if(!_icon && projPage['format'] && projPage['format']['page_icon']) {
-      _icon = toNotionImageUrl(projPage['format']['page_icon'], projPage.id)
+      _icon = toNotionImageUrl(projPage['format']['page_icon'], projPage.id, siteSrc)
     }
     if(!_cover && projPage['format'] && projPage['format']['page_cover']) {
-      _cover = toNotionImageUrl(projPage['format']['page_cover'], projPage.id)
+      _cover = toNotionImageUrl(projPage['format']['page_cover'], projPage.id, siteSrc)
     }
 
     head = headConstructor({
