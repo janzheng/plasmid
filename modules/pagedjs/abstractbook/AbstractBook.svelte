@@ -1,9 +1,9 @@
 
 
 <!-- <h1 class="font-serif" style="font-family: 'Fraunces'; font-size: 12px;">font preload</h1> -->
-<!-- <div class="font-serif font-bold" style="font-family: 'Fraunces'; font-size: 12px; font-weight: 900;">font preload</div> -->
-<!-- <div class="font-serif text-3xl font-bold" style="font-family: 'Fraunces'; font-size: 20px; ">preload</div> -->
-<!-- <div class="font-serif text-3xl" style="font-family: 'Fraunces'; font-size: 20px;">preload</div> -->
+<!-- <div class="font-serif font-bold" style="font-family: 'Fraunces'; font-weight: 900;">font preload</div> -->
+<!-- <div class="font-serif text-3xl font-bold" style="font-family: 'Fraunces'; ">preload</div> -->
+<!-- <div class="font-serif text-3xl" style="font-family: 'Fraunces'; ">preload</div> -->
 
 
 <div class="frontmatter">
@@ -15,7 +15,7 @@
   <div class=" | font-serif p-2 | mt-12">
     <div class="text-center">
       <div class="event-name">
-        <h1 class="font-bold text-2xl pt-2 pb-4 pfix">{@html marked(event.name)}</h1>
+        <h1 class="font-serif font-bold text-4xl pt-2 pb-4 pfix" style="font-family: 'Fraunces'">{@html marked(event.name)}</h1>
       </div>
       <div class="logo w-full mx-auto">
         <img class="block mx-auto my-4" height="350px" width="700px" src={"/evg23_card_dates.jpg"} alt="Logo Header"/>
@@ -33,7 +33,7 @@
   <!-- <h2 class="pt-0 pb-0">Sponsor page | TAILOR 1 Full [color]</h2> -->
   <div class="ad">
     <!-- <h2 class="pt-0 pb-0">TAILOR 1 Full [color]</h2> -->
-    <img src="/ad-placeholder.png" width="100%" height="705px" alt="Ad Placement"/>
+  <img src="https://f2.phage.directory/airscripts/-evergreen-2023-live/content/recWWe5f4DTy0SOza/TAILOR-Evg2023-Ad-1.jpg" width="100%" height="705px" alt="Ad Placement"/>
   </div>
 </div>
 
@@ -65,30 +65,148 @@
 `)}
 </div>
 
+<!-- <div class="Backpage back pagebreak frontmatter mx-auto">
+  <img class="mx-auto mt-20" src="/logo-wall-hex.png" width="80%" height="705px" alt="Evergreen"/>
+</div> -->
+
+{#if renderSessions}
+  <section class="tableofcontents pagebreak reset-toc-page text-xs" id="toc" >
+    {#each sessions as session}
+      <!-- <div class="session-container mb-2 {["Poster Session",  "Session 10: Ecology & Informatics II"].includes(session) ? 'pagebreak':''}"> -->
+      <div class="session-container mb-2 {["Poster Session"].includes(session) ? 'pagebreak':''}">
+        <div class="text-base font-serif ">{session}</div>
+        <ul>
+          {#each abstracts.filter(abs => abs['Assignment'] == session) as abstract}
+            <a id="toc-{abstract['AbstractId']}" href="#abstract-{abstract['AbstractId']}" 
+              class="Abstract-session-toc | underline-none text-black relative ">
+              <li class="list-none mb-0 pr-8 pb-1 pfix">
+                <span>{@html abstract['TitlePlain']}</span>
+              </li>
+            </a>
+          {/each}
+        </ul>
+      </div>
+    {/each}
+  </section>   
+
+  <div class="Session-Abstracts">
+    {#each sessions as session}
+      <div class="Session">
+        <div class="session-title pagebreak font-serif text-4xl mt-80 w-[505px] text-center px-8 ">{session}</div>
+        <div class="">
+          {#each abstracts.filter(abs => abs['Assignment'] == session) as abstract}
+            {@const authorAffiliations = getAuthorAffiliations(abstract)}
+            {@const textLen = abstract['Body'].length + JSON.stringify(authorAffiliations||"").length}
+            <div id={'abstract-'+abstract['AbstractId']}></div>
+            <div class="Abstract page-container pagebreak w-full bg-blue-200 text-xs">
+              <div class="header text-xxs">
+                {session} — Abstract ID: {abstract.AbstractId}
+              </div>
+              <hr class="pb-1"/>
+              {#if abstract?.Keywords}
+                <div class="tags">
+                  {#each abstract?.Keywords?.split(",") as tag}
+                    <span class="Btn --tag --snug --thin text-xxs text-gray-900 bg-gray-100 | mr-1 mb-1-i">{tag}</span>
+                  {/each}
+                </div>
+              {/if}
+              <div class="font-serif text-base leading-tight w-full pfix mb-1">{@html marked(abstract['TitlePlain']||'')}</div>
+              <div class="Abstract-textbody
+                {textLen <= 2800 ? 'text-xs' : ''}
+                {textLen > 2800 && textLen <= 3900 ? 'text-xxs' : ''}
+                {textLen > 3900 ? 'text-[9px] leading-[11px]' : ''}
+                {textLen > 5500 ? 'text-[7.5px] leading-[9px]' : ''}
+              ">
+                {#if authorAffiliations}
+                  <div class="Author-Affiliations py-1">
+                    <div class="pfix 
+                      {textLen <= 3900 ? 'mb-[0.35rem]' : ''}
+                    ">{@html marked(authorAffiliations?.authors.join(", ") || '')}</div>
+                    <ol class="">
+                      {#each authorAffiliations?.affiliations || [] as aff}
+                        <li class="pt-0.5">{aff}</li>
+                      {/each}
+                    </ol>
+                  </div>
+                {:else}
+                  <div class="pfix">{@html marked(abstract.authors || '')}</div>
+                  <div class="whitespace-pre-line affiliations pfix">{@html marked(abstract.affiliations || '')}</div>
+                {/if}
+
+                {#if abstract.correspondence}
+                  <div class="pfix">{@html marked(abstract.correspondence || '')}</div>
+                {/if}
+
+                <div class="mt-2">
+                  {@html marked(abstract['Body']||'')}
+                </div>
+              </div>
+            </div>
+          {/each}
+        </div>
+      </div>
+    {/each}
+  </div>
+{/if}
+
+{#if renderAuthorIndex}
+  <div id="author-index" class="author-index pagebreak text-xxs"> 
+    <div class="">
+      <div class="mb-2 text-2xl font-serif text-evg-green-dark">Author Index</div>
+      <p class="">
+        Authors listed alphabetically, with associated abstract and page numbers. Some authors may appear multiple times based on how their names were entered in respective abstracts.
+      </p>
+    </div>
+    <ol>
+      {#each authors as author}
+        <li class="mb-0 pfix" id="{"toc-author-"+slugify(author)}">
+          <span class="author-index-name">{author}</span>
+          <span class="author-index-links">
+            {#each abstracts.filter(abs => abs['Authors'].includes(author)) as abstract, i}
+              <a class="author-index-link {i>0?"_second-link":""}" href={'#abstract-'+abstract.AbstractId}></a>
+            {/each}
+          </span>
+        </li>
+      {/each}
+      </ol> 
+  </div>
+{/if}
+
+
+
+<!-- 
+
+  Back Pages
+
+ -->
 <!-- sponsor page front [color] -->
-<div class="Sponsor TAILOR two backpage pagebreak">
+<div class="Sponsor TAILOR two backpage frontmatter pagebreak">
   <!-- <h2 class="pt-0 pb-0">TAILOR 2 Full [color]</h2> -->
-  <img src="/ad-placeholder.png" width="100%" height="705px" alt="Ad Placement"/>
+  <!-- <img src="/ad-placeholder.png" width="100%" height="705px" alt="Ad Placement"/> -->
+  <img src="https://f2.phage.directory/airscripts/-evergreen-2023-live/content/recWWe5f4DTy0SOza/TAILOR-Evg2023-Ad-2.jpg" width="100%" height="705px" alt="Ad Placement"/>
 </div>
 
-<div class="Sponsor JAFRAL pagebreak">
+<div class="Sponsor JAFRAL frontmatter pagebreak">
   <!-- <h2 class="pt-0 pb-0">JAFRAL Full [color]</h2> -->
-  <img src="/ad-placeholder.png" width="100%" height="705px" alt="Ad Placement"/>
+  <!-- <img src="/ad-placeholder.png" width="100%" height="705px" alt="Ad Placement"/> -->
+  <img src="https://f2.phage.directory/airscripts/-evergreen-2023-live/content/recWWe5f4DTy0SOza/jafral-ad-2.png" width="100%" height="705px" alt="Ad Placement"/>
 </div>
 
-<div class="Sponsor PHASEGenomics pagebreak">
+<div class="Sponsor PHASEGenomics frontmatter pagebreak">
   <!-- <h2 class="pt-0 pb-0">PHASEGenomics Full [color]</h2> -->
-  <img src="/ad-placeholder.png" width="100%" height="705px" alt="Ad Placement"/>
+  <!-- <img src="/ad-placeholder.png" width="100%" height="705px" alt="Ad Placement"/> -->
+  <img src="https://f2.phage.directory/airscripts/-evergreen-2023-live/content/recWWe5f4DTy0SOza/phasegenomics-ProxiMeta_ad-1.jpg" width="100%" height="705px" alt="Ad Placement"/>
 </div>
 
-<div class="Sponsor MAL PHAGE halfpage pagebreak">
+<div class="Sponsor MAL PHAGE halfpage frontmatter pagebreak">
   <!-- <h2 class="pt-0 pb-0">MALPHAGE Genomics Full [color]</h2> -->
-  <img src="/ad-placeholder.png" width="100%" height="705px" alt="Ad Placement"/>
+  <img src="https://f2.phage.directory/airscripts/-evergreen-2023-live/content/recWWe5f4DTy0SOza/PHAGE-Ad-480x705-080723.jpg" width="100%" height="705px" alt="Ad Placement"/>
+  <!-- <img src="/ad-placeholder.png" width="100%" height="705px" alt="Ad Placement"/> -->
 </div>
 
 
 <!-- back page front [color] - logo grid -->
-<div class="Backpage front pagebreak">
+<div class="Backpage front frontmatter pagebreak">
   <h2 class="pt-0 pb-0">Many thanks to our sponsors</h2>
   <div class="block grid grid-cols-2 gap-0">
     <div class=" p-2 text-center | mb-2 mb-0 | flex justify-center items-center">
@@ -157,109 +275,6 @@
   <img class="block mx-auto mt-16" src="/evergreen-sd-2.jpg" width="80%" height="705px" alt="Evergreen"/>
 </div>
 
-<div class="Backpage back pagebreak frontmatter mx-auto">
-  <img class="mx-auto mt-20" src="/logo-wall-hex.png" width="80%" height="705px" alt="Evergreen"/>
-</div>
-
-{#if renderSessions}
-  <section class="tableofcontents pagebreak reset-toc-page text-xs" id="toc" >
-    {#each sessions as session}
-      <div class="session-container mb-2">
-        <div class="text-base font-serif">{session}</div>
-        <ul>
-          {#each abstracts.filter(abs => abs['Assignment'] == session) as abstract}
-            <a id="toc-{abstract['AbstractId']}" href="#abstract-{abstract['AbstractId']}" 
-              class="Abstract-session-toc | underline-none text-black relative ">
-              <li class="list-none mb-0 pr-8 pfix">
-                <span>{@html abstract['TitlePlain']}</span>
-              </li>
-            </a>
-          {/each}
-        </ul>
-      </div>
-    {/each}
-  </section>   
-
-  <div class="Session-Abstracts">
-    {#each sessions as session}
-      <div class="Session">
-        <div class="session-title pagebreak font-serif text-4xl mt-80 w-[505px] text-center px-8">{session}</div>
-        <div class="">
-          {#each abstracts.filter(abs => abs['Assignment'] == session) as abstract}
-            {@const authorAffiliations = getAuthorAffiliations(abstract)}
-            {@const textLen = abstract['Body'].length + JSON.stringify(authorAffiliations||"").length}
-            <div id={'abstract-'+abstract['AbstractId']}></div>
-            <div class="Abstract page-container pagebreak w-full bg-blue-200 text-xs">
-              <div class="header text-xxs">
-                {session} — Abstract ID: {abstract.AbstractId}
-              </div>
-              <hr class="pb-1"/>
-              {#if abstract?.Keywords}
-                <div class="tags">
-                  {#each abstract?.Keywords?.split(",") as tag}
-                    <span class="Btn --tag --snug --thin text-xxs text-gray-900 bg-gray-100 | mr-1 mb-1-i">{tag}</span>
-                  {/each}
-                </div>
-              {/if}
-              <div class="font-serif text-base leading-tight w-full pfix mb-1">{@html marked(abstract['TitlePlain']||'')}</div>
-              <div class="Abstract-textbody
-                {textLen <= 2600 ? 'text-xs' : ''}
-                {textLen > 2600 && textLen <= 3900 ? 'text-xxs' : ''}
-                {textLen > 3900 ? 'text-[9px] leading-[11px]' : ''}
-              ">
-                {#if authorAffiliations}
-                  <div class="Author-Affiliations">
-                    <div class="pfix mb-[0.2rem]">{@html marked(authorAffiliations?.authors.join(", ") || '')}</div>
-                    <ol class="">
-                      {#each authorAffiliations?.affiliations || [] as aff}
-                        <li class="">{aff}</li>
-                      {/each}
-                    </ol>
-                  </div>
-                {:else}
-                  <div class="pfix">{@html marked(abstract.authors || '')}</div>
-                  <div class="whitespace-pre-line affiliations pfix">{@html marked(abstract.affiliations || '')}</div>
-                {/if}
-
-                {#if abstract.correspondence}
-                  <div class="pfix">{@html marked(abstract.correspondence || '')}</div>
-                {/if}
-
-                <div class="mt-2">
-                  {@html marked(abstract['Body']||'')}
-                </div>
-              </div>
-            </div>
-          {/each}
-        </div>
-      </div>
-    {/each}
-  </div>
-{/if}
-
-{#if renderAuthorIndex}
-  <div id="author-index" class="author-index pagebreak text-xxs"> 
-    <div class="">
-      <div class="mb-2 text-2xl font-serif text-evg-green-dark">Author Index</div>
-      <p class="">
-        Authors listed alphabetically, with associated abstract and page numbers. Some authors may appear multiple times based on how their names were entered in respective abstracts.
-      </p>
-    </div>
-    <ol>
-      {#each authors as author}
-        <li class="mb-0 pfix" id="{"toc-author-"+slugify(author)}">
-          <span class="author-index-name">{author}</span>
-          <span class="author-index-links">
-            {#each abstracts.filter(abs => abs['Authors'].includes(author)) as abstract, i}
-              <a class="author-index-link {i>0?"_second-link":""}" href={'#abstract-'+abstract.AbstractId}></a>
-            {/each}
-          </span>
-        </li>
-      {/each}
-      </ol> 
-  </div>
-{/if}
-
 
 
 
@@ -274,8 +289,8 @@
   })
 
   export let abstracts, sessions, authors;
-  export let renderSessions = false;
-  export let renderAuthorIndex = false;
+  export let renderSessions = true;
+  export let renderAuthorIndex = true;
   // abstracts = abstracts.slice(0,10); // limit for dev
   console.log('author list:', authors)
 
@@ -381,6 +396,9 @@ Head, Lab of Phage Biology and Emerita Member of the Faculty in Biophysics, The 
     &:last-child {
       margin-bottom: 0.2rem;
     }
+  }
+
+  ol {
   }
 
 
