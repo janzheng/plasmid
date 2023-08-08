@@ -61,7 +61,7 @@ jan@phage.directory`
 
     name: `25<sup>th</sup> Biennial Evergreen International Phage Meeting`,
     header: `#### Olympia, Washington 98505
-http://evergreen.phage.directory
+https://evergreen.phage.directory
 
 Dr. Elizabeth Kutter, Organizing Committee Chair 
 +1 (360) 867 6099; tescphage@gmail.com 

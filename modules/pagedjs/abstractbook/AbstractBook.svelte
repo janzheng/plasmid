@@ -53,15 +53,15 @@
 
 **Science Committee**: Evelien Adriaenssens, Jeremy Barr, Sandra Morales, Sabrina Green, Steve Abedon, Hany Anany, Ria Kaelin, Jessica Sacher
 
-**Workshop Presenters:** Evelien Adriaenssens, Justin Clark, Ramy Aziz, Rebecca Wattam, Tobi Nagel, Fran Hodges, Jason Gill
+**Workshop Presenters:** Evelien Adriaenssens, Ryan Cook, Claire Elek, Andrea Telatin, Justin Clark, Ramy Aziz, Rebecca Wattam, Tobi Nagel, Fran Hodges, Jason Gill
 
 **Meeting Goals** Building on the original Cold Spring Harbor phage meetings, the Evergreen meeting's primary goal is to provide an opportunity for members of the ever-broadening phage community from various backgrounds, ages and places to build strong working relationships and share skills and ideas, leading to new insights and collaborations and, in recent years, helping spur on many kinds of applications. People are encouraged to present work that is still in progress. Posters are strongly encouraged, both as independent presentations with their own abstracts (grouped by general topic) and as a way of letting participants more closely examine the detailed data of those giving talks. They remain up throughout the meeting, rather than having specific presentation times for individual groups of posters.
 
-**Citation Notice:** Presenting at this meeting does not constitute a publication and the abstract book is not a formal (i.e. citable) conference proceedings. Abstracts will not be published online, and permission must be obtained from the respective authors before quoting any of their abstracts or data or applying it in a way that may be inappropriate
+**Citation Notice:** Presenting at this meeting does not constitute a publication and the abstract book is not a formal (i.e. citable) conference proceedings. Abstracts will not be published online, and permission must be obtained from the respective authors before quoting any of their abstracts or data or applying it in a way that may be inappropriate.
 
-**Thanks to contributors**: The Evergreen State College and the Phagebiotics Research Foundation, cosponsors and planners; Phage Directory Jessica Sacher and Jan Zheng, and Jake Lind, Evergreen's Conference Services coordinator, and the Evergreen food services crew, for their special efforts of a variety of sorts to make the meeting accommodate so many of you and run smoothly; and the many of you who have helped in other ways. Premier Shuttle Service, for help with transport; Vic's Pizzeria, Charter Up, First Student. 
+**Thanks to contributors**: The Evergreen State College and the Phagebiotics Research Foundation, cosponsors and planners; Phage Directory: Jessica Sacher and Jan Zheng, Jake Lind, Evergreen's Conference Services coordinator, and the Evergreen food services crew, for their special efforts of a variety of sorts to make the meeting accommodate so many of you and run smoothly; and the many of you who have helped in other ways. Premier Shuttle Service, for help with transport; Vic's Pizzeria, Charter Up, First Student. 
 
-**Special thanks to the following organizations** for their financial help in supporting young scholars and participants from underdeveloped countries; please look at their postings at the end of the abstract book: TAILOR, JAFRAL, Phase Genomics, PHAGE Therapy, Applications, and Research, Phages for Global Health, Rime Bio Informatics, DPI Drugs and Drug Candidates, Vésale Bioscience, Phage Directory, Phagebiotics Research Foundation
+**Special thanks to the following organizations** for their financial help in supporting young scholars and participants from underdeveloped countries; please look at their postings at the end of the abstract book: TAILOR, JAFRAL, Phase Genomics, PHAGE Therapy, Applications, and Research, Phages for Global Health, Rime Bioinformatics, DPI Drugs and Drug Candidates, Vésale Bioscience, Phage Directory, Phagebiotics Research Foundation
 `)}
 </div>
 
@@ -304,10 +304,10 @@
 
 #### The Evergreen State College, Olympia, WA
 <br />
-http://evergreen.phage.directory`,
+https://evergreen.phage.directory`,
 
     header: `#### Olympia, Washington 98505
-http://evergreen.phage.directory
+https://evergreen.phage.directory
 
 Dr. Elizabeth Kutter, Organizing Committee Chair 
 +1 (360) 867 6099; tescphage@gmail.com 
