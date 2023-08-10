@@ -5,14 +5,13 @@
 <!-- <div class="font-serif text-3xl font-bold" style="font-family: 'Fraunces'; ">preload</div> -->
 <!-- <div class="font-serif text-3xl" style="font-family: 'Fraunces'; ">preload</div> -->
 
-
 <div class="frontmatter">
   <h1 class="font-serif" style="font-family: 'Fraunces'; font-size: 12px; color: white; height: 0px;">font preload 2</h1>
   <div class="font-serif font-bold" style="font-family: 'Fraunces'; font-size: 12px; font-weight: 900; color: white; height: 0px;">font preload 2 </div>
   <div id="footer-message text-xxs" class="hidden">This abstract book is not a formal conference proceedings. Information can not be referenced without explicit permission of the author(s).</div>
   <!-- used for printing to "preset" the font -->
 
-  <div class=" | font-serif p-2 | mt-12">
+  <div class=" | font-serif p-2">
     <div class="text-center">
       <div class="event-name">
         <h1 class="font-serif font-bold text-4xl pt-2 pb-4 pfix" style="font-family: 'Fraunces'">{@html marked(event.name)}</h1>
@@ -43,7 +42,7 @@
 <div class="Sponsor temp content holder pagebreak text-[10px]">
   <div class="text-center mb-2">
     {@html marked(`
-  ### 25th Biennial Evergreen International Phage Meeting
+  ### 25th Biennial Evergreen <br>International Phage Meeting
   The Evergreen State College, Olympia, WA`)}
   </div>
 
@@ -70,7 +69,8 @@
 </div> -->
 
 {#if renderSessions}
-  <section class="tableofcontents pagebreak reset-toc-page text-xs" id="toc" >
+  <!-- <section class="tableofcontents pagebreak reset-toc-page text-xs" id="toc" > -->
+  <section class="tableofcontents pagebreak text-xs" id="toc" >
     {#each sessions as session}
       <!-- <div class="session-container mb-2 {["Poster Session",  "Session 10: Ecology & Informatics II"].includes(session) ? 'pagebreak':''}"> -->
       <div class="session-container mb-2 {["Poster Session"].includes(session) ? 'pagebreak':''}">
@@ -92,7 +92,7 @@
   <div class="Session-Abstracts">
     {#each sessions as session}
       <div class="Session">
-        <div class="session-title pagebreak font-serif text-4xl mt-80 w-[505px] text-center px-8 ">{session}</div>
+        <div class="session-title pagebreak font-serif text-4xl mt-80 w-[505px] text-center px-4">{session}</div>
         <div class="">
           {#each abstracts.filter(abs => abs['Assignment'] == session) as abstract}
             {@const authorAffiliations = getAuthorAffiliations(abstract)}
@@ -112,8 +112,8 @@
               {/if}
               <div class="font-serif text-base leading-tight w-full pfix mb-1">{@html marked(abstract['TitlePlain']||'')}</div>
               <div class="Abstract-textbody
-                {textLen <= 2800 ? 'text-xs' : ''}
-                {textLen > 2800 && textLen <= 3900 ? 'text-xxs' : ''}
+                {textLen <= 2600 ? 'text-xs' : ''}
+                {textLen > 2600 && textLen <= 3900 ? 'text-xxs' : ''}
                 {textLen > 3900 ? 'text-[9px] leading-[11px]' : ''}
                 {textLen > 5500 ? 'text-[7.5px] leading-[9px]' : ''}
               ">
@@ -272,7 +272,9 @@
 
 <!-- back page back [color] -->
 <div class="Backpage back pagebreak frontmatter mx-auto">
-  <img class="block mx-auto mt-16" src="/evergreen-sd-2.jpg" width="80%" height="705px" alt="Evergreen"/>
+  <!-- <img class="block mx-auto mt-20" src="/evergreen-sd-2.jpg" width="80%" height="705px" alt="Evergreen"/> -->
+  <!-- <img class="block mx-auto mt-20" src="/aimage_25_1.jpg" width="80%" height="705px" alt="Evergreen"/> -->
+  <img class="block mx-auto mt-16" src="/aimage_39_1.jpg" width="95%" height="705px" alt="Evergreen"/>
 </div>
 
 
