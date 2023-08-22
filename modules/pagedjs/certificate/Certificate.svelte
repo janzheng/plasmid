@@ -2,6 +2,8 @@
 
 <div class="outer font-serif">
   <div class="frame">
+    <h1 class="font-serif" style="font-family: 'Fraunces'; font-size: 12px; color: white; height: 0px; padding:0px !important;">font preload 2</h1>
+    <div class="font-serif font-bold" style="font-family: 'Fraunces'; font-size: 12px; font-weight: 900; color: white; height: 0px;">font preload 2 </div>
     <div class="text-center">
       {#if event.logoUrl}
         <div class="logo w-full mx-auto">
@@ -30,7 +32,7 @@
 
     </div>
   </div>
-  <img alt="footer" style="padding-top: 8px; width: 100%; height: 280px; object-fit: cover; object-position: bottom" src='https://f2.phage.directory/airscripts/-evergreen-2023-live/content/rectaUjlWh18lEZzG/evg23_twitter_dates.jpg' >
+  <img alt="footer" style="width: 100%; height: 245px; object-fit: cover; object-position: bottom" src='https://f2.phage.directory/airscripts/-evergreen-2023-live/content/rectaUjlWh18lEZzG/evg23_twitter_dates.jpg' >
 </div>
 
 
@@ -87,6 +89,38 @@ Head, Lab of Phage Biology and Emerita Member of the Faculty in Biophysics, The 
 
 <style lang="scss" global>
 
+@media only print {
+  body {
+    font-family: "Fraunces", serif;
+  }
+}
+
+.printfont {
+    font-family: "Fraunces", serif;
+}
+
+
+
+  @font-face {
+    font-family: 'Fraunces';
+    src: url('/fraunces/Fraunces-9ptBlack.woff2') format('woff2'),
+      url('/fraunces/Fraunces-9ptBlack.woff') format('woff');
+    font-weight: 900;
+    font-style: normal;
+    font-display: swap;
+  }
+  @font-face {
+    font-family: 'Fraunces';
+    src: url('/fraunces/Fraunces_72pt_SuperSoft-Light.woff') format('woff2'),
+      url('/fraunces/Fraunces-9ptBlack.woff') format('woff');
+    font-weight: light;
+    font-style: normal;
+    font-display: swap;
+  }
+
+
+
+  
   .outer {
     @apply bg-evg-green-lightest p-2;
   }

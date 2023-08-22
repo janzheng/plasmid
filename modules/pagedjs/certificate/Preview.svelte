@@ -76,6 +76,7 @@
 
 <div class="printMenu {menuClasses}">
   <slot name="PrintSlot" />
+    <!-- <div class="text-2xl font-serif font-bold mb-4">Evergreen Certificate</div> -->
   <!-- <div class="p-4"> -->
     <button class="Btn-outline" on:click={()=>{preview(sourceElem); showPreview=!showPreview}}>{showPreview?"Hide Preview":"Show Preview"}</button>
     <button class="Btn-outline" on:click={()=>print()}>{printCta}</button>

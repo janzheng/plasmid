@@ -1,3 +1,23 @@
+
+  @font-face {
+    font-family: 'Fraunces';
+    src: url('/fraunces/Fraunces-9ptBlack.woff2') format('woff2'),
+      url('/fraunces/Fraunces-9ptBlack.woff') format('woff');
+    font-weight: 900;
+    font-style: normal;
+    font-display: swap;
+  }
+  @font-face {
+    font-family: 'Fraunces';
+    src: url('/fraunces/Fraunces_72pt_SuperSoft-Light.woff') format('woff2'),
+      url('/fraunces/Fraunces-9ptBlack.woff') format('woff');
+    font-weight: light;
+    font-style: normal;
+    font-display: swap;
+  }
+
+
+
 body {
   font-family: sans-serif;
   background: #DBF4E9;
