@@ -78,8 +78,11 @@
   <slot name="PrintSlot" />
     <!-- <div class="text-2xl font-serif font-bold mb-4">Evergreen Certificate</div> -->
   <!-- <div class="p-4"> -->
-    <button class="Btn-outline" on:click={()=>{preview(sourceElem); showPreview=!showPreview}}>{showPreview?"Hide Preview":"Show Preview"}</button>
-    <button class="Btn-outline" on:click={()=>print()}>{printCta}</button>
+    <div class="flex items-center gap-2">
+      <button class="Btn-outline" on:click={()=>{preview(sourceElem); showPreview=!showPreview}}>{showPreview?"Hide Preview":"Show Preview"}</button>
+      <button class="Btn-outline" on:click={()=>print()}>{printCta}</button>
+    </div>
+    <div class="font-serif pt-2">If the print preview doesn’t look right, please use Chrome, and/or try refreshing. Firefox and Edge are know to have issues. <br>If you’re having problems, you can also email me (jan@phage.directory) and I can help,</div>
     <!-- <button class="Btn-outline" on:click={()=>download()}>{"Download"}</button> -->
   <!-- </div> -->
 </div>
