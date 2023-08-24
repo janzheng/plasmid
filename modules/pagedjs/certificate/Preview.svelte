@@ -148,10 +148,10 @@
   }
 
   .pagedjs_page {
-    --pagedjs-margin-top: .5in;
-    --pagedjs-margin-right: .5in;
-    --pagedjs-margin-left: .5in;
-    --pagedjs-margin-bottom: .5in;
+    --pagedjs-margin-top: .0in;
+    --pagedjs-margin-right: .0in;
+    --pagedjs-margin-left: .0in;
+    --pagedjs-margin-bottom: .0in;
   }
   
 </style>
