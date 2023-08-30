@@ -47,7 +47,8 @@ async function _get(key, metadata=false) {
 }
 
 // set both fuzzyKey (Worker KV if it exists) and in-memory cache
-async function _set(key, value, ttl = 60 * 60) {
+// default to 1 * 10 hour long ttl
+async function _set(key, value, ttl = 60 * 60 * 10) {
   if(fuzzy)
     await fuzzy.set(key, value, null, ttl)
   return cacheSet(key, value, ttl)
@@ -64,7 +65,7 @@ async function _set(key, value, ttl = 60 * 60) {
  * @param {function} [set] - Optional function to set the value in the cache.
  * @returns {*} - The value from cache or from the executed dynamic function.
  */
-export const cachet = async (key, dynamicFunction, {skip=false, metadata=false, ttl=60*60, get, set} = { get: null, set: null }) => {
+export const cachet = async (key, dynamicFunction, {skip=false, metadata=false, ttl, get, set} = { get: null, set: null }) => {
 
   // Use optional get function or default behavior
   let getFunc = get || (async (key, metadata) => await _get(key, metadata));
