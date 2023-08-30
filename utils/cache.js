@@ -130,12 +130,11 @@ export const cacheXclear = (term) => {
 
 
 
-// helper for checking if a string exists in cache
+// wrapper/helper for checking if a string exists in cache
 export const cacheCheck = (_cacheStr, loud = false) => {
-  // TODO: use node to turn on/off cache?
-  // if (cacheGet(_cacheStr) && process.env.CACHE && !process.env.CACHE == 'NoCache')
-  if (cacheGet(_cacheStr, loud)) {
-    return cacheGet(_cacheStr, false)
+  let data = cacheGet(_cacheStr, loud)
+  if (data) {
+    return data
   }
-  return null
+  return false
 }
