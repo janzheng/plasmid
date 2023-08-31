@@ -19,6 +19,22 @@
   // just get the value itself
   console.log("cachet!!!", await cachet('banana/rama'))
 
+
+  // using cachet and fuzzy:
+  // // let add = await fuzzy.set("banana/rama", {fruit:"bannnnanana!!"})
+  // let fzz = await fuzzy.get("banana/rama")
+  // console.log("fuzzy get:", fzz.data)
+  // setting cachet w/ a function
+  // let myvar = "ok I can't believe this works lol"
+  // await cachet('testkey', ()=>{
+  //   console.log('myvar...', myvar)
+  //   return myvar
+  // }, {skip: true})
+  // console.log("cachet testkey!!!", await cachet('testkey'))
+  // console.log("cachet!!!", await cachet('banana/rama'))
+  // let fuzzytest = await fuzzy.get("testkey")
+  // console.log("fuzzytest", fuzzytest.data)
+
 */
 
 export let loud = false;

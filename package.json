@@ -1,6 +1,6 @@
 {
   "name": "plasmid",
-  "version": "0.0.62",
+  "version": "0.0.63",
   "description": "",
   "type": "module",
   "scripts": {
@@ -37,6 +37,7 @@
     "ipfs-http-client": "^57.0.3",
     "ipfs-only-hash": "^4.0.0",
     "js-tiktoken": "^1.0.6",
+    "jsonlines": "^0.1.1",
     "jspdf": "^2.5.1",
     "langchain": "^0.0.45",
     "leven": "^4.0.0",
