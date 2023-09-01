@@ -12,11 +12,15 @@
 */
 
 export default function FuzzyKey({scope, url} = {}) {
-  const set = async (key, value, scope, ttl=3600*4) => {
+  const set = async (key, value, scope, ttl=3600*4, metadata) => {
+    if(typeof key == 'object') {
+      ({key, value, scope, ttl, metadata} = key) // if "key" is the entire object
+    }
     try {
       let obj = {
         "key": key,
         "value": value,
+        "metadata": metadata,
         "ttl": ttl,
       }
 
@@ -94,8 +98,6 @@ export default function FuzzyKey({scope, url} = {}) {
       console.error('Error:', error);
     }
   }
-
-
-
+  
   return { set, get, sget, list, del}
 }
