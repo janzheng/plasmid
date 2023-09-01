@@ -74,7 +74,7 @@ async function _get(key, ttl) {
 
 // set both fuzzyKey (Worker KV if it exists) and in-memory cache
 // default to 1 * 10 hour long ttl
-async function _set(key, value, ttl = 60 * 60 * 10, metadata) {
+async function _set(key, value, ttl = 60 * 60 * 24 * 4, metadata) {
   if(fuzzy)
     await fuzzy.set(key, value, null, ttl, metadata)
   return cacheSet(key, value, ttl)
@@ -95,7 +95,7 @@ async function _set(key, value, ttl = 60 * 60 * 10, metadata) {
  * @param {function} [set] - Optional function to set the value in the cache.
  * @returns {*} - The value from cache or from the executed dynamic function.
  */
-export const cachet = async (key, dynamicFn, {skip=false, metadata, ttl, get, set, ttr=3600 * 6, bgFn}={}) => {
+export const cachet = async (key, dynamicFn, {skip=false, metadata, ttl, get, set, ttr=3600 * 6, bgFn=()=>{}}={}) => { 
 
   // Use optional get function or default behavior
   let getFunc = get || (async (key) => await _get(key, ttl));
@@ -111,7 +111,7 @@ export const cachet = async (key, dynamicFn, {skip=false, metadata, ttl, get, se
   if(loud)
     console.log('[cachet] timeDifference:', timeDifference, 'ttr:', ttr, 'skip:', skip);
 
-  if (timeDifference > ttr) {
+  if (timeDifference > ttr && bgFn) {
     if(loud)
       console.log('[cachet] ttr exceeded; running background function:', bgFn);
     bgFn();
