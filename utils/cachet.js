@@ -42,7 +42,7 @@ export let loud = true;
 
 import { PUBLIC_FUZZYKEY_URL } from '$env/static/public';
 import FuzzyKey from '$plasmid/utils/fuzzykey'
-import { cacheSet, cacheGet } from "./cache.js"
+import { cacheSet, cacheGet, cacheClear } from "./cache.js"
 
 let fuzzy = FuzzyKey({ url: PUBLIC_FUZZYKEY_URL }) || null
 
@@ -95,7 +95,7 @@ async function _set(key, value, ttl = 60 * 60 * 24 * 4, metadata) {
  * @param {function} [set] - Optional function to set the value in the cache.
  * @returns {*} - The value from cache or from the executed dynamic function.
  */
-export const cachet = async (key, dynamicFn, {skip=false, metadata, ttl, get, set, ttr=3600 * 6, bgFn=()=>{}}={}) => { 
+export const cachet = async (key, dynamicFn, {skip=false, metadata, ttl, get, set, ttr=3600 * 6, bgFn=()=>{}}={}) => {  
 
   // Use optional get function or default behavior
   let getFunc = get || (async (key) => await _get(key, ttl));
@@ -115,6 +115,7 @@ export const cachet = async (key, dynamicFn, {skip=false, metadata, ttl, get, se
     if(loud)
       console.log('[cachet] ttr exceeded; running background function:', bgFn);
     bgFn();
+    cacheClear(key); // clear the local key so we can get the new value
   }
 
   // return the cached value and don't run the dynamic function if:
