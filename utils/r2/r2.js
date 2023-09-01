@@ -28,7 +28,7 @@ export const getToken = () => {
 
 
 
-export const uploadFileToR2 = async (file, statusStore, filename=file?.name) => {
+export const uploadFileToR2 = async (file, statusStore, filename=file?.name, scope=PUBLIC_PDR2_SCOPE ) => {
   try {
 
     if (!file) {
@@ -53,7 +53,6 @@ export const uploadFileToR2 = async (file, statusStore, filename=file?.name) => 
     // THIS REQUIRES THE FILOFAX ENDPOINT AT f2.phage.directory!
     let uploadUrl = `${PUBLIC_PDR2_ENDPOINT}`
     let formData = new FormData(); // File to upload. 
-    let scope = PUBLIC_PDR2_SCOPE
     formData.append('files', file, filename); 
     // formData.append('versioning', 'false'); 
     formData.append('scope', scope); 
@@ -130,4 +129,64 @@ export const uploadFileToR2 = async (file, statusStore, filename=file?.name) => 
 
 
 
+export const requestPresignedUrl = async ({file, scope=PUBLIC_PDR2_SCOPE, filename=file?.name, expiresIn=3600}) => {
+  try {
+    console.log('requestPresignedUrl:', {
+      cmd: 'presigned',
+      scope: scope,
+      filename: filename,
+      expiresIn: expiresIn,
+    })
 
+    const response = await fetch(PUBLIC_PDR2_ENDPOINT, {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json',
+        'X-Custom-Auth-Key': PUBLIC_PDR2_AUTH
+      },
+      body: JSON.stringify({
+        cmd: 'presigned',
+        scope: scope,
+        filename: filename,
+        expiresIn: expiresIn,
+      })
+    });
+
+    if (!response.ok) {
+      throw new Error(`HTTP error! status: ${response.status}`);
+    }
+
+    const presignedUrl = await response.text();
+    return presignedUrl;
+  } catch (error) {
+    console.error('[requestPresignedUrl] Failed to fetch presigned URL:', error);
+    return null;
+  }
+}
+
+
+
+export const uploadPresignedUrl = async (url, { file, filename=file?.name, metadata={} }) => {
+  try {
+    const response = await fetch(url, {
+      method: 'PUT',
+      body: file,
+      headers: {
+        // 'Content-Type': 'image/jpeg', // R2 is good at evaluating this
+        ...Object.entries(metadata).reduce((acc, [key, value]) => {
+          acc[`x-amz-meta-${key}`] = value;
+          return acc;
+        }, {}),
+      },
+    });
+
+    if (!response.ok) {
+      throw new Error(`HTTP error! status: ${response.status}`);
+    }
+
+    return true // always true from server
+  } catch (error) {
+    console.error('[uploadPresignedUrl] Failed to upload file:', error);
+    return null;
+  }
+}

@@ -2,7 +2,8 @@
 
 <form class="Upload {classes}"
   on:submit|preventDefault={async ()=>{
-    await uploadFile()
+    // await uploadFile() // small files only; uses CF-worker
+    await uploadFileWithPresignedUrl() // straight to S3
   }}
 >
 
@@ -66,7 +67,7 @@
   {/if}
 
   {#if urlPreview && !preview }
-    <div class="Card-flat p-4 mt-4">
+    <div class="Card-flat | p-4 mt-4">
       <img src={urlPreview} alt="Preview" />
     </div>
   {/if}
@@ -79,34 +80,34 @@
 
   // todo: handle multiple files
 
-  import * as store from 'svelte/store'
+  import * as store from 'svelte/store';
 	import { createEventDispatcher } from 'svelte';
 
-  import { getFileImagePreview } from '$plasmid/utils/uploads/fileImagePreview' 
-  import { getFileHash } from '$plasmid/utils/uploads/fileHash' 
-  import { uploadFileToR2 } from '$plasmid/utils/r2/r2' 
+  import { getFileImagePreview } from '$plasmid/utils/uploads/fileImagePreview';
+  import { getFileHash } from '$plasmid/utils/uploads/fileHash';
+  import { uploadFileToR2, requestPresignedUrl, uploadPresignedUrl } from '$plasmid/utils/r2/r2';
   
 
   // can either pass details back as a bind:fileUpload or use a store
   // status store receives all messages during upload
   export let showUploadCard = true; // set to false when controlled by external form upload flow
   export let showUploadBtn = true;
-  export let files = []
-  export let status = store.writable({})
-  export let showLabel = true
-  export let mode  = 'drag' // = 'simple' // 'drag' is default
-  export let fileUpload = {}
-  export let verbose = false
-  export let showPreview = true
-  export let showStatusMessage = true
-  export let showHash = false
-  export let classes = ''
-  export let ctaCardClasses = `Card-light`
-  export let previewCardClasses = `Card-flat`
-  export let uploadLabel = 'File upload'
-  export let dropClasses = `h-64 | rounded-lg border-2 | bg-gray-50  border-gray-300 border-dashed dark:hover:bg-gray-800 dark:bg-gray-700 hover:bg-gray-100 dark:border-gray-600 dark:hover:border-gray-500 dark:hover:bg-gray-600 `
-  export let uploadHtmlText = `<span class="font-semibold">Click to upload</span> or drag and drop`
-  export let fileText = `SVG, PNG, JPG or GIF (MAX. 800x400px)`
+  export let files = [];
+  export let status = store.writable({});
+  export let showLabel = true;
+  export let mode  = 'drag'; // = 'simple' // 'drag' is default
+  export let fileUpload = {};
+  export let verbose = false;
+  export let showPreview = true;
+  export let showStatusMessage = true;
+  export let showHash = false;
+  export let classes = '';
+  export let ctaCardClasses = ``;
+  export let previewCardClasses = `Card-white mt-4`;
+  export let uploadLabel = 'File upload';
+  export let dropClasses = `h-64 | rounded-lg border-2 | bg-gray-50  border-gray-300 border-dashed dark:hover:bg-gray-800 dark:bg-gray-700 hover:bg-gray-100 dark:border-gray-600 dark:hover:border-gray-500 dark:hover:bg-gray-600 `;
+  export let uploadHtmlText = `<span class="font-semibold">Click to upload</span> or drag and drop`;
+  export let fileText = `SVG, PNG, JPG or GIF (MAX. 800x400px)`;
 
 
 	const dispatch = createEventDispatcher();
@@ -128,7 +129,7 @@
       $status['hash'] = hash
     }
     getHash();
-  }
+  };
 
   // can trigger this externally to upload files
   export const uploadFile = async () => {
@@ -136,9 +137,21 @@
       console.log('...uploading file', files?.[0]);
       fileUpload = await uploadFileToR2(files?.[0], status);
       uploadFinished();
-      return fileUpload
+      return fileUpload;
     }
-    return false
+    return false;
+  };
+
+
+  // this allows for super-large files, as it goes around CF Worker
+  export const uploadFileWithPresignedUrl = async () => {
+    try {
+      const presignedUrl = await requestPresignedUrl({file: files[0]});
+      console.log('Presigned URL:', presignedUrl);
+      let result = await uploadPresignedUrl(presignedUrl, {file: files[0]});
+    } catch (error) {
+      console.error('[uploadFileWithPresignedUrl] Error:', error);
+    }
   };
 
 </script>
