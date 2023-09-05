@@ -154,13 +154,14 @@ export const endoloader = async (config, {
       body: JSON.stringify({ key, config })
     });
     
+    
     if (!response.ok) {
       throw new Error(`HTTP error! status: ${response.status}`);
     }
 
     let result = await response.json();
-    // console.log('endoloader result:', result)
-    return result?.value
+    console.log('endoloader result:', result, url, JSON.stringify({ key, config }, 0, 2));
+    return result?.value || result
   } catch (error) {
     console.error('[endoloader] error:', error);
   }

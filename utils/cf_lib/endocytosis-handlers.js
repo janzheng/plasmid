@@ -3,15 +3,53 @@ import { corsHeaders } from './cors-handler.js'
 import { endo } from '../../modules/cytosis2/cf-endo.js';
 
 // FUTURE: Support Airfetch-like database adds / mutations
+const loud = true;
+
+// super simple hash for kv key gen
+function getHash(config) {
+  const str = JSON.stringify(config);
+  let hash = 5381;
+  for (let i = 0; i < str.length; i++) {
+    const char = str.charCodeAt(i);
+    hash = ((hash << 5) + hash) + char; /* hash * 33 + c */
+  }
+  return hash.toString();
+}
 
 export const postHandler = async (request) => {
   try {
     const body = await request.text();
-    let { config, scope, key, metadata, ttl = 3600 * 8 } = JSON.parse(body)
+    // keep the wait/buffer time short, <4, since caching should be done client side
+    // this is speedier for testing
+    // unlike endocache, the "ttr" value is for background loading; this does NOT load anything in the background (like SWR)
+    // and just returns the cached value, so it's mainly for reducing API calls during high loads
+    let { config, scope, key, metadata, ttl = 3600 * 8, waitTime = 4 } = JSON.parse(body)
     let namespaceKey
     
     // console.log('CONFIG:', config)
+    // Check if the time difference between now and created is over "waitTime" in seconds
+    // if the wait time is more than the age of the cached value, we return the cached value instead of hitting up expensive APIs
+    let value
+    let kvKey = key || getHash(config)
 
+    // if (!scope) scope = 'endocache'
+    namespaceKey = `${scope ? scope + '/' : ''}${kvKey || ''}`
+
+    // console.log('[namespaceKey]:', namespaceKey)
+
+    let kvData = await FUZZYKEY.getWithMetadata(namespaceKey)
+    let now = Date.now();
+    let created = kvData?.metadata?.created
+    let timeDifference = (now - new Date(created)) / 1000; // convert milliseconds to seconds
+
+
+    console.log('[endocachet] waitTime:', waitTime, ' timeDiff:', timeDifference, 'key:', namespaceKey);
+    if (created && timeDifference < waitTime) {
+      // this is mainly to slow down requests
+      if (loud)
+        console.log('[endocachet] under wait time; returning cached value; wait:', waitTime, ' timeDiff:', timeDifference);
+      value = kvData
+    }
 
     if (!config) {
       return new Response(JSON.stringify(`POST needs a config`), {
@@ -19,12 +57,12 @@ export const postHandler = async (request) => {
       });
     }
 
-    let value = await endo(config, {mode: 'cloudflare'}, request)
-    if (key) {
-      namespaceKey = `${scope ? scope + '/' : ''}${key || ''}`
+    if(!value) {// if we're pulling a KV value, get it from the endo request
+      value = await endo(config, {mode: 'cloudflare'}, request)
+
       if (!metadata) {metadata = {}}
       metadata['created'] = Date.now()
-      const result = await FUZZYKEY.put(namespaceKey, JSON.stringify(value), {
+      await FUZZYKEY.put(namespaceKey, JSON.stringify(value), {
         metadata: { ...metadata, ttl },
       });
     }

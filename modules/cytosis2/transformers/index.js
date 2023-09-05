@@ -10,7 +10,7 @@ import { mapKeys, compareVersions } from './utils.js'
 
 // these are VERY HEAVY and langchain is too large for cfworkers
 // remove these when deploying to CF Worker until langchain is removed
-import { llmKeyPrompt, llmArrayPrompt } from './llm-transformers.js'
+// import { llmKeyPrompt, llmArrayPrompt } from './llm-transformers.js'
 
 // var llmKeyPrompt, llmArrayPrompt;
 // if (typeof process !== 'undefined') {
@@ -413,7 +413,7 @@ export const transformerMap = {
   rollupEventsArrayToObjectByKey,
 
   // llm prompts
-  llmKeyPrompt, llmArrayPrompt,
+  // llmKeyPrompt, llmArrayPrompt,
 
   // cytosis transformers
   outputObject,

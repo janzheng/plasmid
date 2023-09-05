@@ -52,7 +52,7 @@ async function _get(key, ttl) {
   let value = cacheGet(key)
   
   if(loud) {
-    console.log('[cachet/get] key:', key)
+    console.log('[cachet/get] -----> key:', key)
     console.log('[cachet/get] pre-fuzzy cache:', typeof value)
   }
 
