@@ -10,9 +10,9 @@
 */
 
 // import { OPENAI_API_KEY } from '$env/static/private'
-import type { CreateChatCompletionRequest, ChatCompletionRequestMessage } from 'openai'
-import type { RequestHandler } from './$types'
-import { getTokenStrLen } from './tokens.js'
+// import type { CreateChatCompletionRequest, ChatCompletionRequestMessage } from 'openai'
+// import type { RequestHandler } from './$types'
+import { getTokenStrLen } from '../utils/tokens.js'
 import { json } from '@sveltejs/kit'
 // import type { Config } from '@sveltejs/adapter-vercel'
 
@@ -22,7 +22,7 @@ const OPENAI_API_KEY = process.env.OPENAI_API_KEY
 //   runtime: 'edge'
 // }
 
-export const _POST: RequestHandler = async ({ request }) => {
+export const _POST = async ({ request }) => {
   try {
     if (!OPENAI_API_KEY) {
       throw new Error('OPENAI_API_KEY env variable not set')
@@ -79,12 +79,12 @@ export const _POST: RequestHandler = async ({ request }) => {
 
     console.log('tokenCount:', tokenCount)
 
-    const messages: ChatCompletionRequestMessage[] = [
+    const messages = [
       { role: 'system', content: prompt },
       ...reqMessages
     ]
 
-    const chatRequestOpts: CreateChatCompletionRequest = {
+    const chatRequestOpts = {
       model: 'gpt-3.5-turbo',
       messages,
       temperature: 0.9,

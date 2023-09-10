@@ -30,7 +30,7 @@ export const postHandler = async (request) => {
     // Check if the time difference between now and created is over "waitTime" in seconds
     // if the wait time is more than the age of the cached value, we return the cached value instead of hitting up expensive APIs
     let value
-    let kvKey = key || getHash(config)
+    let kvKey = key || getHash(config) 
 
     // if (!scope) scope = 'endocache'
     namespaceKey = `${scope ? scope + '/' : ''}${kvKey || ''}`

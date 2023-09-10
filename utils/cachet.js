@@ -53,7 +53,7 @@ async function _get(key, ttl) {
   
   if(loud) {
     console.log('[cachet/get] -----> key:', key)
-    console.log('[cachet/get] pre-fuzzy cache:', typeof value)
+    console.log('-----> [cachet/get] pre-fuzzy cache:', typeof value)
   }
 
   // if not in-memory cache, we check fuzzykey cache
@@ -61,15 +61,24 @@ async function _get(key, ttl) {
     value = await fuzzy.get(key, true)
     cacheSet(key, value, ttl) // set in-memory cache
     if(loud)
-      console.log('[cachet/get] post-fuzzy cache:', typeof value)
+      console.log('-----> [cachet/get] post-fuzzy cache:', typeof value)
   }
 
   if(loud)
-    console.log('[cachet/get] cache metadata:', value?.metadata)
+    console.log('-----> [cachet/get] cache metadata:', value?.metadata)
 
   // return value?.data || value
-  created = value?.metadata?.created
-  return { value: value?.data || value, created }
+  created = value?.metadata?.created;
+  let finalValue = value?.data || value.value || value;
+
+  try {
+    finalValue = JSON.parse(finalValue);
+  } catch (error) {
+    // Handle the error if finalValue is not a valid JSON object
+    // do nothing! finalValue will remain a string
+  }
+
+  return { value: finalValue, created }
 }
 
 // set both fuzzyKey (Worker KV if it exists) and in-memory cache

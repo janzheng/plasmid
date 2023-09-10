@@ -1,6 +1,6 @@
 {
   "name": "plasmid",
-  "version": "0.0.69",
+  "version": "0.0.70",
   "description": "",
   "type": "module",
   "scripts": {
@@ -47,7 +47,7 @@
     "node-cache": "^5.1.2",
     "nodemailer": "^6.6.2",
     "nprogress": "^0.2.0",
-    "openai": "^3.2.1",
+    "openai": "^4.5.0",
     "pagedjs": "^0.4.1",
     "pocketbase": "^0.1.2",
     "prism-solarized-dark": "^1.0.1",

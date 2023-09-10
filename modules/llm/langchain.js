@@ -1,5 +1,0 @@
-/* 
-
-  Langchain functions
-
-*/

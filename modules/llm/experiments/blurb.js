@@ -51,7 +51,7 @@ import {
 
 
 import { Configuration, OpenAIApi } from "openai"
-import { getPrompt } from "./blurb-prompt.js"
+import { getPrompt } from "../templates/blurb-prompt.js/index.js"
 
 
 

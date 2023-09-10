@@ -231,7 +231,7 @@ export async function _POST({ request }) {
 
 */
 
-import { getChat } from '../gpt.js'
+import { getChat } from '../experiments/gpt.js/index.js'
 
 // add options to switch Reviewer 1, 2, 3, and other characters
 

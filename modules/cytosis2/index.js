@@ -160,7 +160,7 @@ export const endoloader = async (config, {
     }
 
     let result = await response.json();
-    console.log('endoloader result:', result, url, JSON.stringify({ key, config }, 0, 2));
+    // console.log('endoloader result:', result, url, JSON.stringify({ key, config }, 0, 2));
     return result?.value || result
   } catch (error) {
     console.error('[endoloader] error:', error);

@@ -62,7 +62,98 @@
 
 
 
-    // takes a string, and replaces all instances of {{key}} with the value of key in the data object
+/* 
+
+  written by GPT-4, and way better than what I wrote
+
+
+  USAGE:
+
+  let raw1 = "Hello {{name}} your email is {{email}}!"
+  let raw2 = "Hello [[name]] your email is [[email]] and you like [[food]]!"
+  let data = {
+    name: 'Janina',
+    email: 'whee@example.com'
+  }
+  let data2 = {
+    firstName: 'Jan',
+    emailAddress: 'som@example.com'
+  }
+  let dictionary = {
+    name: 'firstName',
+    email: 'emailAddress'
+  }
+  
+  let text1 = replaceKeys(raw1, data) // straight data replacement
+  let text2 = replaceKeys(raw1, data2, {dictionary}) // data replacement w/ a mapped dictionary
+  let text3 = replaceKeys(raw2, data2, { 
+    dictionary, startSymbol: "[[", endSymbol: "]]", doCleanup: true })
+  let text4 = replaceKeys(raw1, parseMetadata("name:Janne; email:banana@gmail.com",";"), { doCleanup: true }) // data replacement w/ a mapped dictionary
+
+
+
+*/
+export function replaceKeys(text, data, options = {}) {
+  let { dictionary, doCleanup = false, startSymbol = "{{", endSymbol = "}}" } = options;
+
+  // Escape startSymbol and endSymbol if they are '[' or ']' or specials
+  const specialChars = ['\\', '^', '$', '.', '|', '?', '*', '+', '(', ')', '[', ']', '{', '}'];
+  for (const char of specialChars) {
+    startSymbol = startSymbol.split(char).join(`\\${char}`);
+    endSymbol = endSymbol.split(char).join(`\\${char}`);
+  }
+
+  // If a dictionary is provided, remap the data object
+  if (dictionary) {
+    data = Object.keys(data).reduce((newData, key) => {
+      const newKey = Object.keys(dictionary).find(dictKey => dictionary[dictKey] === key);
+      if (newKey) {
+        newData[newKey] = data[key];
+      }
+      return newData;
+    }, {});
+  }
+
+  // Create a regex pattern using the start and end symbols
+  const pattern = new RegExp(`${startSymbol}(.*?)${endSymbol}`, 'g');
+
+  // Replace all instances of {{key}} in the text with the corresponding value from the data object
+  text = text.replace(pattern, (match, key) => {
+    return data[key] ? data[key] : match;
+  });
+
+  // If doCleanup is true, remove all remaining {{keywords}} that weren't replaced
+  if (doCleanup) {
+    text = text.replace(pattern, '');
+  }
+
+  return text;
+}
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+/* 
+
+  Legacy
+
+*/
+
+// takes a string, and replaces all instances of {{key}} with the value of key in the data object
 export const keyReplace = (textTemplate, replacerObject, cleanup=true) => {
   /*
     replaces content in a source string with a string from a replacer object
@@ -132,7 +223,14 @@ export const defaultDictFn = (data, loud = false) => {
 }
 
 
-// uses keyReplace() to replace text w/ an additional dictionary object
+/* 
+  // uses keyReplace() to replace text w/ an additional dictionary object
+
+  this is so raw text templates and the data (as JSON) can be passed in, along with a separate dictionary of terms to be replaced
+
+  the Dict picks the correct keys from the data object, and replaces the text with the data object
+
+*/
 export const textReplacer = (text, data, dict = defaultDictFn, loud=false) => {
   let _dict = dict ? dict(data, loud) : data
   return keyReplace(text, _dict)
@@ -220,3 +318,59 @@ export const getNiceAddress = (stripeAddress) => {
           Canada
           `
 }
+
+
+
+
+
+
+
+
+
+
+
+/* 
+
+  // input is either a valid JSON string of a bunch of \n key:value pairs
+
+  fruit: banana
+  color: yellow
+
+  or 
+
+  {
+    "fruit": "banana",
+    "color": yellow
+  }
+
+  will both give the proper JSON.
+
+  TODO: Support JSON5 or something that supports other types of json
+
+
+
+*/
+
+// export function parseMetadata(metadataInput = "key:value", options = { splitChar: '\n' }) {
+export function parseMetadata(metadataInput = "key:value", splitChar = '\n') {
+  let metadata = {};
+  // let { splitChar } = options;
+  if (!metadataInput || metadataInput.length == 0)
+    return {}
+
+  if (typeof input === 'string' && metadataInput.trim().startsWith('{')) {
+    // Metadata is a JSON string
+    metadata = JSON.parse(metadataInput);
+  } else if (typeof metadataInput === 'string') {
+    // Metadata is a splitChar separated list of key/val pairs
+    metadataInput?.split(splitChar).forEach(pair => {
+      const [key, value] = pair.split(':');
+      if (key && value) {
+        metadata[key.trim()] = value.trim();
+      }
+    });
+  }
+  return metadata;
+}
+
+
