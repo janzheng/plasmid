@@ -50,26 +50,21 @@ async function _get(key, ttl) {
   // in-memory cache is short, but fast
   let created
   let value = cacheGet(key)
-  
+
+  // this causes a ton of caching problems; ONLY return the original wrapped response; downstream needs to handle ".value"
+  // let finalValue = value?.data || value.value || value;
+  let finalValue = value;
+
   if(loud) {
     console.log('[cachet/get] -----> key:', key)
-    console.log('-----> [cachet/get] pre-fuzzy cache:', typeof value)
+    console.log('-----> [cachet/get] pre-fuzzy cache:', typeof finalValue)
   }
 
   // if not in-memory cache, we check fuzzykey cache
-  if(!value && fuzzy) {
-    value = await fuzzy.get(key, true)
-    cacheSet(key, value, ttl) // set in-memory cache
-    if(loud)
-      console.log('-----> [cachet/get] post-fuzzy cache:', typeof value)
+  if (!finalValue && fuzzy) {
+    finalValue = await fuzzy.get(key, true)
+    if(loud) console.log('-----> [cachet/get] post-fuzzy cache:', finalValue)
   }
-
-  if(loud)
-    console.log('-----> [cachet/get] cache metadata:', value?.metadata)
-
-  // return value?.data || value
-  created = value?.metadata?.created;
-  let finalValue = value?.data || value.value || value;
 
   try {
     finalValue = JSON.parse(finalValue);
@@ -77,17 +72,34 @@ async function _get(key, ttl) {
     // Handle the error if finalValue is not a valid JSON object
     // do nothing! finalValue will remain a string
   }
+  if(loud) console.log('-----> [cachet/get] cache metadata:', finalValue?.metadata)
 
-  return { value: finalValue, created }
+  // return value?.data || value
+  created = finalValue?.metadata?.created;
+  // console.log('[cachet/get] final value :::>>', finalValue)
+
+  cacheSet(key, finalValue, ttl) // set in-memory cache
+  // return { payload: finalValue, created }
+  return finalValue // preserve shape of cached item
 }
 
 // set both fuzzyKey (Worker KV if it exists) and in-memory cache
 // default to 1 * 10 hour long ttl
-async function _set(key, value, ttl = 60 * 60 * 24 * 4, metadata) {
-  if(fuzzy)
-    await fuzzy.set(key, value, null, ttl, metadata)
+async function _set(key, value, ttl = 60 * 60 * 24 * 4, metadata, setFuzzy=true) {
+  // console.log('----> [cachet/_set] -> setting data:', key, value)
+  // if(setFuzzy && key && fuzzy && value) {
+    // console.log('----> [setting fuzzy] key:', key, value)
+    //   await fuzzy.set(key, value, null, ttl, metadata)
+  // }
   return cacheSet(key, value, ttl)
 }
+
+
+
+
+
+
+
 
 
 /**
@@ -104,21 +116,20 @@ async function _set(key, value, ttl = 60 * 60 * 24 * 4, metadata) {
  * @param {function} [set] - Optional function to set the value in the cache.
  * @returns {*} - The value from cache or from the executed dynamic function.
  */
-export const cachet = async (key, dynamicFn, {skip=false, metadata, ttl, get, set, ttr=3600 * 6, bgFn=()=>{}}={}) => {  
+export const cachet = async (key, dynamicFn, { skip: skipCache = false, setFuzzy, metadata, ttl, get, set, ttr=3600 * 6, bgFn=()=>{}}={}) => {  
 
   // Use optional get function or default behavior
   let getFunc = get || (async (key) => await _get(key, ttl));
-  let setFunc = set || (async (key, value, ttl, metadata) => await _set(key, value, ttl, metadata));
+  let setFunc = set || (async (key, value, ttl, metadata, setFuzzy) => await _set(key, value, ttl, metadata, setFuzzy));
 
-  let {value, created} = await getFunc(key);
+  let cachePayload = await getFunc(key);
   
   // Check if the time difference between now and created is over "ttr" in seconds
   // ttr = "timeToRefresh", meaning if the cache is older than ttr, we'll refresh it by running the dynamic function
   let now = Date.now();
-  let timeDifference = (now - new Date(created)) / 1000; // convert milliseconds to seconds
+  let timeDifference = (now - new Date(cachePayload?.metadata?.created)) / 1000; // convert milliseconds to seconds
 
-  if(loud)
-    console.log('[cachet] timeDifference:', timeDifference, 'ttr:', ttr, 'skip:', skip);
+  if (loud) console.log('[cachet] timeDifference:', timeDifference, 'created:', cachePayload?.metadata?.created, 'ttr:', ttr, 'skipCache:', skipCache);
 
   if (timeDifference > ttr && bgFn) {
     if(loud)
@@ -131,22 +142,24 @@ export const cachet = async (key, dynamicFn, {skip=false, metadata, ttl, get, se
   // - value exists
   // - skip is false (we don't want to skip the cache)
   // Check if the key exists in the cache
-  if ((skip == false) && value) {
-    if(loud)
-      console.log('[cachet] Using cached value:', key);
-    return value;
+  if ((skipCache == false) && cachePayload ) {
+    if(loud) {
+      console.log('[cachet] Using cached value:', key, cachePayload);
+      // console.log('[cachet] Using cached value:', key, JSON.stringify(value, 0, 2));
+    }
+    return cachePayload;
   }
 
   if (dynamicFn) {
     // If the key doesn't exist, run the dynamic function
     if(loud)
-      console.log('[cachet] Calculating value:', key);
-    value = await dynamicFn();
+      console.log('[cachet] Retrieving New Data 🌎🌎🌎:', key);
+    cachePayload = await dynamicFn();
   
     // Use optional set function or default behavior to store the result in the cache
-    await setFunc(key, value, ttl, metadata);
+    await setFunc(key, cachePayload, ttl, metadata, setFuzzy);
   
-    return value;
+    return cachePayload;
   }
 
   return null; // nothing to return

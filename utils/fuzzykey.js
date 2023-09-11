@@ -12,6 +12,8 @@
 */
 
 export default function FuzzyKey({scope, url} = {}) {
+
+  
   const set = async (key, value, scope, ttl=3600*4, metadata) => {
     if(typeof key == 'object') {
       ({key, value, scope, ttl, metadata} = key) // if "key" is the entire object
@@ -32,7 +34,10 @@ export default function FuzzyKey({scope, url} = {}) {
         headers: {
           'Content-Type': 'application/json'
         },
-        body: JSON.stringify(obj)
+        // body: JSON.stringify(obj)
+
+        // NOTE: value now comes pre-wrapped, so we shouldn't wrap it again. Always put whatever you get, w/o mods
+        body: JSON.stringify(value)
       });
       const data = await response.json();
       return data;
@@ -43,7 +48,7 @@ export default function FuzzyKey({scope, url} = {}) {
 
 
   // base GETter w/ only a single key
-  const get = async (key, metadata) => {
+  const get = async (key, metadata=true) => {
     try {
       const response = await fetch(`${url}?&key=${key}${metadata==true ? '&metadata=true' : ''}`);
       const data = await response.json();

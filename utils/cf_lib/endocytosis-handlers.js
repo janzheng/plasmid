@@ -23,7 +23,7 @@ export const postHandler = async (request) => {
     // this is speedier for testing
     // unlike endocache, the "ttr" value is for background loading; this does NOT load anything in the background (like SWR)
     // and just returns the cached value, so it's mainly for reducing API calls during high loads
-    let { config, scope, key, metadata, ttl = 3600 * 8, waitTime = 4 } = JSON.parse(body)
+    let { config, scope, key, metadata, ttl = 3600 * 8, waitTime = 4, saveCache = true } = JSON.parse(body)
     let namespaceKey
     
     // console.log('CONFIG:', config)
@@ -43,11 +43,10 @@ export const postHandler = async (request) => {
     let timeDifference = (now - new Date(created)) / 1000; // convert milliseconds to seconds
 
 
-    console.log('[endocachet] waitTime:', waitTime, ' timeDiff:', timeDifference, 'key:', namespaceKey);
+    if (loud) console.log('[endocachet] waitTime:', waitTime, ' timeDiff:', timeDifference, 'key:', namespaceKey);
     if (created && timeDifference < waitTime) {
       // this is mainly to slow down requests
-      if (loud)
-        console.log('[endocachet] under wait time; returning cached value; wait:', waitTime, ' timeDiff:', timeDifference);
+      if (loud) console.log('[endocachet] under wait time; returning cached value; wait:', waitTime, ' timeDiff:', timeDifference);
       value = kvData
     }
 
@@ -59,18 +58,28 @@ export const postHandler = async (request) => {
 
     if(!value) {// if we're pulling a KV value, get it from the endo request
       value = await endo(config, {mode: 'cloudflare'}, request)
-
       if (!metadata) {metadata = {}}
       metadata['created'] = Date.now()
-      await FUZZYKEY.put(namespaceKey, JSON.stringify(value), {
-        metadata: { ...metadata, ttl },
-      });
+
+      if (loud) console.log('[endocachet] new value loaded @', namespaceKey, 'cache?', saveCache);
+
+      if (saveCache && (value?.value || value)) {
+        if (loud) console.log('[endocachet] caching values to:', namespaceKey, 'data:', value);
+        // value = value?.value || value // unwrapping the value from the metadata
+        await FUZZYKEY.put(namespaceKey, JSON.stringify(value?.value || value), {
+          metadata: { ...metadata, ttl },
+        });
+
+        // if (loud) console.log('[endocachet] cached value is:', await FUZZYKEY.get(namespaceKey));
+
+      }
     }
 
     return new Response(JSON.stringify({
       status: true,
       key: namespaceKey,
-      value
+      value,
+      metadata,
     }), {
       headers: corsHeaders
     })

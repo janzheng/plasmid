@@ -144,14 +144,17 @@ export const endoloader = async (config, {
   key, // optional fuzzykey cache key
   // sourceNames, // = ['site-data'],
   // transformers,
+  saveCache,
+  loud = true
 } = {}) => {
   try {
+    if(loud) console.log('[endoloader] loading:', url, key, config)
     const response = await fetch(url, {
       method: 'POST',
       headers: {
         'Content-Type': 'application/json'
       },
-      body: JSON.stringify({ key, config })
+      body: JSON.stringify({ key, config, saveCache })
     });
     
     
@@ -161,7 +164,10 @@ export const endoloader = async (config, {
 
     let result = await response.json();
     // console.log('endoloader result:', result, url, JSON.stringify({ key, config }, 0, 2));
-    return result?.value || result
+    // return result?.value || result
+    // return the original response from endoloader, otherwise wrapping in endocache causes a problem where the same key either stores the wrappd respone OR just the value, causing lots of "fun"
+    // if (loud) console.log('[endoloader] result: ', result)
+    return result
   } catch (error) {
     console.error('[endoloader] error:', error);
   }
