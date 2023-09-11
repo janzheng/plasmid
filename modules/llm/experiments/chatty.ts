@@ -9,6 +9,54 @@
 
 */
 
+
+/* 
+
+  fQuery
+
+*/
+import { fQuery } from '$plasmid/modules/llm/fQuery.js'
+
+// export let sessionHistory = []
+
+export async function getChatStream(messages) {
+  try {
+    let fq = await fQuery().prompt(
+        messages,
+      {
+        model: "gpt-3.5-turbo-16k",
+        stream: true,
+        skipSystemMessage: true,
+        tokenLimit: 4000,
+        moderation: true,
+      })
+    return fq
+  } catch(e) {
+    console.error('[getChatStream] error:', e)
+  }
+}
+
+export const POST2 = async ({ request }) => {
+  const requestData = await request.json()
+  const reqMessages = requestData.messages
+  if (!reqMessages) {
+    throw new Error('no messages provided')
+  }
+
+  return await getChatStream(reqMessages)
+}
+
+
+
+
+/* 
+
+  Legacy
+
+
+*/
+
+
 // import { OPENAI_API_KEY } from '$env/static/private'
 // import type { CreateChatCompletionRequest, ChatCompletionRequestMessage } from 'openai'
 // import type { RequestHandler } from './$types'

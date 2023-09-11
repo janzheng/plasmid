@@ -3,6 +3,114 @@
 // https://hwchase17.github.io/langchainjs/docs/modules/prompts/example_selectors
 // https://github.com/Conner1115/LangChain.js-LLM-Template/tree/main/lib
 
+
+
+/* 
+
+  fQuery
+
+*/
+
+import { fQuery } from '$plasmid/modules/llm/fQuery'
+
+export async function getReviewQuery({
+  input, 
+  persona = "You are a kind journal reviewer, yet strict and rigorous. You explain your reasoning step by step, but concisely and clearly. Your job is to improve the manuscript's chances to get accepted at the best journal possible. ", 
+  system = "You're a decorated professor at the top of microbiology, reviewing research papers. ",
+} = {}) {
+
+  try {
+    // const instructions = `If you don't know, admit you don't know. Do not break out of character and don't explain yourself. Answer as the following character: ${persona}`
+    const scorInstructions = `If you don't know, admit you don't know. Do not break out of character and don't explain yourself. Answer as the following character: ${persona}. Review the manuscript by filling in the following template, in JSON format. Score from 1 (lowest) to 5 (highest):
+        Please format the output in JSON proper JSON formatting. Start your response with "{" and end with "}": 
+        {
+          "scor": {
+            "significance": {
+              "score":"(score)",
+              "explanation":(text)"
+            },
+            "clarity": {
+              "score":"(score)",
+              "explanation":(text)"
+            },
+            "originality": {
+              "score":"(score)",
+              "explanation":(text)"
+            },
+            "rigor": {
+              "score":"(score)",
+              "explanation":(text)"
+            },
+          },
+          "review": "(Review the paper here; use a compliment sandwich: pick out the best parts, then where it can be improved, what parts need to change / are not so good, then end with a compliment that creates hope about how it can get into the journal)",
+          "nextlevel": "(Explain in a paragraph how the author can improve of the manuscript, and ways to take it to the next level)",
+          "improve": "(Use markdown bullet points (-) separated by newline for 3-5 to explain short ways the paper can be improved)",
+          "recommendation": "(List 3-5 journals you recommend)"
+        }`; 
+  
+  
+    let fq = await fQuery().json([
+      system + "; " + scorInstructions,
+      input
+    ], {
+      model: "gpt-3.5-turbo-16k" // gpt-4?
+    })
+    return fq
+  } catch (e) {
+    console.error('[reviewertwo/getReviewQuery] error:', e)
+  }
+}
+
+
+// import this in +server.js
+export async function _POST2({ request }) {
+  try {
+    let {
+      persona,
+      system,
+      text
+    } = await request.json()
+
+    let res = await getReviewQuery({ persona, input:text, system })
+
+    let resultObj = {
+      data: res,
+      persona,
+      text
+    }
+
+    // console.log('----*** resultObj:', JSON.stringify(resultObj, 0, 2))
+    return json(resultObj)
+  } catch (err) {
+    // _err(err)
+    console.error('[getReviewQuery/POST2]', err.message || err?.response?.data)
+    // throw error(500, err.message)
+  }
+}
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+/* 
+
+  Legacy
+
+*/
 // add pdf-parse?
 
 import { json } from '@sveltejs/kit';
@@ -17,7 +125,7 @@ import { LLMChain } from "langchain/chains";
 // import { BufferMemory } from "langchain/memory";
 // import { ConversationChain } from "langchain/chains";
 
-import { getReturnResponse } from "$plasmid/modules/llm/";
+import { getReturnResponse } from "$plasmid/modules/llm/utils";
 
 import {
   SystemMessagePromptTemplate,
@@ -231,7 +339,7 @@ export async function _POST({ request }) {
 
 */
 
-import { getChat } from '../experiments/gpt.js/index.js'
+import { getChat } from '../experiments/gpt.js'
 
 // add options to switch Reviewer 1, 2, 3, and other characters
 

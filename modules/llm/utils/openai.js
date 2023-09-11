@@ -57,12 +57,15 @@ export const getChatCompletion = async (messages, _config) => {
         //   // Do your cleanup here
         // });
 
-        console.log('---> [OpenAI] stream:', config.stream, chatResponse)
-        return new Response(chatResponse.body, {
-          headers: {
-            'Content-Type': 'text/event-stream'
-          }
-        })
+        console.log('---> [OpenAI] stream:', config.stream)
+        return {
+          chatResponse,
+          results: new Response(chatResponse.body, {
+            headers: {
+              'Content-Type': 'text/event-stream'
+            }
+          })
+        }
       } else {
         // regular response; get all the parts of the response
         let requestObject = {
@@ -161,7 +164,9 @@ export const initMessages = (
 
 
 
-export const setSystemMessage = (content, messages) => {
+export const setSystemMessage = (messages, content) => {
+  // MUTATES MESSAGES BUT ALSO RETURNS IT!!
+  //
   // Modify the system function to add or update a system prompt based on content
   // adds a system prompt based on content if it doesn't exist, to the front of the array
   // if it does exist, sets it to the new content

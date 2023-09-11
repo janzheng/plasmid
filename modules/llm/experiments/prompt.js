@@ -1,5 +1,9 @@
 
+/* 
 
+  @9/11: Realy old; doesn't work anymore; use fQuery instead
+
+*/
 // Very basic LLM 
 
 import { ChatOpenAI } from "langchain/chat_models";

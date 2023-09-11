@@ -15,17 +15,15 @@
 
 
 import { json } from '@sveltejs/kit';
-import { Configuration, OpenAIApi } from "openai";
+import OpenAI from "openai";
 
 // import PROMPT_QA_EXAMPLES from "./prompt-qa-examples.js";
 // const PROMPT_INSTRUCTIONS = fs.readFileSync('prompt-instructions.txt', 'utf8');
 
-const configuration = new Configuration({
+const openai = new OpenAI({
   // organization: process.env.OPENAI_ORGANIZATION,
   apiKey: process.env.OPENAI_API_KEY
 });
-const openai = new OpenAIApi(configuration);
-
 
 
 
@@ -101,13 +99,13 @@ export const getChatMessages = ({ system = "You are a helpful assistant", prompt
 
 export const llm = async ({ messages, model = "gpt-3.5-turbo", max_tokens = 256, temperature = 0.4 }) => {
   try {
-    const response = await openai.createChatCompletion({
+    const response = await openai.chat.completions.create({
       model,
       messages: messages,
       max_tokens,
       temperature,
     });
-    return response.data.choices[0].message.content.replaceAll("\n", " ").trim()
+    return response.choices[0].message.content.replaceAll("\n", " ").trim()
   } catch (error) {
 
     console.log('[error] llm:', error)

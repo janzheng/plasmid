@@ -14,9 +14,9 @@
   - Good DX: https://github.com/amaiya/onprem
   - Rivet: https://rivet.ironcladapp.com  
 
-
-  - conversation token limit length limiter
-
+  Future:
+  - shorten messages if hitting the token limit
+  - split text, run, join - this only works on some workflows like summarize
 
   Far-Future:
   - (cytosis?) Message trees where you can go back and try something else and it branches
@@ -50,7 +50,7 @@ let addonLibrary = {
 }
 
 
-export const fquery = (input) => {
+export const fQuery = (input) => {
   let inputPrompt;
   let messages = []
 
@@ -78,7 +78,7 @@ export const fquery = (input) => {
     }
 
     // uses the moderation API
-    const moderate = async (input, verbose=false) => {
+    const moderation = async (input, verbose=false) => {
       let messages = initMessages(input);
       const moderationRes = await fetch('https://api.openai.com/v1/moderations', {
         headers: {
@@ -112,15 +112,13 @@ export const fquery = (input) => {
     const prompt = async (input, inputConfig) => {
       try {
         let _config = { ...config, ...inputConfig };
-        if (_config?.moderate && await moderate(input)) { 
-          // moderate if requested
+        if (_config?.moderation && await moderation(input)) { 
+          // moderation if requested
           return {
             flagged: true,
             prompt: input,
           }
         }
-
-
 
         let messages=[]
         if (Array.isArray(input) && input.every(i => typeof i === 'string')) {
@@ -134,8 +132,8 @@ export const fquery = (input) => {
               ]
           */
          let start = 0
-          if(!inputConfig.skipSystemMessage) {
-            setSystemMessage(input[0], messages)
+          if(!inputConfig?.skipSystemMessage) {
+            messages = setSystemMessage(messages, input[0])
             start = 1
           }
           for (let i = start; i < input.length; i++) {
@@ -145,31 +143,50 @@ export const fquery = (input) => {
               messages = addAssistantMessage(messages, input[i]);
             }
           }
+
           
+        } else if (Array.isArray(input)) {
+          // standard array of messages; we assume it's correctly formed; system message is up to input
+          messages = input;
+        } else if (typeof input === 'object' && Object.keys(input).length > 0) {
+          // input is a JS object with at least 1 key
+          /*
+            {
+              system: "You are hilarious!",
+              input: "Tell me a banana joke"
+            }
+          */
+          if(input?.system) {
+            messages = setSystemMessage(messages, input?.system)
+          }
+          if(input?.input) {
+            messages = addUserMessage(messages, input?.input)
+          }
         } else {
+          // input is a string
           // add the input string either as a regular text string
           // or a s an array of properly-formatted openai chatCompletion objects
-          if(inputConfig.messages) {
-            messages = addUserMessage(inputConfig.messages, input);
+          if(inputConfig?.messages) {
+            messages = addUserMessage(inputConfig?.messages, input);
           } else {
             messages = initMessages(input, _config);
           }
         }
       
 
-        if(inputConfig.replace) {
+        if(inputConfig?.replace) {
           // replaces {{name}} with the user's name from replace object: {name: "Jan"}
           // replaceOptions is the metadata, like dictionary, start/end symbols, etc
           messages = messages.map(message => {
-            message.content = replaceKeys(message.content, inputConfig.replace, inputConfig.replaceOptions);
+            message.content = replaceKeys(message.content, inputConfig?.replace, inputConfig?.replaceOptions);
             return message;
           });
         }
         
-        if (inputConfig.addons) {
-          let addons = inputConfig.addons
+        if (inputConfig?.addons) {
+          let addons = inputConfig?.addons
           messages = messages.map(message => {
-            if (inputConfig.addonOptions?.onlySystem && message.role !== 'system') {
+            if (inputConfig?.addonOptions?.onlySystem && message.role !== 'system') {
               return message
             } else {
               addons.forEach(addon => {
@@ -182,10 +199,11 @@ export const fquery = (input) => {
           });
         }
 
-        // console.log('AFTER MESSAGES:', messages)
+        
+        console.log('[assembled message + config]: \nmessages:', messages, '\nconfig:', _config) // this is really useful; keep it around!!
 
         let initTokenCount = getTokenLen(messages)
-        console.log('token count::', initTokenCount)
+        // console.log('token count::', initTokenCount)
         if (_config?.tokenLimit && initTokenCount.total > _config?.tokenLimit) {
           throw new Error(`Token limit exceeded. Tokens: ${initTokenCount} / Limit: ${_config?.tokenLimit}`)
         }
@@ -279,7 +297,7 @@ export const fquery = (input) => {
         })
       }
       let output = await getResult(input);
-      let counter = 0, tries = inputConfig.tries || 5;
+      let counter = 0, tries = inputConfig?.tries || 5;
 
       let jsonOutput = null;
       while (!jsonOutput && counter < 5) {
@@ -308,7 +326,7 @@ export const fquery = (input) => {
     // function-calling, with retries; returns json; requires functions schema
     // limit the # of functions, as they fill the context limit (and are expensive)
     const funcall = async (input, inputConfig) => {
-      if(!inputConfig.functions || inputConfig.functions.length == 0) {
+      if(!inputConfig?.functions || inputConfig?.functions.length == 0) {
         throw new Error('[llm/json] no functions specified')
       }
 
@@ -397,7 +415,7 @@ export const fquery = (input) => {
 
     // uses funcall() and toSchema() as guardrails to extract data from a prompt
     const extract = async (input, inputConfig) => {
-      let verbose = inputConfig.verbose;
+      let verbose = inputConfig?.verbose;
       inputConfig.verbose = true; // for sub-calls
 
       let res = await toSchema(input, inputConfig);
@@ -463,7 +481,7 @@ export const fquery = (input) => {
       // --- fns
       prompt, ask,
       chat,
-      moderate,
+      moderation,
       json, funcall, toSchema, extract,
       embed,
       related,

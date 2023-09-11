@@ -3,12 +3,85 @@
 // https://hwchase17.github.io/langchainjs/docs/modules/prompts/example_selectors
 // https://github.com/Conner1115/LangChain.js-LLM-Template/tree/main/lib
 
+
+
+
+
+
+/* 
+
+  fQuery
+
+*/
+import { fQuery } from '$plasmid/modules/llm/fQuery'
+
+export async function getBlurbQuery({
+  link, text, modelName,
+} = {}) {
+  
+  try {
+    let system = "You're a helpful summarizer! Respond in markdown. Do not wrap in backticks. Use markdown links where appropriate.";
+    let textInput = `Link: ${link} | Text: ${text}`;
+    textInput = textInput.substring(0, 8000)
+
+    const instructions = `Generate a JSON object from this text: {textInput}. 
+    - A "summary" field: a short 300 character Markdown summary around 200 characters describing the article that includes a link to the abstract in the appropriate context
+    - In the "summary" field always create a link around a phrase in the middle of the text, to the provided link. Example: Some [important text](provided link) is highlighted. Don't add a link to the end. If you can't find a good place to add a link, add it to the first three words.
+    - A "keywords" field with an array containing 3 relevant keywords to the text.
+    - Generate a JSON object that looks like this:
+    {
+      "Summary": "(summary with a key phrase in summary linking to the provided link, with markdown)",
+      "Keywords": ["keyword1", "keyword2", "keyword3"]
+    }
+
+    `;
+
+    let fq = await fQuery().json([
+      system + "; " + instructions,
+      textInput,
+    ], {
+      model: modelName || "gpt-3.5-turbo-16k", // gpt-4?
+    })
+    
+    console.log('getBlurbQuery results :::: ', fq)
+    return {...fq, Link: link}
+  } catch (e) {
+    console.error('[reviewertwo/getReviewQuery] error:', e)
+  }
+}
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+/* 
+
+  Legacy
+
+*/
 // add pdf-parse?
 
 import JSON5 from 'json5'
 
 import { json } from '@sveltejs/kit';
-import { OpenAI } from "langchain/llms";
+// import { OpenAI } from "langchain/llms";
 import { HumanChatMessage, SystemChatMessage } from "langchain/schema";
 import { PromptTemplate } from "langchain/prompts";
 import { Document } from "langchain/document";
@@ -18,7 +91,7 @@ import { ConversationChain } from "langchain/chains";
 import { ChatOpenAI } from "langchain/chat_models";
 import { LLMChain } from "langchain/chains";
 
-import { getReturnResponse } from "../index"
+import { getReturnResponse } from "../utils"
 
 import {
   SystemMessagePromptTemplate,
@@ -50,17 +123,13 @@ import {
 
 
 
-import { Configuration, OpenAIApi } from "openai"
-import { getPrompt } from "../templates/blurb-prompt.js/index.js"
+import OpenAI from "openai";
+import { getPrompt } from "../templates/blurb-prompt.js"
 
-
-
-
-const configuration = new Configuration({
-  apiKey: process.env.OPENAI_API_KEY,
+const openai = new OpenAI({
+  // organization: process.env.OPENAI_ORGANIZATION,
+  apiKey: process.env.OPENAI_API_KEY
 });
-const openai = new OpenAIApi(configuration);
-
 
 
 export async function getSummary(text, temperature = 0.8, top_p = 0.9, max_tokens = 200, frequency_penalty = 0.5, presence_penalty = 0.5,) {
@@ -82,7 +151,7 @@ export async function getSummary(text, temperature = 0.8, top_p = 0.9, max_token
 
 
     // console.log('completion:', completion.data)
-    console.log('[getSummary] Results:', completion.data, completion.data.choices[0].text)
+    console.log('[getSummary] Results:', completion, completion.choices[0].text)
     return completion.data.choices[0].text
   } catch (err) {
     console.error(err.message || err)
@@ -197,20 +266,20 @@ Examples JSON object. Not how the links are generated mid-summary:
       textInput,
     });
     console.timeEnd();
-    console.log('[chat-blurb]: GPT Response:', res?.text);
-
-
+    
+    
     let output = getReturnResponse(res);
+    console.log('[chat-blurb]: GPT Response:', res, output);
     if (output.type === 'application/json') {
       return {
         Link: input?.link,
-        Summary: output.result?.Summary,
-        Keywords: output.result?.Keywords,
+        Summary: output.value?.Summary,
+        Keywords: output.value?.Keywords,
       }
     } else {
       return {
         Link: input?.link,
-        Summary: output.result,
+        Summary: output.value,
         Keywords: null,
       }
     }
