@@ -57,13 +57,13 @@ async function _get(key, ttl) {
 
   if(loud) {
     console.log('[cachet/get] -----> key:', key)
-    console.log('-----> [cachet/get] pre-fuzzy cache:', typeof finalValue)
+    console.log('-----> [cachet/get][Local Cache?]:', key, typeof finalValue)
   }
 
   // if not in-memory cache, we check fuzzykey cache
   if (!finalValue && fuzzy) {
     finalValue = await fuzzy.get(key, true)
-    if(loud) console.log('-----> [cachet/get] post-fuzzy cache:', finalValue)
+    if(loud) console.log('-----> [cachet/get][Fuzzy Cache]:', key, finalValue)
   }
 
   try {
@@ -87,10 +87,10 @@ async function _get(key, ttl) {
 // default to 1 * 10 hour long ttl
 async function _set(key, value, ttl = 60 * 60 * 24 * 4, metadata, setFuzzy=true) {
   // console.log('----> [cachet/_set] -> setting data:', key, value)
-  // if(setFuzzy && key && fuzzy && value) {
-    // console.log('----> [setting fuzzy] key:', key, value)
-    //   await fuzzy.set(key, value, null, ttl, metadata)
-  // }
+  if(setFuzzy && key && fuzzy && value) {
+    console.log('----> [setting fuzzy] cache:', key, value)
+      await fuzzy.set(key, value, null, ttl, metadata)
+  }
   return cacheSet(key, value, ttl)
 }
 
@@ -131,18 +131,11 @@ export const cachet = async (key, dynamicFn, { skip: skipCache = false, setFuzzy
 
   if (loud) console.log('[cachet] timeDifference:', timeDifference, 'created:', cachePayload?.metadata?.created, 'ttr:', ttr, 'skipCache:', skipCache);
 
-  if (timeDifference > ttr && bgFn) {
-    if(loud)
-      console.log('[cachet] ttr exceeded; running background function:', bgFn);
-    bgFn();
-    cacheClear(key); // clear the local key so we can get the new value
-  }
-
   // return the cached value and don't run the dynamic function if:
   // - value exists
   // - skip is false (we don't want to skip the cache)
   // Check if the key exists in the cache
-  if ((skipCache == false) && cachePayload ) {
+  if ((skipCache == false) && cachePayload?.value ) {
     if(loud) {
       console.log('[cachet] Using cached value:', key, cachePayload);
       // console.log('[cachet] Using cached value:', key, JSON.stringify(value, 0, 2));
@@ -159,6 +152,15 @@ export const cachet = async (key, dynamicFn, { skip: skipCache = false, setFuzzy
     // Use optional set function or default behavior to store the result in the cache
     await setFunc(key, cachePayload, ttl, metadata, setFuzzy);
   
+
+    // run the background function at the end to prevent side effects
+    if (timeDifference > ttr && bgFn) {
+      if (loud)
+        console.log('[cachet] ttr exceeded; running background function:', bgFn);
+      bgFn();
+      cacheClear(key); // clear the local key so we can get the new value
+    }
+
     return cachePayload;
   }
 

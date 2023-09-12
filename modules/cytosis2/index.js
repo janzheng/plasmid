@@ -166,7 +166,7 @@ export const endoloader = async (config, {
     // console.log('endoloader result:', result, url, JSON.stringify({ key, config }, 0, 2));
     // return result?.value || result
     // return the original response from endoloader, otherwise wrapping in endocache causes a problem where the same key either stores the wrappd respone OR just the value, causing lots of "fun"
-    // if (loud) console.log('[endoloader] result: ', result)
+    if (loud) console.log('[endoloader] result: ', key, result)
     return result
   } catch (error) {
     console.error('[endoloader] error:', error);
