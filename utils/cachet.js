@@ -132,10 +132,10 @@ export const cachet = async (key, dynamicFn, { skip: skipCache = false, setFuzzy
   if (loud) console.log('[cachet] timeDifference:', timeDifference, 'created:', cachePayload?.metadata?.created, 'ttr:', ttr, 'skipCache:', skipCache);
 
   // return the cached value and don't run the dynamic function if:
-  // - value exists
+  // - value exists, and that it's not just a {} empty js obj
   // - skip is false (we don't want to skip the cache)
   // Check if the key exists in the cache
-  if ((skipCache == false) && cachePayload?.value ) {
+  if ((skipCache == false) && cachePayload?.value && typeof cachePayload?.value === 'object' && Object.keys(cachePayload?.value).length > 0) {
     if(loud) {
       console.log('[cachet] Using cached value:', key, cachePayload);
       // console.log('[cachet] Using cached value:', key, JSON.stringify(value, 0, 2));
