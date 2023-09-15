@@ -131,6 +131,20 @@ export const cachet = async (key, dynamicFn, { skip: skipCache = false, setFuzzy
 
   if (loud) console.log('[cachet] timeDifference:', timeDifference, 'created:', cachePayload?.metadata?.created, 'ttr:', ttr, 'skipCache:', skipCache);
 
+
+  // if cache is updating / saving too often, move this after key cache
+  // but that means that KV might not get uploaded often unless serverless is shut off
+  // run the background function at the end to prevent side effects
+  // this is independent of cached data, and is to refresh the SWR Fuzzy KV cache
+  if (timeDifference > ttr && bgFn) {
+    if (loud)
+      console.log(`[cachet] ttr exceeded (${timeDifference} ?> ${ttr}?); running background function:`, bgFn);
+    bgFn();
+    cacheClear(key); // clear the local key so we can get the new value
+  } else {
+    console.log(`[cachet] within ttr (${timeDifference} ?> ${ttr}?); not running background function:`, bgFn);
+  }
+
   // return the cached value and don't run the dynamic function if:
   // - value exists, and that it's not just a {} empty js obj
   // - skip is false (we don't want to skip the cache)
@@ -151,16 +165,6 @@ export const cachet = async (key, dynamicFn, { skip: skipCache = false, setFuzzy
   
     // Use optional set function or default behavior to store the result in the cache
     await setFunc(key, cachePayload, ttl, metadata, setFuzzy);
-  
-
-    // run the background function at the end to prevent side effects
-    if (timeDifference > ttr && bgFn) {
-      if (loud)
-        console.log('[cachet] ttr exceeded; running background function:', bgFn);
-      bgFn();
-      cacheClear(key); // clear the local key so we can get the new value
-    }
-
     return cachePayload;
   }
 
