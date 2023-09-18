@@ -15,6 +15,7 @@
 */
 
 import { PUBLIC_PDR2_AUTH, PUBLIC_PDR2_ENDPOINT, PUBLIC_PDR2_SCOPE } from '$env/static/public';
+import { getFileHash } from '$plasmid/utils/uploads/fileHash';
 
 // better to get from session instead
 // server-side: reveal deta key to endpoints
@@ -28,27 +29,32 @@ export const getToken = () => {
 
 
 
-export const uploadFileToR2 = async (file, statusStore, filename=file?.name, scope=PUBLIC_PDR2_SCOPE ) => {
+export const uploadFileToR2 = async ({file, status: statusStore, filename, scope=PUBLIC_PDR2_SCOPE} ) => {
   try {
 
     if (!file) {
       statusStore?.update(store => ({
         ...store,
-        message: "Maybe you forgot to choose a file first?"
+        status: 'error',
+        message: "Please choose a file!"
       }))
+      return null
     }
 
-    // move file to Airtable using /deta/airtable endpoint
-    // message = `Uploading ${files[0].name} ...`
+    // TODO:
+    // handle folder / webkitdirectory here
+
+    if(!filename)
+      filename = file?.name || "filename"
+
+
+
     statusStore?.update(store => ({
       ...store,
+      filename,
+      status: 'uploading',
       message: `Uploading ${filename} ...`
     }))
-
-    // let uploadUrl = `${PUBLIC_PDR2_ENDPOINT}/${PUBLIC_PDR2_SCOPE}/${filename}`
-    // if (!PUBLIC_PDR2_SCOPE) {
-    //   url = `${PUBLIC_PDR2_ENDPOINT}/${filename}`
-    // }
 
     // THIS REQUIRES THE FILOFAX ENDPOINT AT f2.phage.directory!
     let uploadUrl = `${PUBLIC_PDR2_ENDPOINT}`
@@ -57,7 +63,7 @@ export const uploadFileToR2 = async (file, statusStore, filename=file?.name, sco
     // formData.append('versioning', 'false'); 
     formData.append('scope', scope); 
 
-    console.log('uploadUrl:', uploadUrl)
+    // console.log('uploadUrl:', uploadUrl)
     let res
     try {
       res = await fetch(
@@ -73,29 +79,36 @@ export const uploadFileToR2 = async (file, statusStore, filename=file?.name, sco
       console.error('[Upload failed]', err)
     }
 
+
+
+
+
     // console.log('uploadres:', res, res.ok)
+    let key 
 
     if (res?.ok) {
       let  resJson
       try {
         resJson = await res.json()
-        console.log('resJson', resJson)
+        // console.log('resJson', resJson)
       } catch(e) {
         console.log('error parsing json', e)
       }
       if (resJson) {
         // uses filofax PUT response
-        filename = resJson?.key
+        key = resJson?.[0].key
       }
 
       // const link = PUBLIC_PDR2_ENDPOINT + '/' + filename
       const link = resJson?.[0].permalink
-      console.log('Uploaded!:', resJson, 'link:', PUBLIC_PDR2_ENDPOINT + '/' + filename)
+      // console.log('Uploaded!:', resJson, 'link:', PUBLIC_PDR2_ENDPOINT + '/' + filename)
 
       let obj = {
         success: true,
-        result: resJson,
+        status: 'success',
+        results: resJson,
         filename: filename,
+        key, 
         endpoint: PUBLIC_PDR2_ENDPOINT,
         url: link,
         message: `Uploaded: <a href="${link}">${link}</a>`,
@@ -106,6 +119,8 @@ export const uploadFileToR2 = async (file, statusStore, filename=file?.name, sco
         ...obj
       }))
       return obj
+
+      
     } else {
 
       console.error('[Upload failed]', res.message)
@@ -113,11 +128,13 @@ export const uploadFileToR2 = async (file, statusStore, filename=file?.name, sco
       statusStore?.update(store => ({
         ...store,
         success: false,
+        status: 'failed',
         message: `Error: ${res.status}`
       }))
 
       return {
         success: false,
+        status: 'failed',
         message: `Error: ${res.status}`
       }
     }
@@ -129,14 +146,27 @@ export const uploadFileToR2 = async (file, statusStore, filename=file?.name, sco
 
 
 
+
+
+
+
+
+
+
+
+
+
 export const requestPresignedUrl = async ({file, scope=PUBLIC_PDR2_SCOPE, filename=file?.name, expiresIn=3600}) => {
   try {
-    console.log('requestPresignedUrl:', {
+    let obj = {
       cmd: 'presigned',
       scope: scope,
-      filename: filename,
+      key: filename,
       expiresIn: expiresIn,
-    })
+      ipfsHash: await getFileHash({file})
+    }
+
+    console.log('requestPresignedUrl:', obj)
 
     const response = await fetch(PUBLIC_PDR2_ENDPOINT, {
       method: 'POST',
@@ -144,20 +174,16 @@ export const requestPresignedUrl = async ({file, scope=PUBLIC_PDR2_SCOPE, filena
         'Content-Type': 'application/json',
         'X-Custom-Auth-Key': PUBLIC_PDR2_AUTH
       },
-      body: JSON.stringify({
-        cmd: 'presigned',
-        scope: scope,
-        filename: filename,
-        expiresIn: expiresIn,
-      })
+      body: JSON.stringify(obj)
     });
 
     if (!response.ok) {
       throw new Error(`HTTP error! status: ${response.status}`);
     }
 
-    const presignedUrl = await response.text();
-    return presignedUrl;
+    // const presignedUrl = await response.text();
+    const presignedUrlObject = await response.json();
+    return presignedUrlObject;
   } catch (error) {
     console.error('[requestPresignedUrl] Failed to fetch presigned URL:', error);
     return null;
@@ -190,3 +216,61 @@ export const uploadPresignedUrl = async (url, { file, filename=file?.name, metad
     return null;
   }
 }
+
+
+
+
+// this allows for super-large files, as it goes around CF Worker
+export const uploadFileWithPresignedUrl = async ({file, scope, status: statusStore}) => {
+  try {
+
+    if (!file) {
+      statusStore?.update(store => ({
+        ...store,
+        status: 'error',
+        message: "Please choose a file!"
+      }))
+      return null
+    }
+
+    const presignedUrlObject = await requestPresignedUrl({ file, scope });
+    console.log('[uploadFileWithPresignedUrl] Presigned URL:', presignedUrlObject);
+
+    let filename = file.name
+    statusStore?.update(store => ({
+      ...store,
+      filename,
+      status: 'uploading',
+      message: `Uploading ${filename} ...`
+    }))
+
+
+
+    let result = await uploadPresignedUrl(presignedUrlObject.url, { file });
+
+    let link = presignedUrlObject.permalink;
+
+    
+    let obj = {
+      success: result,
+      status: 'success',
+      results: presignedUrlObject,
+      filename,
+      key: presignedUrlObject.key,
+      endpoint: PUBLIC_PDR2_ENDPOINT,
+      url: link,
+      message: `Uploaded: <a href="${link}">${link}</a>`,
+    }
+    statusStore?.update(store => ({
+      ...store,
+      ...obj
+    }))
+    return obj
+    
+  } catch (error) {
+    console.error('[uploadFileWithPresignedUrl] Error:', error);
+    return {
+      success: false,
+    }
+  }
+};
