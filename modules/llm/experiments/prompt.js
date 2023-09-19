@@ -8,7 +8,7 @@
 
 import { ChatOpenAI } from "langchain/chat_models";
 import { LLMChain } from "langchain/chains";
-import { getReturnResponse } from "$plasmid/modules/llm/";
+import { getReturnResponse } from "$plasmid/modules/llm/utils";
 
 import {
   SystemMessagePromptTemplate,

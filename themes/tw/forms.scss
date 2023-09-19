@@ -67,7 +67,10 @@ select[multiple],
 
 
 .input-block {
-  @apply mt-1 block w-full
+  @apply mt-1 block w-full;
+  &.mt-0 {
+    margin-top: 0;
+  }
 }
 
 .input-borders {
