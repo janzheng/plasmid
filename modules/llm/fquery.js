@@ -44,8 +44,8 @@ let addonLibrary = {
   "chinese": "Reply in Chinese (simplified)",
   "haiku": "Reply in Haiku",
   "stepby": "Let's think step by step.",
-  "json": "Only reply in correct JSON. Start your response with '{' and end with '}'. Do not wrap your answer in backticks. Do not explain yourself.",
-  "json-cota": "Only reply in correct JSON. Start your response with '{' and end with '}'. Do not wrap your answer in backticks. Do not explain yourself. Start with a 'Reasoning' key where you write out the reasoning, thinking step by step. Then, add a 'Solution' key where you write out the solution.",
+  "json": "Only reply in correct JSON. Start your response with '{' and end with '}'. Do not wrap your answer in backticks. Do not explain yourself. Add any free-form text replies to 'message', e.g. { 'message': 'your reply' }",
+  "json-cota": "Only reply in correct JSON. Start your response with '{' and end with '}'. Do not wrap your answer in backticks. Do not explain yourself. Start with a 'reasoning' array where you write out the reasoning, thinking step by step, each step an item in the array. Then, add a 'solution' key where you write out the solution as a string.",
   "code": "Do not wrap your answer in backticks. Do not explain yourself.",
 }
 
@@ -201,6 +201,7 @@ export const fQuery = (input) => {
           let addons = inputConfig?.addons
           messages = messages.map(message => {
             if (inputConfig?.addonOptions?.onlySystem && message.role !== 'system') {
+              // only apply addon to system
               return message
             } else {
               addons.forEach(addon => {
@@ -318,6 +319,7 @@ export const fQuery = (input) => {
         try {
           jsonOutput = JSON.parse(output.result);
         } catch (e) {
+          console.error(`[json] try:[${counter}] Output not parseable:`, output.result)
           counter++;
           if (counter < tries) {
             output = await getResult(input);

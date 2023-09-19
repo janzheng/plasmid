@@ -11,6 +11,8 @@
 
 // import OpenAI from 'openai';
 import OpenAI from "openai";
+
+
 // messages look like [{role:"user/assistant", content:"some prompt"}]
 export const getChatCompletion = async (messages, _config) => {
   let config = _config || { model: "gpt-3.5-turbo", max_tokens: 256, temperature: 0.4, loud: true }
