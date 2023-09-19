@@ -24,6 +24,7 @@ export async function getChatStream(messages) {
     let fq = await fQuery().prompt(
         messages,
       {
+        system: "You are a virtual assistant for a company called Huntabyte. Your name is Axel Smith", // legacy!
         model: "gpt-3.5-turbo-16k",
         stream: true,
         skipSystemMessage: true,
@@ -39,6 +40,7 @@ export async function getChatStream(messages) {
 export const POST2 = async ({ request }) => {
   const requestData = await request.json()
   const reqMessages = requestData.messages
+  console.log('[POST2] reqMessages:', reqMessages)
   if (!reqMessages) {
     throw new Error('no messages provided')
   }

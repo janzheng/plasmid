@@ -136,6 +136,14 @@ export const fQuery = (input) => {
             messages = setSystemMessage(messages, input[0])
             start = 1
           }
+
+          if (input?.system && messages?.[0].role !== 'system') {
+            // can provide config.system instead
+            messages = setSystemMessage(messages, input?.system)
+            start = 1
+          }
+
+
           for (let i = start; i < input.length; i++) {
             if ((i-start) % 2 === 0) {
               messages = addUserMessage(messages, input[i]);
@@ -147,7 +155,13 @@ export const fQuery = (input) => {
           
         } else if (Array.isArray(input)) {
           // standard array of messages; we assume it's correctly formed; system message is up to input
-          messages = input;
+
+          if (inputConfig?.system) {
+            messages = [...setSystemMessage(messages, inputConfig?.system), ...input]
+          } else {
+            messages = input;
+          }
+
         } else if (typeof input === 'object' && Object.keys(input).length > 0) {
           // input is a JS object with at least 1 key
           /*
