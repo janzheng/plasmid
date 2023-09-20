@@ -8,6 +8,7 @@
     getCyInstance: () => cyInstance
   })
 
+  export let graphClasses = 'block w-full h-[100vh]';
   let refElement = null
   let cyInstance = null
 
@@ -33,8 +34,8 @@
 
 </script>
 
-woof woof
-<div class="graph" bind:this={refElement}>
+<!-- note: need to set the height of graph in parent! -->
+<div class="Graph {graphClasses}" bind:this={refElement}>
   {#if cyInstance}
     <slot></slot>
   {/if}
