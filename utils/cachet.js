@@ -84,7 +84,7 @@ async function _get(key, ttl) {
 }
 
 // set both fuzzyKey (Worker KV if it exists) and in-memory cache
-// default to 1 * 10 hour long ttl
+// default to 4-day long ttl
 async function _set(key, value, ttl = 60 * 60 * 24 * 4, metadata, setFuzzy=true) {
   // console.log('----> [cachet/_set] -> setting data:', key, value)
   if(setFuzzy && key && fuzzy && value) {

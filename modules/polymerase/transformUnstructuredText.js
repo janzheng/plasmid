@@ -43,10 +43,15 @@ export const extractStructuredDataFromText = async ({
   str, schema, maxAttempts = 1,
   url = `https://pd-api.fly.dev/gen/api/prompt`,
   // url = `http://localhost:3051/gen/api/prompt`,
+  loud = false,
+  modelName = "gpt-3.5-turbo",
+  keepExampleText = false,
 }) => {
   str = str.trim()
 
-  console.log('[extractStructuredDataFromText] inputs:', str, schema, url)
+  if(loud)
+    console.log('[extractStructuredDataFromText] inputs:', str, schema, url)
+
   let attempts = 0
 
   if (!str || str.length == 0)
@@ -56,14 +61,22 @@ export const extractStructuredDataFromText = async ({
   // this lets you send stringified JSON objects into the LLM prompt (can't use single { and })
   let jsonSchemaString = JSON.stringify(schema).replace(/[{]/g, '{{').replace(/[}]/g, '}}');
 
+  let exampleTextInstr
+  if (keepExampleText) {
+    exampleTextInstr = `Output default text in your JSON (eg. JON_DOE, EXPERIMENT_NAME)`
+  }
+
   let body = JSON.stringify({
-      "prompt": `Given this rough schema definition and/or entities: """${jsonSchemaString}]""", please extract the following text from """${str}""". Only output JSON. Do not describe your results. Do not wrap in markdown backticks or HTML.`
+    prompt: `Given this rough schema definition and/or entities: """${jsonSchemaString}]""", please extract the following text from """${str}""". """${exampleTextInstr}""" Only output JSON. Do not describe your results. Do not wrap in markdown backticks or HTML.`,
+      modelName
     })
 
   while (attempts < maxAttempts) {
     attempts += 1;
-    
-    console.log('[extractStructuredDataFromText] Sending prompt:', body)
+
+    if (loud)
+      console.log('[extractStructuredDataFromText] Sending prompt:', body)
+
     let res = await fetch(`${url}`, {
       method: 'POST',
       headers: {
@@ -77,8 +90,9 @@ export const extractStructuredDataFromText = async ({
     }
 
     let data = await res.json()
-    if(data && data.result) {
-      console.log('[extractStructuredDataFromText] output:', data)
+    if (data && data.result) {
+      if (loud)
+        console.log('[extractStructuredDataFromText] output:', data)
       return data.result
     }
   }
@@ -128,7 +142,7 @@ export const extractStructuredDataFromText = async ({
     })();
 
 */
-export const transformUnstructuredText = R.curry(async ({ schema, zodSchema, maxAttempts=1, extractorFn}, unstructuredText) => {
+export const transformUnstructuredText = R.curry(async ({ schema, zodSchema, maxAttempts=1, extractorFn, loud=false}, unstructuredText) => {
   let attempts = 0;
   let structuredTextData = null;
 
@@ -145,7 +159,8 @@ export const transformUnstructuredText = R.curry(async ({ schema, zodSchema, max
     // this only returns the validated data per the schema
     if (zodSchema) {
       const result = zodSchema.safeParse(structuredTextData);
-      console.log('[transformUnstructuredText] zod result:', result);
+      if (loud)
+        console.log('[transformUnstructuredText] zod result:', result);
       if (result.success) {
         return result.data
         // return structuredText;
@@ -172,7 +187,7 @@ export const transformUnstructuredText = R.curry(async ({ schema, zodSchema, max
 
 export const validateStructuredTextData = R.curry((zodSchema, structuredTextData) => {
   const result = zodSchema.safeParse(structuredTextData);
-  console.log('[validateStructuredTextData] zod result:', result);
+  // console.log('[validateStructuredTextData] zod result:', result);
   if (result.success) {
     return result.data
   }

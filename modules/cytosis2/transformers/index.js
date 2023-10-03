@@ -50,6 +50,26 @@ export const addTransformers = (transformers) => {
 
 
 
+
+
+
+
+
+/* 
+
+
+  Transformers
+
+
+*/
+
+
+
+
+
+
+
+
 /* 
   gets one or more columns from a given object, discards the rest
   only works for root keys, not nested keys (flatten first)

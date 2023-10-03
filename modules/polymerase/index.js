@@ -74,10 +74,6 @@ export { generateSchemaFromText, createZodObject };
 import { generateRamdaStrFromText, createRamdaParser, parseLine, parseLineStr, parseLines } from "$plasmid/modules/polymerase/parseLines.js";
 export { generateRamdaStrFromText, createRamdaParser, parseLine, parseLineStr, parseLines };
 
-
-
-
-
 import * as R from 'ramda';
 import * as RA from 'ramda-async';
 import { z } from "zod";
@@ -155,34 +151,34 @@ export const demos = () => {
       // console.log("[transformUnstructuredText demo]:\n", unstructuredText, "\n>>", structuredTextData);
 
       // Chain it with other Ramda functions
-      const structuredTextResult = await RA.pipeAsync(
-        transformUnstructuredText({ schema: sampleNameSchemaStr, extractorFn: extractStructuredDataFromText }),
-        R.prop('name'),
-        R.toUpper
-      )(unstructuredText);
-      console.log("[transformUnstructuredText chain demo]:\n", unstructuredText, "\n>>", structuredTextResult); // The transformed username in uppercase
+      // const structuredTextResult = await RA.pipeAsync(
+      //   transformUnstructuredText({ schema: sampleNameSchemaStr, extractorFn: extractStructuredDataFromText }),
+      //   R.prop('name'),
+      //   R.toUpper
+      // )(unstructuredText);
+      // console.log("[transformUnstructuredText chain demo]:\n", unstructuredText, "\n>>", structuredTextResult); // The transformed username in uppercase
 
 
-      try {
-        // Use the generated schema to transform and validate each line
-        const inputStr = `
-          Jon Smith, jonsmith@example.com
-          Adam Appleby, aapl@example.com
-          Banana Rama, barama@example.com
-        `;
-        // const inputStr = `Jon Smith, jonsmith@example.com`;
+      // try {
+      //   // Use the generated schema to transform and validate each line
+      //   const inputStr = `
+      //     Jon Smith, jonsmith@example.com
+      //     Adam Appleby, aapl@example.com
+      //     Banana Rama, barama@example.com
+      //   `;
+      //   // const inputStr = `Jon Smith, jonsmith@example.com`;
 
-        let output = await transformLines({
-            schema: "name, email",
-            extractorFn: extractStructuredDataFromText,
-          }, 
-          splitLines(inputStr)
-        );
-        output = output.filter(x=>x)
-        console.log("[extractStructuredDataFromText / multiline demo] input:", inputStr, "\n>>>", output);
-      } catch (error) {
-        console.error(error);
-      }
+      //   let output = await transformLines({
+      //       schema: "name, email",
+      //       extractorFn: extractStructuredDataFromText,
+      //     }, 
+      //     splitLines(inputStr)
+      //   );
+      //   output = output.filter(x=>x)
+      //   console.log("[extractStructuredDataFromText / multiline demo] input:", inputStr, "\n>>>", output);
+      // } catch (error) {
+      //   console.error(error);
+      // }
 
     })();
 

@@ -1,5 +1,9 @@
 /*
 
+
+    9/30/23: this is kind of old; deprecated / not used, but example of what cytosis used to look like / inspo for cytosis2 file grabbing
+
+
     Grabs data during dev-time or build-time.
 
     

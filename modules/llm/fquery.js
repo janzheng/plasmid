@@ -17,6 +17,8 @@
   Future:
   - shorten messages if hitting the token limit
   - split text, run, join - this only works on some workflows like summarize
+  - [for JSON and data extract, and for reasoning]: add a constraint checker to ensure valid generation. On violation, inject what was generated and the rule violation, and regenerate.
+      - inject JSON parse errors into the last message, OR add a GPT-3 as a double checker to say whether it's valid or not, if not, write a reason why not and pass that into the last message, and re-evaluate
 
   Far-Future:
   - (cytosis?) Message trees where you can go back and try something else and it branches
@@ -48,6 +50,8 @@ let addonLibrary = {
   "json-cota": "Only reply in correct JSON. Start your response with '{' and end with '}'. Do not wrap your answer in backticks. Do not explain yourself. Start with a 'reasoning' array where you write out the reasoning, thinking step by step, each step an item in the array. Then, add a 'solution' key where you write out the solution as a string.",
   "code": "Do not wrap your answer in backticks. Do not explain yourself.",
 }
+
+const NUM_RETRIES = 2;
 
 
 export const fQuery = (input) => {
@@ -302,7 +306,7 @@ export const fQuery = (input) => {
     const json = async (input, inputConfig) => {
       const getResult = async (input) => {
         return await prompt(input, {
-          system: "You are a software engineer. Only respond in correct JSON. Start your response with '{' and end with '}'. Do not explain yourself. Do not use quotation marks, or wrap in markdown.",
+          system: "You are a software engineer. Only respond in correct JSON. Start your response with '{' and end with '}'. Do not explain your answers. Do not use quotation marks, or wrap in markdown backticks.",
           temperature: 0,
           // model: "gpt-4", // gpt-4 generally has much better responses
           ...inputConfig,
@@ -312,16 +316,18 @@ export const fQuery = (input) => {
         })
       }
       let output = await getResult(input);
-      let counter = 0, tries = inputConfig?.tries || 5;
+      let counter = 0, tries = inputConfig?.tries || NUM_RETRIES;
 
       let jsonOutput = null;
-      while (!jsonOutput && counter < 5) {
+      while (!jsonOutput && counter < NUM_RETRIES) {
         try {
           jsonOutput = JSON.parse(output.result);
         } catch (e) {
           console.error(`[json] try:[${counter}] Output not parseable:`, output.result)
           counter++;
           if (counter < tries) {
+            if (typeof (input) == "string") input += " Please write your response in correct JSON"
+            if (Array.isArray(input)) input[input.length - 1].content += " Please write your response in correct JSON"
             output = await getResult(input);
           }
         }
@@ -361,9 +367,9 @@ export const fQuery = (input) => {
         })
       }
       let output = await getResult(input);
-      let counter = 0, tries = inputConfig?.tries || 5;
+      let counter = 0, tries = inputConfig?.tries || NUM_RETRIES;
       let jsonOutput = null;
-      while (!jsonOutput && counter < 5) {
+      while (!jsonOutput && counter < NUM_RETRIES) {
         try {
           jsonOutput = JSON.parse(output.result.arguments);
         } catch (e) {
@@ -400,10 +406,10 @@ export const fQuery = (input) => {
         })
       }
       let output = await getResult(input);
-      let counter = 0, tries = inputConfig?.tries || 5;
+      let counter = 0, tries = inputConfig?.tries || NUM_RETRIES;
 
       let jsonOutput = null;
-      while (!jsonOutput && counter < 5) {
+      while (!jsonOutput && counter < NUM_RETRIES) {
         try {
           jsonOutput = JSON.parse(output.result);
           // should probably use Zod for this...

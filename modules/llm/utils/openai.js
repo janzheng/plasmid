@@ -200,9 +200,9 @@ export const addAssistantMessage = (messages, content, role = "assistant") => {
   return messages
 }
 
-export const addFuntionCallMessage = (messages, content, role = "assistant") => {
+export const addFuntionCallMessage = (messages, functionResponse, functionName, role = "function") => {
   messages.push(
-    { role, function_call: content }
+    { role, name: functionName, content: functionResponse }
   )
   return messages
 }

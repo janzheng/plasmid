@@ -1,3 +1,24 @@
+/* 
+
+  Cytosis 2 - data loaders + transformers
+
+  Basic cytosis flow is:
+  (1) load a bunch of data from sources
+  (2) transform that data in diferent ways
+  (3) output or return the data
+
+  We don't want to make Cytosis more complicated, but we can separat the loaders + transformers
+  and add them to an FSM or other tool. Cytosis on its own is useful for specific loader/transformer tasks like blog and other data loading tasks.
+
+  - todo notes
+    - be able to pass in all loaders and transformer fns // make them available in the config - so we don't need a separate cf version (since some can't be loaded on CF)
+
+
+
+
+*/
+
+
 
 import { dataLoader } from './loaders/data-loader.js'
 import { cfnotionLoader } from './loaders/cfnotion-loader.js'
