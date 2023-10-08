@@ -23,6 +23,10 @@ export function getReturnResponse(res, outputName="value", loud=false) {
   if (typeof value === 'object' && value !== null && !Array.isArray(value)) {
     output.type = 'application/json';
     output[outputName] = value;
+  } else if (Array.isArray(value)) {
+    // not sure how these should be handled differently lol
+    output.type = 'application/json';
+    output[outputName] = value;
   } else {
     // replace all 
     try {

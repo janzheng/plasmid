@@ -1,0 +1,39 @@
+{
+  "name": "@tiptap-pro/extension-invisible-characters",
+  "description": "invisible characters extension for tiptap",
+  "version": "2.3.0",
+  "homepage": "https://tiptap.dev/api/extensions/invisible-characters",
+  "keywords": [
+    "tiptap",
+    "tiptap extension"
+  ],
+  "license": "SEE LICENSE IN LICENSE.md",
+  "funding": {
+    "type": "github",
+    "url": "https://github.com/sponsors/ueberdosis"
+  },
+  "main": "dist/tiptap-extension-invisible-characters.cjs.js",
+  "umd": "dist/tiptap-extension-invisible-characters.umd.js",
+  "module": "dist/tiptap-extension-invisible-characters.esm.js",
+  "types": "dist/tiptap-pro/packages/extension-invisible-characters/src/index.d.ts",
+  "files": [
+    "dist",
+    "CHANGELOG.md",
+    "LICENSE.md"
+  ],
+  "peerDependencies": {
+    "@tiptap/core": "^2.0.0-beta.218",
+    "@tiptap/pm": "^2.0.0-beta.218"
+  },
+  "devDependencies": {
+    "@tiptap/core": "^2.0.0-beta.218",
+    "@tiptap/pm": "^2.0.0-beta.218"
+  },
+  "publishConfig": {
+    "registry": "https://registry.tiptap.dev"
+  },
+  "scripts": {
+    "clean": "rm -rf dist",
+    "build": "npm run clean && rollup -c"
+  }
+}

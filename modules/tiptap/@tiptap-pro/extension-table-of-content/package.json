@@ -1,0 +1,42 @@
+{
+  "name": "@tiptap-pro/extension-table-of-content",
+  "description": "table of contents extension for Tiptap",
+  "version": "2.3.0",
+  "homepage": "https://tiptap.dev",
+  "keywords": [
+    "tiptap",
+    "tiptap extension"
+  ],
+  "license": "SEE LICENSE IN LICENSE.md",
+  "funding": {
+    "type": "github",
+    "url": "https://github.com/sponsors/ueberdosis"
+  },
+  "main": "dist/index.cjs.js",
+  "umd": "dist/index.umd.js",
+  "module": "dist/index.js",
+  "types": "dist/tiptap-pro/packages/extension-table-of-content/src/index.d.ts",
+  "files": [
+    "dist",
+    "CHANGELOG.md",
+    "LICENSE.md"
+  ],
+  "scripts": {
+    "clean": "rm -rf dist",
+    "build": "npm run clean && rollup -c"
+  },
+  "dependencies": {
+    "uuid": "^8.3.2"
+  },
+  "devDependencies": {
+    "@tiptap/core": "^2.0.0",
+    "@tiptap/pm": "^2.0.0"
+  },
+  "peerDependencies": {
+    "@tiptap/core": "^2.0.0",
+    "@tiptap/pm": "^2.0.0"
+  },
+  "publishConfig": {
+    "registry": "https://registry.tiptap.dev"
+  }
+}

@@ -208,11 +208,16 @@ export const fQuery = (input) => {
               // only apply addon to system
               return message
             } else {
-              addons.forEach(addon => {
-                // Check if addon exists in the addons object and replace it with the corresponding value
-                let addonValue = addonLibrary[addon] ? addonLibrary[addon] : addon;
-                message.content = `${message.content} | ${addonValue}`;
-              });
+              if(Array.isArray(addons)) {
+                addons.forEach(addon => {
+                  // Check if addon exists in the addons object and replace it with the corresponding value
+                  let addonValue = addonLibrary[addon] ? addonLibrary[addon] : addon;
+                  message.content = `${message.content} | ${addonValue}`;
+                })
+              } else {
+                // addon is just a string in this case
+                message.content = `${message.content} | ${addons}`;
+              }
             }
             return message;
           });
@@ -306,7 +311,7 @@ export const fQuery = (input) => {
     const json = async (input, inputConfig) => {
       const getResult = async (input) => {
         return await prompt(input, {
-          system: "You are a software engineer. Only respond in correct JSON. Start your response with '{' and end with '}'. Do not explain your answers. Do not use quotation marks, or wrap in markdown backticks.",
+          system: "You are a code generator. Only respond in correct JSON. Start your response with '{' and end with '}'. Do not explain your answers. Do not use quotation marks, or wrap in markdown backticks.",
           temperature: 0,
           // model: "gpt-4", // gpt-4 generally has much better responses
           ...inputConfig,
@@ -354,7 +359,7 @@ export const fQuery = (input) => {
 
       const getResult = async (input) => {
         return await prompt(input, {
-          system: "You are a software engineer. Only use the functions you have been provided with.",
+          system: "You are a code generator. Only use the functions you have been provided with.",
           // functions: [], // send in schema definitions
           // function_call: {"name": "get_n_day_weather_forecast" } // force use
           // max_tokens: 4000, // this messes with response length / tokens
