@@ -36,19 +36,25 @@
 
 */
 
+const loud = false;
+
 import { getTokenLen } from './utils/tokens.js'
 // import { getMessagesFromInput } from './utils/index.js'
-import { getChatCompletion, initMessages, setSystemMessage, addUserMessage, addFuntionCallMessage, addAssistantMessage } from './utils/openai.js'
+import { getChatCompletion, initMessages, setSystemMessage, addUserMessage, addFunctionCallMessage, addAssistantMessage } from './utils/openai.js'
 import { replaceKeys, parseMetadata } from '$plasmid/utils/helpers.js'
 
 let addonLibrary = {
   "french": "Reply in French",
   "chinese": "Reply in Chinese (simplified)",
   "haiku": "Reply in Haiku",
-  "stepby": "Let's think step by step.",
+  "stepby": "Let's think step by step, then give your final answer.",
   "json": "Only reply in correct JSON. Start your response with '{' and end with '}'. Do not wrap your answer in backticks. Do not explain yourself. Add any free-form text replies to 'message', e.g. { 'message': 'your reply' }",
   "json-cota": "Only reply in correct JSON. Start your response with '{' and end with '}'. Do not wrap your answer in backticks. Do not explain yourself. Start with a 'reasoning' array where you write out the reasoning, thinking step by step, each step an item in the array. Then, add a 'solution' key where you write out the solution as a string.",
+  "json-thinking": "Only reply in correct JSON. Start your response with '{' and end with '}'. Do not wrap your answer in backticks. Do not explain yourself. Please think through the math with a 'thinking' key where you think through step by step before you answer in an 'answer' key.",
   "code": "Do not wrap your answer in backticks. Do not explain yourself.",
+  "no-explain": "Do not explain yourself.",
+  "no-backticks": "Do not wrap your answer in backticks.",
+  "unwrap-results": "Do not wrap your entire response in a 'results:' key."
 }
 
 const NUM_RETRIES = 2;
@@ -141,12 +147,11 @@ export const fQuery = (input) => {
             start = 1
           }
 
-          if (input?.system && messages?.[0].role !== 'system') {
+          if ((input?.system || inputConfig?.system) && (messages?.[0] && messages?.[0].role !== 'system')) {
             // can provide config.system instead
-            messages = setSystemMessage(messages, input?.system)
+            messages = setSystemMessage(messages, input?.system || inputConfig?.system)
             start = 1
           }
-
 
           for (let i = start; i < input.length; i++) {
             if ((i-start) % 2 === 0) {
@@ -159,9 +164,9 @@ export const fQuery = (input) => {
           
         } else if (Array.isArray(input)) {
           // standard array of messages; we assume it's correctly formed; system message is up to input
-
           if (inputConfig?.system) {
-            messages = [...setSystemMessage(messages, inputConfig?.system), ...input]
+            messages = [...messages, ...input];
+            messages = setSystemMessage(messages, inputConfig?.system);
           } else {
             messages = input;
           }
@@ -203,11 +208,15 @@ export const fQuery = (input) => {
         
         if (inputConfig?.addons) {
           let addons = inputConfig?.addons
-          messages = messages.map(message => {
+          messages = messages.map((message, i) => {
             if (inputConfig?.addonOptions?.onlySystem && message.role !== 'system') {
               // only apply addon to system
               return message
-            } else {
+            }
+            else if (inputConfig?.addonOptions?.lastMessage && i < messages.length-1) {
+              // skip if not the last message
+            }
+            else {
               if(Array.isArray(addons)) {
                 addons.forEach(addon => {
                   // Check if addon exists in the addons object and replace it with the corresponding value
@@ -223,8 +232,9 @@ export const fQuery = (input) => {
           });
         }
 
-        
-        console.log('[assembled message + config]: \nmessages:', messages, '\nconfig:', _config) // this is really useful; keep it around!!
+        if(loud) {
+          console.log('[assembled message + config]: \nmessages:', messages, '\nconfig:', _config) // this is really useful; keep it around!!
+        }
 
         let initTokenCount = getTokenLen(messages)
         // console.log('token count::', initTokenCount)
@@ -232,26 +242,31 @@ export const fQuery = (input) => {
           throw new Error(`Token limit exceeded. Tokens: ${initTokenCount} / Limit: ${_config?.tokenLimit}`)
         }
 
-        let { results, chatResponse } = await getChatCompletion(messages, { ..._config })
+        let { results, message } = await getChatCompletion(messages, { ..._config })
 
         if (_config?.stream) {
           // todo: figure out how to capture this later on, on load-end
           return results // response.body
         }
 
-        if (_config?.functions) {
-          messages = addFuntionCallMessage(messages, results)
+        if (_config?.functions && message?.function_call?.name) {
+          messages = addFunctionCallMessage(messages, message)
         } else {
           messages = addAssistantMessage(messages, results)
         }
 
         if(_config.verbose) {
-          return {
+          let returnObj = {
             messages,
-            chatResponse: (_config?.showChatResponse && chatResponse) || null,
             initTokenCount,
-            result: (_config?.showResult && results) || null
           }
+          if (_config?.showMessage && message) {
+            returnObj['message'] = message
+          }
+          if (_config?.showResults && results) {
+            returnObj['results'] = results
+          }
+          return returnObj
         } else {
           // just return the string completion inference for short chats
           return results
@@ -268,6 +283,19 @@ export const fQuery = (input) => {
         verbose: true,
       })
     }
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 
 
@@ -311,13 +339,15 @@ export const fQuery = (input) => {
     const json = async (input, inputConfig) => {
       const getResult = async (input) => {
         return await prompt(input, {
-          system: "You are a code generator. Only respond in correct JSON. Start your response with '{' and end with '}'. Do not explain your answers. Do not use quotation marks, or wrap in markdown backticks.",
+          system: "You are a code generator. Only respond in correct JSON. Start your response with '{' and end with '}'. Do not explain your answers. Do not use quotation marks, or wrap in markdown backticks. Do not wrap your entire response in a 'results:' key.",
           temperature: 0,
           // model: "gpt-4", // gpt-4 generally has much better responses
           ...inputConfig,
-          // these MUST BE TRUE, or your code will break (*.result)
-          showResult: true,
+          // these MUST BE TRUE, or your code will break (*.results)
           verbose: true, 
+          // optional; these make response really large
+          showResults: true, // this is what we're parsing!
+          showMessage: false,
         })
       }
       let output = await getResult(input);
@@ -326,9 +356,9 @@ export const fQuery = (input) => {
       let jsonOutput = null;
       while (!jsonOutput && counter < NUM_RETRIES) {
         try {
-          jsonOutput = JSON.parse(output.result);
+          jsonOutput = JSON.parse(output.results);
         } catch (e) {
-          console.error(`[json] try:[${counter}] Output not parseable:`, output.result)
+          console.error(`[json] try:[${counter}] Output not parseable:`, output.results)
           counter++;
           if (counter < tries) {
             if (typeof (input) == "string") input += " Please write your response in correct JSON"
@@ -346,6 +376,7 @@ export const fQuery = (input) => {
       else {
         output['numTries'] = counter + 1;
         output['json'] = jsonOutput;
+        delete output['results']; // this is the same as .json, but not parsed
         return output;
       }
     }
@@ -364,27 +395,37 @@ export const fQuery = (input) => {
           // function_call: {"name": "get_n_day_weather_forecast" } // force use
           // max_tokens: 4000, // this messes with response length / tokens
           temperature: 0,
-          model: "gpt-3.5-turbo-16k", // use 16k for better context length, or gpt-4 for 8k length
+          // model: "gpt-3.5-turbo-16k", // use 16k for better context length, or gpt-4 for 8k length
+          model: "gpt-3.5-turbo", // use 16k for better context length, or gpt-4 for 8k length
           ...inputConfig,
-          // these MUST BE TRUE, or your code will break (*.result)
-          showResult: true, 
+          // these MUST BE TRUE, or your code will break (*.results)
+          showResults: true, 
           verbose: true, 
+          // optional
+          showMessage: true,
         })
       }
+
       let output = await getResult(input);
       let counter = 0, tries = inputConfig?.tries || NUM_RETRIES;
       let jsonOutput = null;
+
+      if (!output.results.arguments) {
+        jsonOutput = {
+          message: output.results
+        } // no functions to call = no arguments; this is most likely a message
+      }
+
       while (!jsonOutput && counter < NUM_RETRIES) {
         try {
-          jsonOutput = JSON.parse(output.result.arguments);
+          jsonOutput = JSON.parse(output.results.arguments);
         } catch (e) {
+          console.error(`[funcall] Error`, {e});
           counter++;
-          if (counter < tries) {
-            output = await getResult(input);
-          }
         }
       }
       if (!jsonOutput) {
+        console.error('[funcall] Not JSON output', {output, jsonOutput})
         throw new Error(`[funcall] Failed to parse JSON after ${tries} attempts`);
       }
     
@@ -397,6 +438,173 @@ export const fQuery = (input) => {
       }
     };
 
+
+
+
+
+    // convenience function that
+    // takes functions, and uses funcall to run the function 
+    // availableFunctions is an object w; { fnName: { schema, fn }}
+    // all args are sent in one obj (first arg)
+    // showReply = respond w/ LLM
+    const runFunc = async (input, { inputConfig, availableFunctions, replyMode }) => {
+      if (!availableFunctions) {
+        throw new Error('[llm/json] no available functions specified')
+      }
+
+      let functions = Object.values(availableFunctions).map(fn => fn.schema)
+      functions = functions.filter(fn => fn)
+
+      const responseMessage = await funcall(
+        input,
+        {
+          functions: functions,
+          function_call: "auto",
+          tries: 2,
+          verbose: true,
+          ...inputConfig,
+        }
+      )
+      
+      let messages = responseMessage.messages;
+      const functionName = responseMessage.results?.name;
+      const functionToCall = availableFunctions[functionName]?.fn;
+      let functionArgs, functionResponse
+      let reply
+
+
+      if (functionName) {
+        // only get function responses if there's a function deemed to be called
+        // otherwise functionResponse and reply will be empty
+        functionArgs = JSON.parse(responseMessage.results.arguments);
+
+        console.log('>>> Function Calling:', functionName, functionArgs)
+
+        if (replyMode == 'args') {
+          // reply w/ function call response w/o running anything
+          return {
+            name: functionName,
+            args: functionArgs,
+            // reply: responseMessage.results,
+          }
+        }
+
+        functionResponse = await functionToCall(functionArgs);
+        // messages.push(responseMessage.message) // add assistant's message back in
+        // Step 4: send the info on the function call and function response to GPT
+        messages.push({
+          "role": "function",
+          "name": functionName,
+          "content": JSON.stringify(functionResponse),
+        });  // extend conversation with function response
+
+        
+        if(loud) {
+          console.log('---- responseMessage:', { availableFunctions, responseMessage, msgs: responseMessage.messages, message: responseMessage.message, functionResponse, functionArgs })
+        }
+        // TODO: CLEAN THIS UP!
+        if (replyMode == 'json') {
+          reply = await json(messages, {
+            ...inputConfig,
+            verbose: true,
+            addons: ["json-thinking", "unwrap-results"],
+            addonOptions: {
+              lastMessage: true,
+            }
+          });  // get a new response from GPT where it can see the function response
+          messages = reply.messages // update messages
+        }
+        if (replyMode == 'prompt') {
+          reply = await prompt(messages, {
+            ...inputConfig,
+            verbose: true,
+            // addons: ["stepby"],
+            // addonOptions: {
+            //   lastMessage: true,
+            // }
+          });  // get a new response from GPT where it can see the function response
+          messages = reply.messages // update messages
+        }
+      }
+
+      let returnObj = {
+        reply, // includes all the messages and latest message
+      }
+
+      if(reply) {
+        returnObj['reply'] = reply;
+      }
+      if (!reply) {
+        // only show these if not showing reply (no "replyMode"), otherwise lots of data
+        returnObj['messages'] = messages
+      }
+
+      if (functionName) {
+        returnObj['function'] = {
+          name: functionName,
+          args: functionArgs,
+          response: functionResponse, // either return the response or LLM message
+        }
+      }
+      if(!functionName && responseMessage.message) {
+        returnObj['results'] = responseMessage.message
+      }
+
+      return returnObj
+    }
+
+
+
+    // wrapper to write continuous function calling
+    // until there are no more function that can responsd
+    const runFuncLoop = async (input, { inputConfig, availableFunctions }) => {
+      let messages
+      if(!Array.isArray(input)) {
+        messages = [input]
+      } else {
+        messages = input
+      }
+
+      let continueLoop = true;
+      let funcLoopResults
+
+      let num = 0
+      while (continueLoop) {
+        funcLoopResults = await runFunc(messages, {
+          availableFunctions,
+          inputConfig: {
+            skipSystemMessage: true,
+            ...inputConfig,
+          }
+        })
+        messages = funcLoopResults?.messages;
+        // console.log('runFuncLoop', num, funcLoopResults)
+        num = num + 1
+
+        if (funcLoopResults.results) {
+          continueLoop = false
+        }
+      }
+
+      // build / parse all function responses
+      if (funcLoopResults.messages) {
+        let functionResponses = {}
+        let functionMessages = funcLoopResults.messages.filter(msg => msg.role == 'function')
+        functionMessages.forEach(msg => {
+          functionResponses = { ...functionResponses,
+            [msg.name]: JSON.parse(msg?.content)?.results || null
+          }
+        })
+        funcLoopResults['functionResponses'] = functionResponses
+      }
+
+
+      return funcLoopResults
+    }
+
+
+
+
     // generator for function calling object, using fn calling and json schema to convert a prompt to a function call object w/ json schema
     const toSchema = async (input, inputConfig) => {
       const getResult = async (input) => {
@@ -406,7 +614,7 @@ export const fQuery = (input) => {
           // model: "gpt-4", // gpt-4 generally has much better responses
           ...inputConfig,
           // these MUST BE TRUE, or your code will break (*.result)
-          showResult: true, 
+          showResults: true, 
           verbose: true, 
         })
       }
@@ -416,7 +624,7 @@ export const fQuery = (input) => {
       let jsonOutput = null;
       while (!jsonOutput && counter < NUM_RETRIES) {
         try {
-          jsonOutput = JSON.parse(output.result);
+          jsonOutput = JSON.parse(output.results);
           // should probably use Zod for this...
           let check = await prompt(`Check if this is a valid JSON schema: ${JSON.stringify(jsonOutput)}. Only output "true" or "false"`)
           if(check !== "true") throw new Error("Not a valid JSON schema")
@@ -428,6 +636,7 @@ export const fQuery = (input) => {
         }
       }
       if (!jsonOutput) {
+        console.error('[[toSchema] Failed to parse JSON after ${tries} attempts', output.results)
         throw new Error(`[toSchema] Failed to parse JSON after ${tries} attempts`);
       }
 
@@ -445,8 +654,17 @@ export const fQuery = (input) => {
       let verbose = inputConfig?.verbose;
       inputConfig.verbose = true; // for sub-calls
 
-      let res = await toSchema(input, inputConfig);
-      let jsonSchema = res.json;
+      // jsonSchemaProp is just the { properties: ...} of a schema
+      let jsonSchema = inputConfig?.['jsonSchema']?.['parameters'] || inputConfig?.['jsonSchema']
+      let res
+
+      if(!jsonSchema) {
+        // get a inferred schema
+        res = await toSchema(input, inputConfig);
+        jsonSchema = res.json;
+      }
+
+      // console.log('---->>>', jsonSchema)
       let fName = "data_extract";
       let desc = "extracts data from string";
       let required = Object.keys(jsonSchema?.properties).filter(key => {
@@ -456,14 +674,6 @@ export const fQuery = (input) => {
         }
       })
       jsonSchema['required'] = required
-      // console.log('[extract] json schema:', jsonSchema, JSON.stringify([{
-      //   "name": fName,
-      //   "description": desc,
-      //   "parameters": {
-      //     ...jsonSchema,
-      //     "required": required,
-      //   },
-      // }], 0, 2), )
       res =  await funcall(input, {
         ...inputConfig,
         functions: [{
@@ -510,6 +720,7 @@ export const fQuery = (input) => {
       chat,
       moderation,
       json, funcall, toSchema, extract,
+      runFunc, runFuncLoop,
       embed,
       related,
       getTokenLen,

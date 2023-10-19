@@ -60,7 +60,8 @@ export function getTokenLen(input) {
   if (typeof input === 'string') {
     return getTokenStrLen(input);
   } else if (Array.isArray(input)) {
-    let tokens = input.map(message => getTokenStrLen(message.content));
+    // console.log('getTokenLen input:', {input});
+    let tokens = input.map(message => message.content && message.content.length>0 && getTokenStrLen(message.content));
     let total = tokens.reduce((a, b) => a + b, 0);
     return {
       messages: input.length,

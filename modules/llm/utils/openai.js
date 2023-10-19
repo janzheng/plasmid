@@ -90,9 +90,17 @@ export const getChatCompletion = async (messages, _config) => {
         if (config.loud) console.log('---> [OpenAI] FULL response:', JSON.stringify(response, 0, 2))
 
         // console.log('====>', response.choices[0])
+        // results are either the message content or function call output
         let results = response.choices[0]?.message?.content?.replaceAll("\n", " ")?.trim() || response.choices[0].message.function_call;
-        if (config.loud) console.log('---> [OpenAI] result:', result, typeof result)
-        return {results, chatResponse: response}
+        // let results = { // do we want to be explicit?
+        //   content: response.choices[0]?.message?.content?.replaceAll("\n", " ")?.trim(),
+        //   function_call: response.choices[0].message.function_call,
+        // }
+        if (config.loud) console.log('---> [OpenAI] result:', results, typeof results)
+        // return {results, response}
+
+        // automatically just return the first choice's message, since this is the norm
+        return { results, message: response.choices[0]?.message }
 
       }
 
@@ -173,7 +181,7 @@ export const setSystemMessage = (messages, content) => {
   // adds a system prompt based on content if it doesn't exist, to the front of the array
   // if it does exist, sets it to the new content
   // Check if a system prompt already exists in the chat history
-  const systemPromptIndex = messages.findIndex((message) => message.role === "system");
+  const systemPromptIndex = messages.findIndex((message) => message?.role === "system");
 
   if (systemPromptIndex === -1) {
     // If a system prompt doesn't exist, add it to the front of the array
@@ -200,9 +208,10 @@ export const addAssistantMessage = (messages, content, role = "assistant") => {
   return messages
 }
 
-export const addFuntionCallMessage = (messages, functionResponse, functionName, role = "function") => {
+// this is the assistant's request for a function call
+export const addFunctionCallMessage = (messages, message, role = "assistant") => {
   messages.push(
-    { role, name: functionName, content: functionResponse }
+    { role, content: null, function_call: {name: message?.function_call?.name, arguments: message?.function_call?.arguments }}
   )
   return messages
 }
