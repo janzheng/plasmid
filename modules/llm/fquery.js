@@ -36,7 +36,7 @@
 
 */
 
-const loud = false;
+let loud = false;
 
 import { getTokenLen } from './utils/tokens.js'
 // import { getMessagesFromInput } from './utils/index.js'
