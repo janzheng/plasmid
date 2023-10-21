@@ -41,7 +41,7 @@ let loud = false;
 import { getTokenLen } from './utils/tokens.js'
 // import { getMessagesFromInput } from './utils/index.js'
 import { getChatCompletion, initMessages, setSystemMessage, addUserMessage, addFunctionCallMessage, addAssistantMessage } from './utils/openai.js'
-import { replaceKeys, parseMetadata } from '$plasmid/utils/helpers.js'
+import { replaceKeys, parseMetadata } from './utils/helpers.js'
 
 let addonLibrary = {
   "french": "Reply in French",
