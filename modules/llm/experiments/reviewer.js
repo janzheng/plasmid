@@ -11,7 +11,7 @@
 
 */
 
-import { fQuery } from '$plasmid/modules/llm/fQuery'
+import { fQuery } from '$plasmid/modules/llm/fquery'
 
 export async function getReviewQuery({
   input, 

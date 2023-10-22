@@ -15,7 +15,7 @@
   fQuery
 
 */
-import { fQuery } from '$plasmid/modules/llm/fQuery.js'
+import { fQuery } from '$plasmid/modules/llm/fquery.js'
 
 // export let sessionHistory = []
 

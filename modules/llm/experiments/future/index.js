@@ -10,7 +10,7 @@ import { PROMPT_INSTRUCTIONS } from './promptInstructions.js'
   fQuery
 
 */
-import { fQuery } from '$plasmid/modules/llm/fQuery'
+import { fQuery } from '$plasmid/modules/llm/fquery'
 
 // export let sessionHistory = []
 
