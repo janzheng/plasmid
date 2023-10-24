@@ -36,7 +36,7 @@
 
 */
 
-let loud = false;
+let loud = true;
 
 import { getTokenLen } from './utils/tokens.js'
 // import { getMessagesFromInput } from './utils/index.js'
@@ -54,7 +54,9 @@ let addonLibrary = {
   "code": "Do not wrap your answer in backticks. Do not explain yourself.",
   "no-explain": "Do not explain yourself.",
   "no-backticks": "Do not wrap your answer in backticks.",
-  "unwrap-results": "Do not wrap your entire response in a 'results:' key."
+  "unwrap-results": "Do not wrap your entire response in a 'results:' key.",
+  "reasoning": "Use headings or subheadings to highlight the main points or sections of the content. Utilize concrete examples or anecdotes to elucidate concepts effectively. Support claims and arguments with statistics or evidence for greater persuasiveness. Establish coherence by using transitions and connectors to link ideas and paragraphs. Avoid redundancy by employing synonyms or paraphrasing when necessary. Engage in reflective, logical, and reasoned thinking prior to delivering.",
+  "witty": "Maintain a witty, imaginative, and informative tone while keeping the conversation natural."
 }
 
 const NUM_RETRIES = 2;
@@ -130,7 +132,7 @@ export const fQuery = (input) => {
           }
         }
 
-        let messages=[]
+        let messages = []
         if (Array.isArray(input) && input.every(i => typeof i === 'string')) {
           // input is an array of strings
           /*
@@ -141,16 +143,18 @@ export const fQuery = (input) => {
                 "Explain the joke?",
               ]
           */
-         let start = 0
-          if(!inputConfig?.skipSystemMessage) {
+          let start = 0
+          if (!_config?.skipSystemMessage) {
             messages = setSystemMessage(messages, input[0])
             start = 1
           }
 
-          if ((input?.system || inputConfig?.system) && (messages?.[0] && messages?.[0].role !== 'system')) {
-            // can provide config.system instead
-            messages = setSystemMessage(messages, input?.system || inputConfig?.system)
-            start = 1
+          if (input?.system || _config?.system) {
+            if (messages?.[0]?.role !== 'system') {
+              // can provide config.system instead
+              messages = setSystemMessage(messages, input?.system || _config?.system)
+              // start = 1
+            }
           }
 
           for (let i = start; i < input.length; i++) {
@@ -164,9 +168,9 @@ export const fQuery = (input) => {
           
         } else if (Array.isArray(input)) {
           // standard array of messages; we assume it's correctly formed; system message is up to input
-          if (inputConfig?.system) {
+          if (_config?.system) {
             messages = [...messages, ...input];
-            messages = setSystemMessage(messages, inputConfig?.system);
+            messages = setSystemMessage(messages, _config?.system);
           } else {
             messages = input;
           }
@@ -179,8 +183,8 @@ export const fQuery = (input) => {
               input: "Tell me a banana joke"
             }
           */
-          if(input?.system) {
-            messages = setSystemMessage(messages, input?.system)
+          if (input?.system || _config?.system) {
+            messages = setSystemMessage(messages, input?.system || _config?.system)
           }
           if(input?.input) {
             messages = addUserMessage(messages, input?.input)
@@ -189,31 +193,31 @@ export const fQuery = (input) => {
           // input is a string
           // add the input string either as a regular text string
           // or a s an array of properly-formatted openai chatCompletion objects
-          if(inputConfig?.messages) {
-            messages = addUserMessage(inputConfig?.messages, input);
+          if (_config?.messages) {
+            messages = addUserMessage(_config?.messages, input);
           } else {
             messages = initMessages(input, _config);
           }
         }
       
 
-        if(inputConfig?.replace) {
+        if (_config?.replace) {
           // replaces {{name}} with the user's name from replace object: {name: "Jan"}
           // replaceOptions is the metadata, like dictionary, start/end symbols, etc
           messages = messages.map(message => {
-            message.content = replaceKeys(message.content, inputConfig?.replace, inputConfig?.replaceOptions);
+            message.content = replaceKeys(message.content, _config?.replace, _config?.replaceOptions);
             return message;
           });
         }
         
-        if (inputConfig?.addons) {
-          let addons = inputConfig?.addons
+        if (_config?.addons) {
+          let addons = _config?.addons
           messages = messages.map((message, i) => {
-            if (inputConfig?.addonOptions?.onlySystem && message.role !== 'system') {
+            if (_config?.addonOptions?.onlySystem && message.role !== 'system') {
               // only apply addon to system
               return message
             }
-            else if (inputConfig?.addonOptions?.lastMessage && i < messages.length-1) {
+            else if (_config?.addonOptions?.lastMessage && i < messages.length-1) {
               // skip if not the last message
             }
             else {
@@ -279,7 +283,8 @@ export const fQuery = (input) => {
 
     // chat is similar to prompt but returns more data like chat history
     const chat = async (input, inputConfig) => {
-      return await prompt(input, {...inputConfig,
+      let _config = { ...config, ...inputConfig };
+      return await prompt(input, {..._config,
         verbose: true,
       })
     }

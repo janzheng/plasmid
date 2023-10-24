@@ -21,8 +21,7 @@ export const getChatCompletion = async (messages, _config) => {
   });
   let OPENAI_API_KEY = config?.apiKey || process.env.OPENAI_API_KEY
 
-  // console.log('messages:', messages)
-  // return "banana"
+  console.log('[getChatCompletion] messages:', messages)
   try {
       // if (!response.ok) {
       //   const err = await response.json()
