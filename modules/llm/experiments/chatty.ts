@@ -15,7 +15,8 @@
   fQuery
 
 */
-import { fQuery } from '$plasmid/modules/llm/fquery.js'
+import { fQuery } from '../fquery.js'
+import { config } from "dotenv"; config();
 
 // export let sessionHistory = []
 

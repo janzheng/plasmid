@@ -1,6 +1,6 @@
 {
   "name": "plasmid",
-  "version": "0.0.97",
+  "version": "0.0.98",
   "description": "",
   "type": "module",
   "scripts": {
@@ -31,7 +31,7 @@
     "dayjs": "^1.11.5",
     "deta": "^1.1.0",
     "deta-base-orm": "^0.5.3",
-    "dotenv": "^11.0.0",
+    "dotenv": "^16.3.1",
     "form-data": "^4.0.0",
     "gpt-tokens": "^1.0.7",
     "html-to-image": "^1.11.11",
