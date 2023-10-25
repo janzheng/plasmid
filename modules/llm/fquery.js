@@ -63,31 +63,25 @@ let addonLibrary = {
 const NUM_RETRIES = 2;
 
 
-export const fQuery = (input) => {
-  let inputPrompt;
+export const fQuery = (config) => {
   let messages = []
-
-  let config = { 
+  
+  let defaultConfig = {
     // allowed to mutate as side effect of other fns — we want this to happen!
     // if it gets too messy, just create a new LLM object
     system: "You are a helpful assistant",
-    model: "gpt-3.5-turbo", 
+    model: "gpt-3.5-turbo",
     // max_tokens: 256,
     temperature: 0.4,
-    apiKey: null,
   };
-  
-  if (typeof input === 'string') {
-    inputPrompt = input;
-  } else {
-    config = input || config;
-  }
-  
+  config = {...defaultConfig, ...config};
+
+
   try {
     const OPENAI_API_KEY = config?.apiKey || process.env.OPENAI_API_KEY;
     
     if (!OPENAI_API_KEY) {
-      throw new Error('OPENAI_API_KEY env variable not set!', process.env)
+      throw new Error('OPENAI_API_KEY env variable not set!')
     }
 
     // uses the moderation API
