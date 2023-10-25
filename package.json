@@ -1,6 +1,6 @@
 {
   "name": "plasmid",
-  "version": "0.0.103",
+  "version": "0.0.104",
   "description": "",
   "type": "module",
   "scripts": {
@@ -41,7 +41,7 @@
     "js-tiktoken": "^1.0.6",
     "jsonlines": "^0.1.1",
     "jspdf": "^2.5.1",
-    "langchain": "^0.0.45",
+    "langchain": "^0.0.172",
     "leven": "^4.0.0",
     "markdown-it": "^12.1.0",
     "markdown-it-attrs": "^4.0.0",
@@ -49,7 +49,7 @@
     "node-cache": "^5.1.2",
     "nodemailer": "^6.6.2",
     "nprogress": "^0.2.0",
-    "openai": "^4.5.0",
+    "openai": "^4.14.0",
     "pagedjs": "^0.4.1",
     "pocketbase": "^0.1.2",
     "prism-solarized-dark": "^1.0.1",
