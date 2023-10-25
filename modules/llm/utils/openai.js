@@ -11,6 +11,7 @@
 
 // import OpenAI from 'openai';
 import OpenAI from "openai";
+import { config } from "dotenv"; config();
 
 
 // messages look like [{role:"user/assistant", content:"some prompt"}]
@@ -105,7 +106,7 @@ export const getChatCompletion = async (messages, _config) => {
 
   } catch (error) {
 
-    console.log('[llm] error:', error)
+    console.log('[openai.js] error:', error)
     throw error
   }
 }
