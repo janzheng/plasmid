@@ -81,7 +81,7 @@ export const fQuery = (config) => {
     const OPENAI_API_KEY = config?.apiKey || process.env.OPENAI_API_KEY;
     
     if (!OPENAI_API_KEY) {
-      throw new Error('OPENAI_API_KEY env variable not set!')
+      throw new Error('OPENAI_API_KEY env variable not set!', config)
     }
 
     // uses the moderation API
