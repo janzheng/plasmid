@@ -56,15 +56,15 @@ export const llmArrayPrompt = async (results, settings = {}) => {
 // FOCUS ON THE DX OF CALLING THE METHODS FIRST
 // Abstract langchain, which is too confusing
 
-import { ChatOpenAI } from "langchain/chat_models";
-import { LLMChain } from "langchain/chains";
+// import { ChatOpenAI } from "langchain/chat_models";
+// import { LLMChain } from "langchain/chains";
 
-import {
-  SystemMessagePromptTemplate,
-  HumanMessagePromptTemplate,
-  ChatPromptTemplate,
-} from "langchain/prompts";
-// import { forEach } from "lodash"
+// import {
+//   SystemMessagePromptTemplate,
+//   HumanMessagePromptTemplate,
+//   ChatPromptTemplate,
+// } from "langchain/prompts";
+// // import { forEach } from "lodash"
 
 
 
@@ -80,29 +80,29 @@ export async function getPrompt(
 
 
   try {
-    const model = new ChatOpenAI({
-      modelName,
-      openAIApiKey: process.env[apiKeyName],
-      temperature,
-    });
+  //   const model = new ChatOpenAI({
+  //     modelName,
+  //     openAIApiKey: process.env[apiKeyName],
+  //     temperature,
+  //   });
 
-    prompt = user || input || prompt // support multi keywords
+  //   prompt = user || input || prompt // support multi keywords
 
-    const chatPromptTemplate = ChatPromptTemplate.fromPromptMessages([
-      SystemMessagePromptTemplate.fromTemplate(system),
-      HumanMessagePromptTemplate.fromTemplate(prompt),
-    ]);
+  //   const chatPromptTemplate = ChatPromptTemplate.fromPromptMessages([
+  //     SystemMessagePromptTemplate.fromTemplate(system),
+  //     HumanMessagePromptTemplate.fromTemplate(prompt),
+  //   ]);
 
-    const chain = new LLMChain({
-      llm: model,
-      prompt: chatPromptTemplate,
-    });
+  //   const chain = new LLMChain({
+  //     llm: model,
+  //     prompt: chatPromptTemplate,
+  //   });
 
-    console.log('>>>> Getting answer from OpenAI...')
-    const res = await chain.call();
-    console.log('[GPT] \n---------->>>>>\n\nOutput:', res, '\n\n<<<------------');
+  //   console.log('>>>> Getting answer from OpenAI...')
+  //   const res = await chain.call();
+  //   console.log('[GPT] \n---------->>>>>\n\nOutput:', res, '\n\n<<<------------');
 
-    return res
+  //   return res
 
   } catch (err) {
     console.error('[llm/prompt]', err.message || err?.response?.data)

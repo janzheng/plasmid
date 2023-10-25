@@ -6,15 +6,15 @@
 */
 // Very basic LLM 
 
-import { ChatOpenAI } from "langchain/chat_models";
-import { LLMChain } from "langchain/chains";
+// import { ChatOpenAI } from "langchain/chat_models";
+// import { LLMChain } from "langchain/chains";
 import { getReturnResponse } from "$plasmid/modules/llm/utils";
 
-import {
-  SystemMessagePromptTemplate,
-  HumanMessagePromptTemplate,
-  ChatPromptTemplate,
-} from "langchain/prompts";
+// import {
+//   SystemMessagePromptTemplate,
+//   HumanMessagePromptTemplate,
+//   ChatPromptTemplate,
+// } from "langchain/prompts";
 
 
 
@@ -29,29 +29,29 @@ export async function prompt(
     
 
   try {
-    const model = new ChatOpenAI({
-      modelName,
-      openAIApiKey: process.env.OPENAI_API_KEY,
-      temperature,
-    });
+    // const model = new ChatOpenAI({
+    //   modelName,
+    //   openAIApiKey: process.env.OPENAI_API_KEY,
+    //   temperature,
+    // });
 
-    prompt = user || input || prompt // support multi keywords
+    // prompt = user || input || prompt // support multi keywords
 
-    const chatPromptTemplate = ChatPromptTemplate.fromPromptMessages([
-      SystemMessagePromptTemplate.fromTemplate(system),
-      HumanMessagePromptTemplate.fromTemplate(prompt),
-    ]);
+    // const chatPromptTemplate = ChatPromptTemplate.fromPromptMessages([
+    //   SystemMessagePromptTemplate.fromTemplate(system),
+    //   HumanMessagePromptTemplate.fromTemplate(prompt),
+    // ]);
 
-    const chain = new LLMChain({
-      llm: model,
-      prompt: chatPromptTemplate,
-    });
+    // const chain = new LLMChain({
+    //   llm: model,
+    //   prompt: chatPromptTemplate,
+    // });
 
-    console.log('>>>> Getting answer from OpenAI...')
-    console.time();
-    const res = await chain.call();
-    console.timeEnd();
-    console.log('[GPT] \n---------->>>>>\n\nOutput:', res, '\n\n<<<------------');
+    // console.log('>>>> Getting answer from OpenAI...')
+    // console.time();
+    // const res //= await chain.call();
+    // console.timeEnd();
+    // console.log('[GPT] \n---------->>>>>\n\nOutput:', res, '\n\n<<<------------');
 
     let output = getReturnResponse(res);
     return output
@@ -102,17 +102,17 @@ export async function promptStream (
 
     prompt = user || input || prompt // support multi keywords
 
-    const chatPromptTemplate = ChatPromptTemplate.fromPromptMessages([
-      SystemMessagePromptTemplate.fromTemplate(system),
-      HumanMessagePromptTemplate.fromTemplate(prompt),
-    ]);
+    // const chatPromptTemplate = ChatPromptTemplate.fromPromptMessages([
+    //   SystemMessagePromptTemplate.fromTemplate(system),
+    //   HumanMessagePromptTemplate.fromTemplate(prompt),
+    // ]);
 
-    const chain = new LLMChain({
-      llm: model,
-      prompt: chatPromptTemplate,
-    });
+    // const chain = new LLMChain({
+    //   llm: model,
+    //   prompt: chatPromptTemplate,
+    // });
 
-    let output = await chain.call()
+    // let output = await chain.call()
 
     return output?.text
 

@@ -5,15 +5,15 @@
 
 // add pdf-parse?
 
-import { ChatOpenAI } from "langchain/chat_models";
-import { LLMChain } from "langchain/chains";
+// import { ChatOpenAI } from "langchain/chat_models";
+// import { LLMChain } from "langchain/chains";
 import { getReturnResponse } from "$plasmid/modules/llm/utils";
 
-import {
-  SystemMessagePromptTemplate,
-  HumanMessagePromptTemplate,
-  ChatPromptTemplate,
-} from "langchain/prompts";
+// import {
+//   SystemMessagePromptTemplate,
+//   HumanMessagePromptTemplate,
+//   ChatPromptTemplate,
+// } from "langchain/prompts";
 
 
 
@@ -70,21 +70,21 @@ Melo ^1,2"
     // `You're a helpful assistant to a microbiologist. You're given a microbiology abstract, and you need to extract the following information from the abstract into a proper JSON in a JS code block:`;
     firstPromptMsg = firstPromptMsg || "Abstract: {text}";
 
-    const model = new ChatOpenAI({
-      modelName,
-      openAIApiKey: process.env.OPENAI_API_KEY,
-      temperature,
-    });
+    // const model = new ChatOpenAI({
+    //   modelName,
+    //   openAIApiKey: process.env.OPENAI_API_KEY,
+    //   temperature,
+    // });
 
-    const chatPromptTemplate = ChatPromptTemplate.fromPromptMessages([
-      SystemMessagePromptTemplate.fromTemplate(system), 
-      HumanMessagePromptTemplate.fromTemplate(firstPromptMsg),
-    ]);
+    // const chatPromptTemplate = ChatPromptTemplate.fromPromptMessages([
+    //   SystemMessagePromptTemplate.fromTemplate(system), 
+    //   HumanMessagePromptTemplate.fromTemplate(firstPromptMsg),
+    // ]);
     
-    const chain = new LLMChain({
-      llm: model,
-      prompt: chatPromptTemplate,
-    });
+    // const chain = new LLMChain({
+    //   llm: model,
+    //   prompt: chatPromptTemplate,
+    // });
 
     let res = { text: '(LLM answer will go here)' }
 
@@ -95,9 +95,9 @@ Melo ^1,2"
 
     console.log('>>>> Getting answer from OpenAI...')
     console.time();
-    res = await chain.call({
-      text: input,
-    });
+    // res = await chain.call({
+    //   text: input,
+    // });
     console.timeEnd();
     console.log('[GPT] \n---------->>>>>\n\nOutput:', res, '\n\n<<<------------');
 
@@ -175,34 +175,34 @@ Example:
     // `You're a helpful assistant to a microbiologist. You're given a microbiology abstract, and you need to extract the following information from the abstract into a proper JSON in a JS code block:`;
     firstPromptMsg = firstPromptMsg || "Abstract: {text}";
 
-    const model = new ChatOpenAI({
-      modelName,
-      openAIApiKey: process.env.OPENAI_API_KEY,
-      temperature,
-    });
+    // const model = new ChatOpenAI({
+    //   modelName,
+    //   openAIApiKey: process.env.OPENAI_API_KEY,
+    //   temperature,
+    // });
 
-    const chatPromptTemplate = ChatPromptTemplate.fromPromptMessages([
-      SystemMessagePromptTemplate.fromTemplate(system),
-      HumanMessagePromptTemplate.fromTemplate(firstPromptMsg),
-    ]);
+    // const chatPromptTemplate = ChatPromptTemplate.fromPromptMessages([
+    //   SystemMessagePromptTemplate.fromTemplate(system),
+    //   HumanMessagePromptTemplate.fromTemplate(firstPromptMsg),
+    // ]);
 
-    const chain = new LLMChain({
-      llm: model,
-      prompt: chatPromptTemplate,
-    });
+    // const chain = new LLMChain({
+    //   llm: model,
+    //   prompt: chatPromptTemplate,
+    // });
 
-    let res = { text: '(LLM answer will go here)' }
+    // let res = { text: '(LLM answer will go here)' }
 
-    console.log('[abstract]: Calling GPT...')
-    console.time();
-    res = await chain.call({
-      text: input,
-    });
-    console.timeEnd();
-    console.log('[GPT] \n---------->>>>>\n\nOutput:', res, '\n\n<<<------------');
+    // console.log('[abstract]: Calling GPT...')
+    // console.time();
+    // res = await chain.call({
+    //   text: input,
+    // });
+    // console.timeEnd();
+    // console.log('[GPT] \n---------->>>>>\n\nOutput:', res, '\n\n<<<------------');
 
-    let output = getReturnResponse(res);
-    return output
+    // let output = getReturnResponse(res);
+    // return output
 
   } catch (err) {
     // _err(err)

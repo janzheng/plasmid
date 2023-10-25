@@ -82,22 +82,22 @@ import JSON5 from 'json5'
 
 import { json } from '@sveltejs/kit';
 // import { OpenAI } from "langchain/llms";
-import { HumanChatMessage, SystemChatMessage } from "langchain/schema";
-import { PromptTemplate } from "langchain/prompts";
-import { Document } from "langchain/document";
-import { CharacterTextSplitter } from "langchain/text_splitter";
-import { BufferMemory } from "langchain/memory";
-import { ConversationChain } from "langchain/chains";
-import { ChatOpenAI } from "langchain/chat_models";
-import { LLMChain } from "langchain/chains";
+// import { HumanChatMessage, SystemChatMessage } from "langchain/schema";
+// import { PromptTemplate } from "langchain/prompts";
+// import { Document } from "langchain/document";
+// import { CharacterTextSplitter } from "langchain/text_splitter";
+// import { BufferMemory } from "langchain/memory";
+// import { ConversationChain } from "langchain/chains";
+// import { ChatOpenAI } from "langchain/chat_models";
+// import { LLMChain } from "langchain/chains";
 
 import { getReturnResponse } from "../utils"
 
-import {
-  SystemMessagePromptTemplate,
-  HumanMessagePromptTemplate,
-  ChatPromptTemplate,
-} from "langchain/prompts";
+// import {
+//   SystemMessagePromptTemplate,
+//   HumanMessagePromptTemplate,
+//   ChatPromptTemplate,
+// } from "langchain/prompts";
 
 
 // TODO
@@ -240,32 +240,32 @@ Examples JSON object. Not how the links are generated mid-summary:
 }
       `;
 
-    const model = new ChatOpenAI({
-      // modelName: modelName || "gpt-3.5-turbo",
-      modelName: modelName,
-      openAIApiKey: process.env.OPENAI_API_KEY,
-      temperature: input?.temperature || 0.2,
-    });
-    const prompt = ChatPromptTemplate.fromPromptMessages([
-      SystemMessagePromptTemplate.fromTemplate(system),
-      HumanMessagePromptTemplate.fromTemplate(template),
-    ]);
-    const chain = new LLMChain({
-      prompt: prompt,
-      llm: model,
-    });
+    // const model = new ChatOpenAI({
+    //   // modelName: modelName || "gpt-3.5-turbo",
+    //   modelName: modelName,
+    //   openAIApiKey: process.env.OPENAI_API_KEY,
+    //   temperature: input?.temperature || 0.2,
+    // });
+    // const prompt = ChatPromptTemplate.fromPromptMessages([
+    //   SystemMessagePromptTemplate.fromTemplate(system),
+    //   HumanMessagePromptTemplate.fromTemplate(template),
+    // ]);
+    // const chain = new LLMChain({
+    //   prompt: prompt,
+    //   llm: model,
+    // });
 
 
-    let res = { text: '(results)' }
+    // let res = { text: '(results)' }
 
-    // console.log('Calling reviewer:', persona)
-    console.log('[chat-blurb]: Calling GPT...')
-    console.time();
-    res = await chain.call({
-      instructions: instructions, // + ' ' + examples,
-      textInput,
-    });
-    console.timeEnd();
+    // // console.log('Calling reviewer:', persona)
+    // console.log('[chat-blurb]: Calling GPT...')
+    // console.time();
+    // res = await chain.call({
+    //   instructions: instructions, // + ' ' + examples,
+    //   textInput,
+    // });
+    // console.timeEnd();
     
     
     let output = getReturnResponse(res);

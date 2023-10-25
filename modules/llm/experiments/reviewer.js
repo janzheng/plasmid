@@ -114,8 +114,8 @@ export async function _POST2({ request }) {
 // add pdf-parse?
 
 import { json } from '@sveltejs/kit';
-import { ChatOpenAI } from "langchain/chat_models";
-import { LLMChain } from "langchain/chains";
+// import { ChatOpenAI } from "langchain/chat_models";
+// import { LLMChain } from "langchain/chains";
 
 // import { OpenAI } from "langchain/llms";
 // import { HumanChatMessage, SystemChatMessage } from "langchain/schema";
@@ -127,11 +127,11 @@ import { LLMChain } from "langchain/chains";
 
 import { getReturnResponse } from "$plasmid/modules/llm/utils";
 
-import {
-  SystemMessagePromptTemplate,
-  HumanMessagePromptTemplate,
-  ChatPromptTemplate,
-} from "langchain/prompts";
+// import {
+//   SystemMessagePromptTemplate,
+//   HumanMessagePromptTemplate,
+//   ChatPromptTemplate,
+// } from "langchain/prompts";
 
 
 // TODO
@@ -245,26 +245,26 @@ export async function getReview(input) {
     let modelName = input?.modelName || "gpt-3.5-turbo"
     system = input?.system || "You're a decorated professor at the top of the field, reviewing research papers. {instructions} {persona} ";
     template = "{textInput}";
-    const model = new ChatOpenAI({
-      modelName: modelName || "gpt-3.5-turbo",
-      openAIApiKey: process.env.OPENAI_API_KEY,
-      temperature: 0.7
-    });
-    const prompt = ChatPromptTemplate.fromPromptMessages([
-      SystemMessagePromptTemplate.fromTemplate(system),
-      // new MessagesPlaceholder("history"),
-      HumanMessagePromptTemplate.fromTemplate(template),
-    ]);
-    // don't need this for now
-    // const chain = new ConversationChain({
-    //   // memory: new BufferMemory({ returnMessages: true, memoryKey: "history" }),
+    // const model = new ChatOpenAI({
+    //   modelName: modelName || "gpt-3.5-turbo",
+    //   openAIApiKey: process.env.OPENAI_API_KEY,
+    //   temperature: 0.7
+    // });
+    // const prompt = ChatPromptTemplate.fromPromptMessages([
+    //   SystemMessagePromptTemplate.fromTemplate(system),
+    //   // new MessagesPlaceholder("history"),
+    //   HumanMessagePromptTemplate.fromTemplate(template),
+    // ]);
+    // // don't need this for now
+    // // const chain = new ConversationChain({
+    // //   // memory: new BufferMemory({ returnMessages: true, memoryKey: "history" }),
+    // //   prompt: prompt,
+    // //   llm: model,
+    // // });
+    // const chain = new LLMChain({
     //   prompt: prompt,
     //   llm: model,
     // });
-    const chain = new LLMChain({
-      prompt: prompt,
-      llm: model,
-    });
 
 
 
@@ -275,11 +275,11 @@ export async function getReview(input) {
     // console.log('Calling reviewer:', persona)
     console.log('>>>> Getting answer from OpenAI...')
     console.time();
-    res = await chain.call({
-      instructions,
-      persona,
-      textInput: text
-    });
+    // res = await chain.call({
+    //   instructions,
+    //   persona,
+    //   textInput: text
+    // });
     console.timeEnd();
     console.log('---------->>>>>\n\nOutput:', res?.text, '\n\n<<<------------');
 
