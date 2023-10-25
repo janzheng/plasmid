@@ -38,6 +38,7 @@
 
 let loud = true;
 
+import { config } from "dotenv"; config();
 import { getTokenLen } from './utils/tokens.js'
 // import { getMessagesFromInput } from './utils/index.js'
 import { getChatCompletion, initMessages, setSystemMessage, addUserMessage, addFunctionCallMessage, addAssistantMessage } from './utils/openai.js'
