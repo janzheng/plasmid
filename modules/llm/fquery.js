@@ -79,6 +79,8 @@ export const fQuery = (config) => {
 
   try {
     const OPENAI_API_KEY = config?.apiKey || process.env.OPENAI_API_KEY;
+
+    console.log('::::: config::', config)
     
     if (!OPENAI_API_KEY) {
       throw new Error('OPENAI_API_KEY env variable not set! Config:', config)
