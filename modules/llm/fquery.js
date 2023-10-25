@@ -732,7 +732,7 @@ export const fQuery = (input) => {
       getTokenLen,
     }
   } catch(e) {
-    console.log('[llm] error', e)
+    console.log('[fquery] error', e)
 
     // throw it up to the API server
     throw(e)
