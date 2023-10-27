@@ -51,7 +51,18 @@
 */
 
 import leven from 'leven'
-import strains from './strains.json'
+// import strains from './strains.json'
+
+export async function loadStrains() {
+  const response = await fetch('https://f2.phage.directory/yawnxyz/strains.json');
+  if (!response.ok) {
+    throw new Error(`HTTP error! status: ${response.status}`);
+  }
+  const strains = await response.json();
+  return strains;
+}
+
+loadStrains().then(data => strains = data);
 
 export const getStrains = (shorten = true) => {
   return strains.data
