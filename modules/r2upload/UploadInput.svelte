@@ -165,15 +165,15 @@
 
 
   // // this allows for super-large files, as it goes around CF Worker
-  // export const uploadFileWithPresignedUrl = async (scope) => {
-  //   try {
-  //     const presignedUrl = await requestPresignedUrl({file: files[0], scope});
-  //     console.log('Presigned URL:', presignedUrl);
-  //     let result = await uploadPresignedUrl(presignedUrl, {file: files[0]});
-  //   } catch (error) {
-  //     console.error('[uploadFileWithPresignedUrl] Error:', error);
-  //   }
-  // };
+  export const uploadFileWithPresignedUrl = async (scope) => {
+    try {
+      const presignedUrl = await requestPresignedUrl({file: files[0], scope});
+      console.log('Presigned URL:', presignedUrl);
+      let result = await uploadPresignedUrl(presignedUrl, {file: files[0]});
+    } catch (error) {
+      console.error('[uploadFileWithPresignedUrl] Error:', error);
+    }
+  };
 
 
 </script>
