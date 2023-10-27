@@ -2406,10 +2406,10 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@yawnxyz/sveltekit-notion@npm:^0.0.508":
-  version: 0.0.508
-  resolution: "@yawnxyz/sveltekit-notion@npm:0.0.508"
-  checksum: 6d2b030394b21e6cc9ddece8751d457c649715c5343e107fa4f7684a75b4b9a82fb11c1721094b11d659900b1158876778ed9393ef0e6d144e301e818fde04f2
+"@yawnxyz/sveltekit-notion@npm:^0.0.537":
+  version: 0.0.537
+  resolution: "@yawnxyz/sveltekit-notion@npm:0.0.537"
+  checksum: 1b1968f3b74d93588d6c1c9413f31f24a4052fdb400d3ee173e9cf77636fe2b3474f7d64db093622c89b5bca02dc99e7ee14537dd7c28b5fed6be4030c58b0be
   languageName: node
   linkType: hard
 
@@ -7811,7 +7811,7 @@ __metadata:
     "@sentry/sveltekit": ^7.46.0
     "@supabase/supabase-js": ^1.29.1
     "@sveltejs/kit": ^1.0.0-next.437
-    "@yawnxyz/sveltekit-notion": ^0.0.508
+    "@yawnxyz/sveltekit-notion": ^0.0.537
     async-retry: ^1.3.3
     bcryptjs: ^2.4.3
     csvtojson: ^2.0.10

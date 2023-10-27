@@ -82,12 +82,12 @@
 
 
   // convenient addons; these can be set to false and implemented in the parent
-  export let showPreview = false; // set to false when controlled by external form upload flow
-  export let showUploadBtn = false;
+  // export let showPreview = false; // set to false when controlled by external form upload flow
+  // export let showUploadBtn = false;
 
 
-  export let status = store.writable({});
-  export let fileUpload = {};
+  // export let status = store.writable({});
+  // export let fileUpload = {};
 
   
   // export let verbose = false;
@@ -99,8 +99,8 @@
 
 
   // file preview & CID hash
-  export let preview, urlPreview; // can pass an external URL in for image preview
-  let hash;
+  // export let preview, urlPreview; // can pass an external URL in for image preview
+  // let hash;a
 
   /* 
     Object that wraps around a file:

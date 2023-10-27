@@ -6,6 +6,8 @@
 
 
 <div
+  role="button"
+  tabindex="0"
   class="PostStub topic {classes} {classMode} | Card-solid --hoverbox --btn --negative px-4 py-1 relative" id={topic.id}
   on:click|preventDefault={()=>{if(!window.getSelection().toString()) goto(link);}} 
   on:keyup|preventDefault={()=>{if(!window.getSelection().toString()) goto(link);}} 

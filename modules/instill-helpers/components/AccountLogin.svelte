@@ -83,7 +83,7 @@
   export let doLoginCheck = false
   export let baseConfig;
   export let hideLogin = true;
-  export let registerLink = baseConfig?.register_url;
+  // export let registerLink = baseConfig?.register_url;
   export let editProfileLink = `${baseConfig?.base_url}/profiles/${$commentUser.Username}/edit`;
   let error, message
   // let comment = $commentUser
