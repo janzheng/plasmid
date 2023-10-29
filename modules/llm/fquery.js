@@ -44,6 +44,10 @@ import { getTokenLen } from './utils/tokens.js'
 import { getChatCompletion, initMessages, setSystemMessage, addUserMessage, addFunctionCallMessage, addAssistantMessage } from './utils/openai.js'
 import { replaceKeys, parseMetadata } from '../../utils/helpers.js'
 
+// enable this for fly
+import { env } from '$env/dynamic/private'; // necessary for fly
+
+
 let addonLibrary = {
   "french": "Reply in French",
   "chinese": "Reply in Chinese (simplified)",
@@ -78,7 +82,8 @@ export const fQuery = (config) => {
 
 
   try {
-    const OPENAI_API_KEY = config?.apiKey || process.env.OPENAI_API_KEY;
+    // const OPENAI_API_KEY = config?.apiKey || process.env.OPENAI_API_KEY;
+    const OPENAI_API_KEY = config?.apiKey || env?.OPENAI_API_KEY || process.env.OPENAI_API_KEY;
 
     // console.log('::::: config::', config, process.env)
     
