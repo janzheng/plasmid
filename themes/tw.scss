@@ -104,7 +104,7 @@
   height: var(--avatarSize);
 
   &.--placeholder {
-    @apply bg-slate-100 text-slate-800 p-4 flex place-content-center place-items-center;
+    @apply bg-slate-50 text-slate-800 p-4 flex place-content-center place-items-center;
   }
 }
 

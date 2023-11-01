@@ -42,7 +42,7 @@ try {
       saveCsv(results, outputFilePath)
   })()
 } catch (err) { // do nothing if file doesn't exist // _err(err)
-  console.error('Error:', err)
+  console.error('Cytosis Error:', err)
 }
 
 

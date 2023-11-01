@@ -42,7 +42,7 @@ export default function FuzzyKey({scope, url} = {}) {
       const data = await response.json();
       return data;
     } catch (error) {
-      console.error('Error:', error);
+      console.error('FuzzKey/Set Error:', error);
     } 
   }
 
@@ -51,10 +51,11 @@ export default function FuzzyKey({scope, url} = {}) {
   const get = async (key, metadata=true) => {
     try {
       const response = await fetch(`${url}?&key=${key}${metadata==true ? '&metadata=true' : ''}`);
+      // const data = await response.text()
       const data = await response.json();
       return data;
     } catch (error) {
-      console.error('Error:', error);
+      console.error('FuzzKey/Get Error:', error);
     }
   }
 
@@ -65,7 +66,7 @@ export default function FuzzyKey({scope, url} = {}) {
       const data = await response.json();
       return data;
     } catch (error) {
-      console.error('Error:', error);
+      console.error('FuzzKey/SGet Error:', error);
     }
   }
 
@@ -85,7 +86,7 @@ export default function FuzzyKey({scope, url} = {}) {
       const data = await response.json();
       return data;
     } catch (error) {
-      console.error('Error:', error);
+      console.error('FuzzKey/List Error:', error);
     } 
   }
 
@@ -100,7 +101,7 @@ export default function FuzzyKey({scope, url} = {}) {
       const data = await response.json();
       return data;
     } catch (error) {
-      console.error('Error:', error);
+      console.error('FuzzKey/Del Error:', error);
     }
   }
   
