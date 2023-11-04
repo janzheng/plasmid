@@ -52,6 +52,9 @@
 %btn--tight {
   @apply py-0 px-2 border;
 }
+%btn--square {
+  @apply py-2 px-2 border;
+}
 
 %btn--snug {
   @apply py-0 px-1 border;
@@ -88,6 +91,7 @@
   &.--short {@extend %btn--short;}
   &.--tall {@extend %btn--tall;}
   &.--tight {@extend %btn--tight;}
+  &.--square {@extend %btn--square;}
   &.--snug {@extend %btn--snug;}
   &.--thin {@extend %btn--thin;}
   &.--dud {@extend %btn--dud;}

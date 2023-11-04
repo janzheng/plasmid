@@ -129,7 +129,7 @@ export const cachet = async (key, dynamicFn, { skip: skipCache = false, setFuzzy
   let now = Date.now();
   let timeDifference = (now - new Date(cachePayload?.metadata?.created)) / 1000; // convert milliseconds to seconds
 
-  if (loud) console.log('[cachet] timeDifference:', timeDifference, 'created:', cachePayload?.metadata?.created, 'ttr:', ttr, 'skipCache:', skipCache);
+  if (loud) console.log('[cachet]', 'key:', key, 'timeDifference:', timeDifference, 'created:', cachePayload?.metadata?.created, 'ttr:', ttr, 'skipCache:', skipCache);
 
 
   // if cache is updating / saving too often, move this after key cache

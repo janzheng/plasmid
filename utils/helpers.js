@@ -149,7 +149,9 @@ export function replaceKeys(text, data, options = {}) {
 
 /* 
 
-  Legacy
+  Legacy!
+
+  keyReplace and other are old; some systems still use it, but prefer to use [replaceKeys] instead
 
 */
 

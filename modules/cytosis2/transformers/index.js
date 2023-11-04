@@ -229,6 +229,7 @@ export const transformFlattenKeyedObject = (results) => {
 export const transformArrayVersionedObjects = (results, { uniqueKey="Name", versionKey="Version" } = {}) => {
   if (!Array.isArray(results)) return results
   let postObject = {} // instead of sorting / shuffling things around, we just add them to the object by key
+  let postObjects = []
   let posts = []
 
   // first pass: add all empties and v1s to posts
@@ -237,12 +238,8 @@ export const transformArrayVersionedObjects = (results, { uniqueKey="Name", vers
       post[versionKey] = post[versionKey] || "1"
       postObject[post[uniqueKey]] = postObject[post[uniqueKey]] || { versions: [] }
       postObject[post[uniqueKey]]['versions'].push(post)
-    } else {
-      // just push unversioned pages to the final list
-      posts.push(post)
     }
   })
-  // console.log('----> postObject', postObject)
 
   // sort post versions
   // transform keyed object back into array
@@ -251,11 +248,24 @@ export const transformArrayVersionedObjects = (results, { uniqueKey="Name", vers
       return compareVersions(a[versionKey], b[versionKey])
     })
     sortedVersions.reverse() // reverse so that the latest version is first; mutates array
-    posts.push({
+    postObjects.push({
       [uniqueKey]: postKey,
       versions: sortedVersions,
       ...sortedVersions[0] // add the latest version's data back into the object
     })
+  })
+
+  // console.log('----> postObjects', postObjects)
+
+  // this MIGHt have broken versioned posts...
+  results.forEach((post) => {
+    let pObj = postObjects.find(pObj => pObj[uniqueKey] == post[uniqueKey])?.[0]
+    if (pObj) {
+      posts.push(pObj)
+    }
+    else {
+      posts.push(post)
+    }
   })
 
   // console.log('----> posts array', posts)
