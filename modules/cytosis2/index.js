@@ -166,7 +166,7 @@ export const endoloader = async (config, {
   // sourceNames, // = ['site-data'],
   // transformers,
   saveCache,
-  loud = true
+  loud = false
 } = {}) => {
   try {
     if(loud) console.log('[endoloader] loading:', url, key, config)
