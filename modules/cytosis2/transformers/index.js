@@ -106,7 +106,6 @@ export const combineColumnsFromObjectArray = (arr, { keys }) => {
       result[k] = [ ...result[k], ...row[k] ]
     })
   })
-  console.log('wakakakakak combineColumnsFromObjectArray results:', result)
   return result
 }
 
