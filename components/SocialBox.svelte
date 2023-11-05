@@ -3,34 +3,36 @@
 
   import { socialParse } from '../utils/social-parser'
 
-	export let email, socialText, socialProfiles, showFull = true
+	export let email, socialText, socialProfiles, showFull = true;
+  let socials;
 
-	socialProfiles = socialProfiles // reactive
+	// socialProfiles = socialProfiles; // reactive
 
   $: if(socialText) {
-    socialProfiles = socialParse(socialText)
-  }
+    socialProfiles = socialParse(socialText);
+    socials = Object.values(socialProfiles.resultsMap);
+  };
 
-	let socials
-	$: socials = Array.from(socialProfiles)
+	$: if(socials) {
+      socials.map(social => {
+      if(social.type == 'twitter')
+        social.username = '@'+social.username
+      // if(social.type == 'linkedin')
+      // 	social.username = 'linkedin/in/'+social.username
+      if(social.type == 'google-scholar') {
+        social.username = 'Google Scholar'
+      }
 
-	$: socials.map(social => {
-		if(social.type == 'twitter')
-			social.username = '@'+social.username
-		// if(social.type == 'linkedin')
-		// 	social.username = 'linkedin/in/'+social.username
-		if(social.type == 'google-scholar') {
-			social.username = 'Google Scholar'
-		}
-
-		if(social.type == 'github') {
-			social.type = 'github-circled' // for icon to work
-		}
-	})
+      if(social.type == 'github') {
+        social.type = 'github-circled' // for icon to work
+      }
+    });
+  };
 </script>
 
 
 <div class="SocialBox">
+  this is social box
 
 
   {#if showFull == true }

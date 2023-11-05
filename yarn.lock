@@ -1517,6 +1517,24 @@ __metadata:
   languageName: node
   linkType: hard
 
+"@iconify/svelte@npm:^3.1.4":
+  version: 3.1.4
+  resolution: "@iconify/svelte@npm:3.1.4"
+  dependencies:
+    "@iconify/types": ^2.0.0
+  peerDependencies:
+    svelte: "*"
+  checksum: bc63162027412818dde91790aa1e9e044abfda584780c6dcc12492aca2a642cbc755c791d08c0a114f2002629356661391d99a567c53d2b7d99b9eb580cf976c
+  languageName: node
+  linkType: hard
+
+"@iconify/types@npm:^2.0.0":
+  version: 2.0.0
+  resolution: "@iconify/types@npm:2.0.0"
+  checksum: 029f58542c160e9d4a746869cf2e475b603424d3adf3994c5cc8d0406c47e6e04a3b898b2707840c1c5b9bd5563a1660a34b110d89fce43923baca5222f4e597
+  languageName: node
+  linkType: hard
+
 "@ipld/dag-cbor@npm:^6.0.3":
   version: 6.0.15
   resolution: "@ipld/dag-cbor@npm:6.0.15"
@@ -7803,6 +7821,7 @@ __metadata:
     "@babel/plugin-transform-runtime": ^7.9.0
     "@babel/preset-env": ^7.14.7
     "@babel/runtime": ^7.9.2
+    "@iconify/svelte": ^3.1.4
     "@notionhq/client": ^2.2.0
     "@opendocsg/pdf2md": ^0.1.27
     "@polka/send": ^0.4.0

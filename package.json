@@ -1,6 +1,6 @@
 {
   "name": "plasmid",
-  "version": "0.0.115",
+  "version": "0.0.116",
   "description": "",
   "type": "module",
   "scripts": {
@@ -18,6 +18,7 @@
     "@babel/plugin-transform-runtime": "^7.9.0",
     "@babel/preset-env": "^7.14.7",
     "@babel/runtime": "^7.9.2",
+    "@iconify/svelte": "^3.1.4",
     "@notionhq/client": "^2.2.0",
     "@opendocsg/pdf2md": "^0.1.27",
     "@sentry/serverless": "^7.13.0",

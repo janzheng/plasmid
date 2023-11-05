@@ -139,9 +139,22 @@ export const socialParse = (inputText) => {
 
   // remove all commas, if they exist
   inputText = inputText.replace(/,/g, '');
-  
-  Object.entries(internals.regexes).forEach(([type, regex]) => {
 
+  // Get the 'url' regex and remove it from the 'regexes' object
+  const urlRegex = internals.regexes['url'];
+  if (urlRegex) {
+    delete internals.regexes['url'];
+  }
+
+  // Process all other regexes first
+  Object.entries(internals.regexes).forEach(processRegex);
+
+  // Process the 'url' regex last
+  if (urlRegex) {
+    processRegex(['url', urlRegex]);
+  }
+
+  function processRegex([type, regex]) {
     // While loop is needed to process multiple matches from 1 regex
     let result;
     while ((result = regex.exec(inputText)) !== null) {
@@ -149,14 +162,13 @@ export const socialParse = (inputText) => {
 
       // do some url stuff
       let url = result[0]
-      if(type === 'twitter@') {
+      if (type === 'twitter@') {
         url = `https://twitter.com/${username}`
       }
-      if(url.includes('http') === false) {
+      if (url.includes('http') === false) {
         url = `https://${url}`
       }
 
-      // resultsMap.set(`${type}|${username}`, {
       resultsMap.set(`${type}`, {
         type,
         username,
@@ -164,18 +176,27 @@ export const socialParse = (inputText) => {
         type_name: internals.typeNameMap.get(type) || 'other'
       });
 
-      resultsArr.push({
-        [type]: {
-          type,
-          username,
-          url,
-          type_name: internals.typeNameMap.get(type) || 'other'
-        }
-      })
-    }
-  });
+      // resultsArr.push({
+      //   [type]: {
+      //     type,
+      //     username,
+      //     url,
+      //     type_name: internals.typeNameMap.get(type) || 'other'
+      //   }
+      // })
 
-  // console.log('woop:', resultsArr)
+      resultsArr.push({
+        type,
+        username,
+        url,
+        type_name: internals.typeNameMap.get(type) || 'other'
+      })
+
+      // Remove the matched substring from the input text
+      inputText = inputText.replace(result[0], '');
+    }
+  }
+
   // return [...resultsMap.values()];
   return { resultsMap, resultsArr }
 };
