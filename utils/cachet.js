@@ -88,8 +88,9 @@ async function _get(key, ttl) {
 async function _set(key, value, ttl = 60 * 60 * 24 * 4, metadata, setFuzzy=true) {
   // console.log('----> [cachet/_set] -> setting data:', key, value)
   if(setFuzzy && key && fuzzy && value) {
-    console.log('----> [setting fuzzy] cache:', key, value)
-      await fuzzy.set(key, value, null, ttl, metadata)
+    if(loud)
+      console.log('----> [setting fuzzy] cache:', key, value)
+    await fuzzy.set(key, value, null, ttl, metadata)
   }
   return cacheSet(key, value, ttl)
 }
@@ -142,7 +143,8 @@ export const cachet = async (key, dynamicFn, { skip: skipCache = false, setFuzzy
     bgFn();
     cacheClear(key); // clear the local key so we can get the new value
   } else {
-    console.log(`[cachet] within ttr (${timeDifference} ?> ${ttr}?); not running background function:`, bgFn);
+    if(loud)
+      console.log(`[cachet] within ttr (${timeDifference} ?> ${ttr}?); not running background function:`, bgFn);
   }
 
   // return the cached value and don't run the dynamic function if:
