@@ -26,51 +26,51 @@ const internals = {
   // We sometimes use [A-Za-z_]{0,3} instead of www since there are localized urls like au.linkedin.com
   // The {0,3} will get flagged as unsafe but I have not found a better solution yet
   regexes: {
-    'aboutme': /(https?:\/\/(www\.)?)?about\.me\/([^ /\n]+)/ig,
-    'angellist': /(https?:\/\/(www\.)?)?angel\.co\/([^ /\n]+)/ig,
-    'behance': /(https?:\/\/(www\.)?)?behance\.(com|net)\/([^ /\n]+)/ig,
-    'blogger': /(https?:\/\/(www\.)?)?blogger\.com\/profile\/([^ /\n]+)/ig,
-    'coinbase': /(https?:\/\/(www\.)?)?coinbase\.com\/([^ /\n]+)/ig,
-    'crunchbase': /(https?:\/\/(www\.)?)?crunchbase\.com\/(person|company|organization)\/([^ /\n]+)/ig,
-    'delicious': /(https?:\/\/(www\.)?)?delicious\.com\/([^ /\n]+)/ig,
-    'digg': /(https?:\/\/(www\.)?)?digg\.com\/users\/([^ /\n]+)/ig,
-    'dribbble': /(https?:\/\/(www\.)?)?dribbble\.com\/([^ /\n]+)/ig,
-    'facebook': /https?:\/\/([A-Za-z_]{0,3}\.|[A-Za-z_]{2}-[A-Za-z_]{2}\.)?(facebook|fb)\.com\/(groups\/)?([^ /\n]+)/ig, //eslint-disable-line unicorn/no-unsafe-regex
-    'flickr': /(https?:\/\/(www\.)?)?flickr\.com\/(people|photos|groups)\/([^ /\n]+)/ig,
-    'foursquare': /(https?:\/\/(www\.)?)?foursquare\.com\/(user\/)?([^ /\n]+)/ig,
-    'github': /(https?:\/\/(www\.)?)?github\.com\/([^ /\n]+)/ig,
-    'googleplus': /https?:\/\/plus\.google\.com\/u\/0\/\+?([^ /\n]+)/ig,
-    'gravatar': /https?:\/\/([A-Za-z_]{0,3}\.)?gravatar\.com\/([^ /\n]+)/ig, //eslint-disable-line unicorn/no-unsafe-regex
-    'instagram': /(https?:\/\/(www\.)?)?instagram\.com\/([^ /\n]+)/ig,
-    'keybase': /(https?:\/\/(www\.)?)?keybase\.io\/([^ /\n]+)/ig,
-    'klout': /(https?:\/\/(www\.)?)?klout\.com\/([^ /\n]+)/ig,
-    'lastfm': /(https?:\/\/(www\.)?)?(last\.fm|lastfm\.com)\/user\/([^ /\n]+)/ig,
+    'aboutme': /(https?:\/\/(www\.)?)?about\.me\/([^ /\\\n]+)/ig,
+    'angellist': /(https?:\/\/(www\.)?)?angel\.co\/([^ /\\\n]+)/ig,
+    'behance': /(https?:\/\/(www\.)?)?behance\.(com|net)\/([^ /\\\n]+)/ig,
+    'blogger': /(https?:\/\/(www\.)?)?blogger\.com\/profile\/([^ /\\\n]+)/ig,
+    'coinbase': /(https?:\/\/(www\.)?)?coinbase\.com\/([^ /\\\n]+)/ig,
+    'crunchbase': /(https?:\/\/(www\.)?)?crunchbase\.com\/(person|company|organization)\/([^ /\\\n]+)/ig,
+    'delicious': /(https?:\/\/(www\.)?)?delicious\.com\/([^ /\\\n]+)/ig,
+    'digg': /(https?:\/\/(www\.)?)?digg\.com\/users\/([^ /\\\n]+)/ig,
+    'dribbble': /(https?:\/\/(www\.)?)?dribbble\.com\/([^ /\\\n]+)/ig,
+    'facebook': /https?:\/\/([A-Za-z_]{0,3}\.|[A-Za-z_]{2}-[A-Za-z_]{2}\.)?(facebook|fb)\.com\/(groups\/)?([^ /\\\n]+)/ig, //eslint-disable-line unicorn/no-unsafe-regex
+    'flickr': /(https?:\/\/(www\.)?)?flickr\.com\/(people|photos|groups)\/([^ /\\\n]+)/ig,
+    'foursquare': /(https?:\/\/(www\.)?)?foursquare\.com\/(user\/)?([^ /\\\n]+)/ig,
+    'github': /(https?:\/\/(www\.)?)?github\.com\/([^ /\\\n]+)/ig,
+    'googleplus': /https?:\/\/plus\.google\.com\/u\/0\/\+?([^ /\\\n]+)/ig,
+    'gravatar': /https?:\/\/([A-Za-z_]{0,3}\.)?gravatar\.com\/([^ /\\\n]+)/ig, //eslint-disable-line unicorn/no-unsafe-regex
+    'instagram': /(https?:\/\/(www\.)?)?instagram\.com\/([^ /\\\n]+)/ig,
+    'keybase': /(https?:\/\/(www\.)?)?keybase\.io\/([^ /\\\n]+)/ig,
+    'klout': /(https?:\/\/(www\.)?)?klout\.com\/([^ /\\\n]+)/ig,
+    'lastfm': /(https?:\/\/(www\.)?)?(last\.fm|lastfm\.com)\/user\/([^ /\\\n]+)/ig,
     'linkedin': /(https?:\/\/([A-Za-z_]{0,3}\.)?)?linkedin\.com\/(((sales\/)?(in|pub|people|company|companies|organization|edu|school|groups)\/)|(profile\/view\?id=[a-zA-Z]))([^ \n]+)/ig,  //eslint-disable-line unicorn/no-unsafe-regex
-    'medium': /(https?:\/\/(www\.)?)?medium\.com\/@?([^ /\n]+)/ig,
-    'myspace': /(https?:\/\/(www\.)?)?myspace\.com\/([^ /\n]+)/ig,
-    'ok': /(https?:\/\/(www\.)?)?ok\.ru\/(profile\/)?([^ /\n]+)/ig,
-    'pandora': /(https?:\/\/(www\.)?)?pandora\.com\/people\/([^ /\n]+)/ig,
+    'medium': /(https?:\/\/(www\.)?)?medium\.com\/@?([^ /\\\n]+)/ig,
+    'myspace': /(https?:\/\/(www\.)?)?myspace\.com\/([^ /\\\n]+)/ig,
+    'ok': /(https?:\/\/(www\.)?)?ok\.ru\/(profile\/)?([^ /\\\n]+)/ig,
+    'pandora': /(https?:\/\/(www\.)?)?pandora\.com\/people\/([^ /\\\n]+)/ig,
     'pinterest': /https?:\/\/([A-Za-z_]{0,3}\.)?pinterest\.[a-zA-Z.]+\/([^ +/\n]+)/ig,  //eslint-disable-line unicorn/no-unsafe-regex
-    'plancast': /(https?:\/\/(www\.)?)?plancast\.com\/([^ /\n]+)/ig,
-    'quora': /(https?:\/\/(www\.)?)?quora\.com\/(profile\/)?([^ /\n]+)/ig,
-    'reddit': /(https?:\/\/(www\.)?)?reddit\.com\/user\/([^ /\n]+)/ig,
-    'slideshare': /(https?:\/\/(www\.)?)?slideshare\.net\/([^ /\n]+)/ig,
+    'plancast': /(https?:\/\/(www\.)?)?plancast\.com\/([^ /\\\n]+)/ig,
+    'quora': /(https?:\/\/(www\.)?)?quora\.com\/(profile\/)?([^ /\\\n]+)/ig,
+    'reddit': /(https?:\/\/(www\.)?)?reddit\.com\/user\/([^ /\\\n]+)/ig,
+    'slideshare': /(https?:\/\/(www\.)?)?slideshare\.net\/([^ /\\\n]+)/ig,
     'tumblr': /https?:\/\/(.+)\.tumblr\.com/ig,
-    'twitter': /https?:\/\/((www|mobile)\.)?twitter\.com\/([^ /\n]+)/ig,
-    'vimeo': /(https?:\/\/(www\.)?)?vimeo\.com\/([^ /\n]+)/ig,
-    'vk': /(https?:\/\/(www\.)?)?vk\.com\/([^ /\n]+)/ig,
+    'twitter': /https?:\/\/((www|mobile)\.)?twitter\.com\/([^ /\\\n]+)/ig,
+    'vimeo': /(https?:\/\/(www\.)?)?vimeo\.com\/([^ /\\\n]+)/ig,
+    'vk': /(https?:\/\/(www\.)?)?vk\.com\/([^ /\\\n]+)/ig,
     'wordpress': /https?:\/\/((?!subscribe).+)\.wordpress\.com/ig,
-    'xing': /(https?:\/\/(www\.)?)?xing\.com\/(profile\/)?([^ /\n]+)/ig,
-    'yahoo': /https?:\/\/((profile|me|local)\.)?yahoo\.com\/([^ /\n]+)/ig,
-    'youtube': /https?:\/\/([A-Za-z_]{0,3}\.)?youtube\.com\/(user\/|channel\/|c\/)?([^ /\n]+)/ig,  //eslint-disable-line unicorn/no-unsafe-regex
+    'xing': /(https?:\/\/(www\.)?)?xing\.com\/(profile\/)?([^ /\\\n]+)/ig,
+    'yahoo': /https?:\/\/((profile|me|local)\.)?yahoo\.com\/([^ /\\\n]+)/ig,
+    'youtube': /https?:\/\/([A-Za-z_]{0,3}\.)?youtube\.com\/(user\/|channel\/|c\/)?([^ /\\\n]+)/ig,  //eslint-disable-line unicorn/no-unsafe-regex
 
-    orcid: /(https?:\/\/(www\.)?)?orcid\.org\/([^ /\n]+)/ig,
-    researchgate: /(https?:\/\/(www\.)?)?researchgate\.net\/profile\/([^ /\n]+)/ig,
-    googlescholar: /https?:\/\/scholar\.google\.com\/citations\?user=([^ /\n]+)/ig,
-    publons: /(https?:\/\/(www\.)?)?publons\.com\/researcher\/([0-9]{0,9})?\/([^ /\n]+)/ig,
-    protocolsio: /(https?:\/\/(www\.)?)?protocols\.io\/researchers\/([^ /\n]+)/ig,
+    orcid: /(https?:\/\/(www\.)?)?orcid\.org\/([^ /\\\n]+)/ig,
+    researchgate: /(https?:\/\/(www\.)?)?researchgate\.net\/profile\/([^ /\\\n]+)/ig,
+    googlescholar: /https?:\/\/scholar\.google\.com\/citations\?user=([^ /\\\n]+)/ig,
+    publons: /(https?:\/\/(www\.)?)?publons\.com\/researcher\/([0-9]{0,9})?\/([^ /\\\n]+)/ig,
+    protocolsio: /(https?:\/\/(www\.)?)?protocols\.io\/researchers\/([^ /\\\n]+)/ig,
     'url': /https?:\/\/w{0,3}\w*?\.(\w*?\.)?\w{2,3}\S*|www\.(\w*?\.)?\w*?\.\w{2,3}\S*|(\w*?\.)?\w*?\.\w{2,3}[\/\?]\S*/ig,
-    'twitter@': /\@([^ /\n]+)/ig,
+    'twitter@': /\@([^ /\\\n]+)/ig,
   },
   typeNameMap: new Map([
     ['aboutme', 'About.me'],
@@ -161,8 +161,15 @@ export const socialParse = (inputText) => {
     // While loop is needed to process multiple matches from 1 regex
     let result;
     while ((result = regex.exec(inputText)) !== null) {
-      const username = result[result.length - 1];
+      let username = result[result.length - 1];
+      if (username) {
+        let match = username.match(/(@?\w+)(?=[\\" ])/);
+        if (match) {
+          username = match[1];
+        }
+      }
 
+      
       // do some url stuff
       let url = result[0]
       if (type === 'twitter@') {
@@ -172,6 +179,13 @@ export const socialParse = (inputText) => {
       if (urlMatch && urlMatch[0].includes('http') === false) {
         url = `https://${urlMatch[0]}`
       }
+      
+      let cleanUrlRegex = /https?:\/\/[^">]+/i;
+      let cleanUrlMatch = url.match(cleanUrlRegex);
+      if (cleanUrlMatch) {
+        url = cleanUrlMatch[0];
+      }
+
 
       resultsMap.set(`${type}`, {
         type,
