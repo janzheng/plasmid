@@ -8,7 +8,17 @@
   export let showText = false;
   let socials;
 
-  $: if(socialText) {
+  socialText = `<a class="notion-link" href="https://isvm.org">https://isvm.org</a> | <a class="notion-link" href="https://twitter.com/VirusOfMicrobes">Twitter</a>`
+
+  if (email) {
+    let emailRegex = /\S+@\S+\.\S+/;
+    let match = email.match(emailRegex);
+    if (match) {
+      email = match[0];
+    }
+  }
+
+  if(socialText) {
     socialProfiles = socialParse(socialText);
     socials = socialProfiles.resultsArr;
 
@@ -21,12 +31,10 @@
         social.username = 'Google Scholar'
       }
 
-      if(social.type == 'github') {
-        social.type = 'github-circled' // for icon to work
-      }
+      // if(social.type == 'github') {
+      //   social.type = 'github-circled' // for icon to work
+      // }
     });
-    console.log('socials:', socials);
-
   };
 
   const iconMap = {

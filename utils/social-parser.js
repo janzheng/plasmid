@@ -140,14 +140,17 @@ export const socialParse = (inputText) => {
   // remove all commas, if they exist
   inputText = inputText.replace(/,/g, '');
 
+  // Create a copy of internals.regexes
+  const regexesCopy = { ...internals.regexes };
+
   // Get the 'url' regex and remove it from the 'regexes' object
-  const urlRegex = internals.regexes['url'];
+  const urlRegex = regexesCopy['url'];
   if (urlRegex) {
-    delete internals.regexes['url'];
+    delete regexesCopy['url'];
   }
 
   // Process all other regexes first
-  Object.entries(internals.regexes).forEach(processRegex);
+  Object.entries(regexesCopy).forEach(processRegex);
 
   // Process the 'url' regex last
   if (urlRegex) {
@@ -165,8 +168,9 @@ export const socialParse = (inputText) => {
       if (type === 'twitter@') {
         url = `https://twitter.com/${username}`
       }
-      if (url.includes('http') === false) {
-        url = `https://${url}`
+      let urlMatch = url.match(urlRegex);
+      if (urlMatch && urlMatch[0].includes('http') === false) {
+        url = `https://${urlMatch[0]}`
       }
 
       resultsMap.set(`${type}`, {
