@@ -37,7 +37,7 @@
 
 */
 
-export let loud = false;
+export let loud = true;
 
 
 import { PUBLIC_FUZZYKEY_URL } from '$env/static/public';
@@ -88,9 +88,10 @@ async function _get(key, ttl) {
 async function _set(key, value, ttl = 60 * 60 * 24 * 4, metadata, setFuzzy=true) {
   // console.log('----> [cachet/_set] -> setting data:', key, value)
   if(setFuzzy && key && fuzzy && value) {
-    if(loud)
-      console.log('----> [setting fuzzy] cache:', key, value)
-    await fuzzy.set(key, value, null, ttl, metadata)
+    // if(loud)
+    //   console.log('----> [setting fuzzy] cache:', key, value)
+    let result = await fuzzy.set(key, value, null, ttl, metadata)
+    // console.log('setKey result:', result, key, value)
   }
   return cacheSet(key, value, ttl)
 }
@@ -130,7 +131,7 @@ export const cachet = async (key, dynamicFn, { skip: skipCache = false, setFuzzy
   let now = Date.now();
   let timeDifference = (now - new Date(cachePayload?.metadata?.created)) / 1000; // convert milliseconds to seconds
 
-  if (loud) console.log('[cachet]', 'key:', key, 'timeDifference:', timeDifference, 'created:', cachePayload?.metadata?.created, 'ttr:', ttr, 'skipCache:', skipCache);
+  if (loud) console.log('[cachet] key:', key, 'timeDifference:', timeDifference, 'created:', cachePayload?.metadata?.created, 'ttl:', ttl, 'ttr:', ttr, 'skipCache:', skipCache);
 
 
   // if cache is updating / saving too often, move this after key cache

@@ -126,7 +126,7 @@ export const postHandler = async (request) => {
     } else {
 
       if (!key || !value) {
-        return new Response(JSON.stringify(`POST needs a key and/or value`), {
+        return new Response(JSON.stringify(`POST needs a key and/or value!`), {
           headers: corsHeaders
         });
       }

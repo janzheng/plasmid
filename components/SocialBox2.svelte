@@ -7,9 +7,7 @@
 	export let email, socialText, socialProfiles, classes;
   export let showText = false;
   let socials;
-
-  // socialText = `<a class="notion-link" href="https://isvm.org">https://isvm.org</a> | <a class="notion-link" href="https://twitter.com/VirusOfMicrobes">Twitter</a>`
-
+  
   if (email) {
     let emailRegex = /\S+@\S+\.\S+/;
     let match = email.match(emailRegex);

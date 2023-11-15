@@ -37,7 +37,8 @@ export default function FuzzyKey({scope, url} = {}) {
         // body: JSON.stringify(obj)
 
         // NOTE: value now comes pre-wrapped, so we shouldn't wrap it again. Always put whatever you get, w/o mods
-        body: JSON.stringify(value)
+        // body: JSON.stringify(value) // this completely breaks it for local deploys — sometimes value is already wrapped, other times not
+        body: value.key ? JSON.stringify(value) : JSON.stringify(obj)
       });
       const data = await response.json();
       return data;
