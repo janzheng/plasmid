@@ -37,7 +37,7 @@
 
 */
 
-export let loud = true;
+export let loud = false;
 
 
 import { PUBLIC_FUZZYKEY_URL } from '$env/static/public';

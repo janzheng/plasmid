@@ -82,11 +82,19 @@ export const cfnotionLoader = async (src) => {
       const response = await fetch(url);
       let results = await response.json();
 
-  
+
+      console.log('000 RESULTS 0:', Buffer.byteLength(JSON.stringify(results), 'utf8'))
+
+
       // transform the data before returning
       results = getNotionDataList(results, src)
+      
+      console.log('111 RESULTS 1:', Buffer.byteLength(JSON.stringify(results), 'utf8'))
+
       results = await loadPages(results, src)
-  
+
+      console.log('222 RESULTS 2:', Buffer.byteLength(JSON.stringify(results), 'utf8'))
+
       // call transformers one by one
       // results = transformRemap(results, src.transformer)
       // results = transformArrayToObjectByKey(results, src.transformer)
@@ -116,6 +124,8 @@ export const getNotionDataList = (data, src) => {
 
 
 
+// adds pageBlocks (loads the page content) for each page in the collection
+// this can be really slow for large collections
 const loadPages = async (rows, src) => {
   let arr = rows
   if (src.loaders?.notionPageId) {
@@ -141,6 +151,11 @@ const loadPages = async (rows, src) => {
 
 
 
+/* 
+
+  These are for Cloudflare Workers only; will fail in Node
+
+*/
 export const cfnotionLoaderWorker = async (src) => {
   // meant only for CF worker bindings
   if (typeof NOTIONCFWORKER === 'undefined') {

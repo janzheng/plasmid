@@ -2,3 +2,5 @@
 .yarn
 .yarnrc.yml
 .DS_Store
+.cosine
+.env
