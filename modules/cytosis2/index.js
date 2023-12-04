@@ -190,6 +190,6 @@ export const endoloader = async (config, {
     if (loud) console.log('[endoloader] result: ', key, result)
     return result
   } catch (error) {
-    console.error('[endoloader] error:', error);
+    console.error('[endoloader] error fetching... url:', url, error);
   }
 }
