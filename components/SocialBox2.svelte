@@ -17,6 +17,7 @@
   }
 
   if(socialText) {
+    console.log('social text:', socialText)
     socialProfiles = socialParse(socialText);
     socials = socialProfiles.resultsArr;
 
@@ -32,8 +33,9 @@
       // if(social.type == 'github') {
       //   social.type = 'github-circled' // for icon to work
       // }
-      // console.log('socials:', socials)
     });
+    console.log('socials:', socials)
+    
   };
 
   const iconMap = {

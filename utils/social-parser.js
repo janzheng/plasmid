@@ -66,7 +66,9 @@ const internals = {
 
     orcid: /(https?:\/\/(www\.)?)?orcid\.org\/([^ /\\\n]+)/ig,
     researchgate: /(https?:\/\/(www\.)?)?researchgate\.net\/profile\/([^ /\\\n]+)/ig,
-    googlescholar: /https?:\/\/scholar\.google\.com\/citations\?user=([^ /\\\n]+)/ig,
+    // googlescholar: /https?:\/\/scholar\.google\.com\/citations\?user=([^ /\\\n]+)/ig,
+    // match things like scholar.google.co.in, co.uk and others
+    'googlescholar': /https?:\/\/scholar\.google\.[a-z\.]{2,6}\/citations\?user=([^ /\\\n]+)/ig,
     publons: /(https?:\/\/(www\.)?)?publons\.com\/researcher\/([0-9]{0,9})?\/([^ /\\\n]+)/ig,
     protocolsio: /(https?:\/\/(www\.)?)?protocols\.io\/researchers\/([^ /\\\n]+)/ig,
     'url': /https?:\/\/w{0,3}\w*?\.(\w*?\.)?\w{2,3}\S*|www\.(\w*?\.)?\w*?\.\w{2,3}\S*|(\w*?\.)?\w*?\.\w{2,3}[\/\?]\S*/ig,
@@ -140,6 +142,16 @@ export const socialParse = (inputText) => {
   // remove all commas, if they exist
   inputText = inputText.replace(/,/g, '');
 
+  // extract and deduplicate all links from inputText
+  // extract all links from inputText using a regular expression
+  let links = inputText.match(/https?:\/\/[^"<\s]+/g);
+
+  // deduplicate links by converting to a Set and back to an Array
+  links = [...new Set(links)];
+  // console.log('---> LINKS:: links:', links)
+  inputText = links.join('\n')
+  // console.log('---> LINKS:: inputText:', inputText)
+
   // Create a copy of internals.regexes
   const regexesCopy = { ...internals.regexes };
 
@@ -185,7 +197,7 @@ export const socialParse = (inputText) => {
       if (cleanUrlMatch) {
         url = cleanUrlMatch[0];
       }
-
+      url = url.replace(/<\/a$/i, '');
 
       resultsMap.set(`${type}`, {
         type,
