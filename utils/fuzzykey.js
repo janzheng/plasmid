@@ -50,13 +50,14 @@ export default function FuzzyKey({scope, url} = {}) {
 
   // base GETter w/ only a single key
   const get = async (key, metadata=true) => {
+    let src = `${url}?&key=${key}${metadata == true ? '&metadata=true' : ''}`
     try {
-      const response = await fetch(`${url}?&key=${key}${metadata==true ? '&metadata=true' : ''}`);
+      const response = await fetch(src);
       // const data = await response.text()
       const data = await response.json();
       return data;
     } catch (error) {
-      console.error('FuzzKey/Get Error:', error);
+      console.error('FuzzKey/Get Error:', src, error);
     }
   }
 

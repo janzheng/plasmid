@@ -7,7 +7,7 @@
   (2) transform that data in diferent ways
   (3) output or return the data
 
-  We don't want to make Cytosis more complicated, but we can separat the loaders + transformers
+  We don't want to make Cytosis more complicated, but we can separate the loaders + transformers
   and add them to an FSM or other tool. Cytosis on its own is useful for specific loader/transformer tasks like blog and other data loading tasks.
 
   - todo notes
@@ -158,6 +158,11 @@ export const endo = async (config, {
 
 
 
+
+
+import { Sema } from 'async-sema';
+const sema = new Sema(4); // limit to 10 concurrent executions
+
 // basic wrap around the Cloudflare Worker endocytosis loader
 // todo: implement sourceNames and transformers
 export const endoloader = async (config, {
@@ -168,8 +173,9 @@ export const endoloader = async (config, {
   saveCache,
   loud = false
 } = {}) => {
+  await sema.acquire();
   try {
-    if(loud) console.log('[endoloader] loading:', url, key, config)
+    if (loud) console.log('[endoloader] loading:', url, key, config)
     const response = await fetch(url, {
       method: 'POST',
       headers: {
@@ -177,8 +183,8 @@ export const endoloader = async (config, {
       },
       body: JSON.stringify({ key, config, saveCache })
     });
-    
-    
+
+
     if (!response.ok) {
       throw new Error(`HTTP error! status: ${response.status}`);
     }
@@ -190,6 +196,8 @@ export const endoloader = async (config, {
     if (loud) console.log('[endoloader] result: ', key, result)
     return result
   } catch (error) {
-    console.error('[endoloader] error fetching... url:', url, error);
+    console.error('[endoloader] error fetching... url:', url, key, config, error);
+  } finally {
+    sema.release();
   }
 }
