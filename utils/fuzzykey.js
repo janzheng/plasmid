@@ -11,8 +11,25 @@
     let fzz = await fuzzy.get("banana/rama")
 */
 
+import { Sema } from 'async-sema';
 export default function FuzzyKey({scope, url} = {}) {
 
+  const sema = new Sema(4); // limit to 10 concurrent executions
+
+  const fetchWithSema = async (url, options) => {
+    await sema.acquire();
+    try {
+      const response = await fetch(url, options);
+      const data = await response.json();
+      return data;
+    } catch (error) {
+      console.error('Fetch Error:', error);
+    } finally {
+      sema.release();
+    }
+  };
+
+  
   
   const set = async (key, value, scope, ttl=3600*4, metadata) => {
     if(typeof key == 'object') {
@@ -29,7 +46,7 @@ export default function FuzzyKey({scope, url} = {}) {
       if(scope)
         obj['scope'] = scope
 
-      const response = await fetch(url, {
+      const response = await fetchWithSema(url, {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json'
@@ -52,7 +69,7 @@ export default function FuzzyKey({scope, url} = {}) {
   const get = async (key, metadata=true) => {
     let src = `${url}?&key=${key}${metadata == true ? '&metadata=true' : ''}`
     try {
-      const response = await fetch(src);
+      const response = await fetchWithSema(src);
       // const data = await response.text()
       const data = await response.json();
       return data;
@@ -64,7 +81,7 @@ export default function FuzzyKey({scope, url} = {}) {
   // separation of scope and key can be helpful sometimes
   const sget = async (scope, key) => {
     try {
-      const response = await fetch(`${url}?scope=${scope}&key=${key}&metadata=true`);
+      const response = await fetchWithSema(`${url}?scope=${scope}&key=${key}&metadata=true`);
       const data = await response.json();
       return data;
     } catch (error) {
@@ -78,7 +95,7 @@ export default function FuzzyKey({scope, url} = {}) {
       if(scope)
         obj['scope'] = scope
 
-      const response = await fetch(url, {
+      const response = await fetchWithSema(url, {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json'
@@ -99,7 +116,7 @@ export default function FuzzyKey({scope, url} = {}) {
   */
   const del = async (key) => {
     try {
-      const response = await fetch(`${url}?&key=${key}`);
+      const response = await fetchWithSema(`${url}?&key=${key}`);
       const data = await response.json();
       return data;
     } catch (error) {
