@@ -139,8 +139,8 @@ export const cachet = async (key, dynamicFn, { skip: skipCache = false, setFuzzy
   // run the background function at the end to prevent side effects
   // this is independent of cached data, and is to refresh the SWR Fuzzy KV cache
   if (timeDifference > ttr && bgFn) {
-    if (loud)
-      console.log(`[cachet] ttr exceeded (${timeDifference} ?> ${ttr}?); running background function:`, bgFn);
+    // if (loud)
+    console.log(`*-> [cachet: ttr exceeded] (${timeDifference} ?> ${ttr}) --> running background function:`, bgFn);
     bgFn();
     cacheClear(key); // clear the local key so we can get the new value
   } else {

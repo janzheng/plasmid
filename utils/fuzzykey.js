@@ -23,7 +23,7 @@ export default function FuzzyKey({scope, url} = {}) {
       const data = await response.json();
       return data;
     } catch (error) {
-      console.error('Fetch Error:', error);
+      console.error('[fuzzykey/fetch] Fetch Error:', error);
     } finally {
       sema.release();
     }
@@ -46,7 +46,7 @@ export default function FuzzyKey({scope, url} = {}) {
       if(scope)
         obj['scope'] = scope
 
-      const response = await fetchWithSema(url, {
+      const data = await fetchWithSema(url, {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json'
@@ -57,7 +57,6 @@ export default function FuzzyKey({scope, url} = {}) {
         // body: JSON.stringify(value) // this completely breaks it for local deploys — sometimes value is already wrapped, other times not
         body: value.key ? JSON.stringify(value) : JSON.stringify(obj)
       });
-      const data = await response.json();
       return data;
     } catch (error) {
       console.error('FuzzKey/Set Error:', error);
@@ -69,9 +68,8 @@ export default function FuzzyKey({scope, url} = {}) {
   const get = async (key, metadata=true) => {
     let src = `${url}?&key=${key}${metadata == true ? '&metadata=true' : ''}`
     try {
-      const response = await fetchWithSema(src);
+      const data = await fetchWithSema(src);
       // const data = await response.text()
-      const data = await response.json();
       return data;
     } catch (error) {
       console.error('FuzzKey/Get Error:', src, error);
@@ -81,8 +79,7 @@ export default function FuzzyKey({scope, url} = {}) {
   // separation of scope and key can be helpful sometimes
   const sget = async (scope, key) => {
     try {
-      const response = await fetchWithSema(`${url}?scope=${scope}&key=${key}&metadata=true`);
-      const data = await response.json();
+      const data = await fetchWithSema(`${url}?scope=${scope}&key=${key}&metadata=true`);
       return data;
     } catch (error) {
       console.error('FuzzKey/SGet Error:', error);
@@ -95,14 +92,13 @@ export default function FuzzyKey({scope, url} = {}) {
       if(scope)
         obj['scope'] = scope
 
-      const response = await fetchWithSema(url, {
+      const data = await fetchWithSema(url, {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json'
         },
         body: JSON.stringify(obj)
       });
-      const data = await response.json();
       return data;
     } catch (error) {
       console.error('FuzzKey/List Error:', error);
@@ -116,8 +112,7 @@ export default function FuzzyKey({scope, url} = {}) {
   */
   const del = async (key) => {
     try {
-      const response = await fetchWithSema(`${url}?&key=${key}`);
-      const data = await response.json();
+      const data = await fetchWithSema(`${url}?&key=${key}`);
       return data;
     } catch (error) {
       console.error('FuzzKey/Del Error:', error);

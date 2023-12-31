@@ -11,6 +11,7 @@
   - attributes
     - short
     - tall
+    - wide
     - thin
     - tight
 
@@ -47,6 +48,10 @@
 
 %btn--tall {
   @apply py-4;
+}
+
+%btn--wide {
+  @apply px-8;
 }
 
 %btn--tight {
@@ -90,6 +95,7 @@
 
   &.--short {@extend %btn--short;}
   &.--tall {@extend %btn--tall;}
+  &.--wide {@extend %btn--wide;}
   &.--tight {@extend %btn--tight;}
   &.--square {@extend %btn--square;}
   &.--snug {@extend %btn--snug;}
