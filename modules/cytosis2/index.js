@@ -175,7 +175,8 @@ export const endoloader = async (config, {
 } = {}) => {
   await sema.acquire();
   try {
-    if (loud) console.log('[endoloader] loading:', url, key, config)
+    // if (loud) 
+    console.log('[endoloader] loading:', url, { key, config, saveCache })
     const response = await fetch(url, {
       method: 'POST',
       headers: {
@@ -197,7 +198,7 @@ export const endoloader = async (config, {
     if (loud) console.log('[endoloader] result: ', key, result)
     return result
   } catch (error) {
-    console.error('[endoloader] error fetching... url:', url, key, config, error);
+    console.error('[endoloader] error fetching... url:', url, { key, config, saveCache }, error);
   } finally {
     sema.release();
   }
