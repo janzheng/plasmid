@@ -4,7 +4,7 @@
   import Icon from '@iconify/svelte';
   import { socialParse } from '../utils/social-parser'
 
-	export let email, socialText, socialProfiles, classes;
+	export let email, socialText, socialProfiles, classes = 'flex gap-1';
   export let showText = false;
   let socials;
   
