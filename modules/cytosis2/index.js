@@ -176,7 +176,7 @@ export const endoloader = async (config, {
   await sema.acquire();
   try {
     // if (loud) 
-    console.log('[endoloader] loading:', url, { key, config, saveCache })
+    console.log('[endoloader] loading:', url, JSON.stringify({ key, config, saveCache }))
     const response = await fetch(url, {
       method: 'POST',
       headers: {
