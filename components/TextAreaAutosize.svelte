@@ -26,7 +26,8 @@
 	// export let maxRows;
   export let placeholder = ''
   export let required=false
-	
+  export let offset=20 // depends on padding / lineheight etc. needs to be manual
+
   export let textarea = null;
 	$: minHeight = `${1 + minRows * lineheight}em`;
 	// $: maxHeight = maxRows ? `${1 + maxRows * lineheight}em` : `auto`;
@@ -42,6 +43,9 @@
     // textarea.style.minHeight = minHeight
     // // set the max height
     // // textarea.style.maxHeight = maxHeight
+
+    // if preloaded text, make the height as tall as the window 
+    textarea.style.height = textarea.scrollHeight + offset + "px"
 	});
     
 
@@ -61,21 +65,21 @@
 	>{value + '\n'}</pre> -->
 
   <!-- setting style to overflow:hidden causes issues for text areas longer than the window -->
+  <!-- if passing in {...$$restProps}, it'll jump a lot!  -->
 	<textarea {id} {name} {placeholder} class="{classes}" bind:value {required}
     bind:this={textarea}
     rows={minRows}
     style=""
     on:keyup={(e)=>{
     // console.log('[Profile] Profile changed successfully!')
-      console.log('textarea:', textarea.scrollHeight, e.target.style.height)
+      // console.log('textarea:', textarea.scrollHeight, e.target.style.height)
 
       // if scrollheight is as tall as window height, set as window height:
       if(textarea.scrollHeight > window.innerHeight) {
         textarea.style.height = window.innerHeight + "px"
-
       } else {
         e.target.style.height = "auto"
-        e.target.style.height = (e.target.scrollHeight + 20) + "px"
+        e.target.style.height = (e.target.scrollHeight + offset) + "px"
       }
     }} 
   ></textarea>	
