@@ -59,7 +59,7 @@ export const generateSchemaFromText = async ({
 Please output the ${schemaType} object without any markdown back ticks or wrappers. Do not describe your results. Do not wrap in markdown backticks or HTML. Do not output JSON Schema or any other schemas. Please output the 
 
 ${schemaType == 'zod' ? `Zod object as a z.object.
-Only include z.object. Don't call .parse. Don't call .safeParse. Don't specify any other code. Only output code that includes z.object({{ ... }}). Don't chain code.
+Only include z.object. Don't call .parse. Don't call .parseYaml. Don't specify any other code. Only output code that includes z.object({{ ... }}). Don't chain code.
 
 Example of a Zod schema object. Please output your result in a newline delimited string like this:
 z.object({{

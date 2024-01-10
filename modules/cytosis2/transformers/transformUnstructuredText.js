@@ -184,7 +184,7 @@ export const transformUnstructuredText = R.curry(async ({ schema, zodSchema, max
     // Optionally Validate + transform the extracted data if a zodSchema is given
     // this only returns the validated data per the schema
     if (zodSchema) {
-      const result = zodSchema.safeParse(structuredTextData);
+      const result = zodSchema.parseYaml(structuredTextData);
       console.log('[transformUnstructuredText] zod result:', result);
       if (result.success) {
         return result.data
@@ -211,7 +211,7 @@ export const transformUnstructuredText = R.curry(async ({ schema, zodSchema, max
 */
 
 export const validateStructuredTextData = R.curry((zodSchema, structuredTextData) => {
-  const result = zodSchema.safeParse(structuredTextData);
+  const result = zodSchema.parseYaml(structuredTextData);
   console.log('[validateStructuredTextData] zod result:', result);
   if (result.success) {
     return result.data

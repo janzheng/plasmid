@@ -1,4 +1,14 @@
+/* 
 
+  easiest way is to add this to html:
+
+  html {
+    // creates smooth scrolling w/o js
+    scroll-behavior: smooth;
+  }
+
+
+*/
 // from here: https://github.com/sveltejs/sapper/issues/331
 export function scrollToAnchor(anchor, behavior='smooth',e) {
   if(e)
