@@ -5,7 +5,9 @@
   import { socialParse } from '../utils/social-parser'
 
 	export let email, socialText, socialProfiles, classes = 'flex gap-1';
+  export let linkClass, iconClass;
   export let showText = false;
+  export let showFullLinks = false;
   let socials;
   
   if (email) {
@@ -70,19 +72,39 @@
     {/each}
   {:else} -->
 
+  {#if showFullLinks}
+
     {#if email}
       <span class="Email">
-        <a href={`mailto:${email}`} alt={email}><Icon icon="tabler:mail" />{#if showText}<span class="px-2">{email}</span>{/if}
+        <a class="{linkClass}" href={`mailto:${email}`} alt={email}><Icon class={iconClass} icon="tabler:mail" /><span class="px-2">{email}</span>
         </a>
       </span>
     {/if}
 
     {#each socials as social}
+      <!-- {JSON.stringify(social)} -->
       <span class={`${social.type}`}>
-        <a href={social.url} alt={social.type}><Icon icon="{iconMap[social.type]||`mdi:${social.type}`}" />{#if showText}<span class="px-2">{social.username}</span>{/if}
+        <a class="{linkClass}" href={social.url} alt={social.type}><Icon class={iconClass} icon="{iconMap[social.type]||`mdi:${social.type}`}" /><span class="px-2">{social.url}</span>
         </a>
       </span>
     {/each}
+
+  {:else}
+    {#if email}
+      <span class="Email">
+        <a class="{linkClass}" href={`mailto:${email}`} alt={email}><Icon class={iconClass} icon="tabler:mail" />{#if showText}<span class="px-2">{email}</span>{/if}
+        </a>
+      </span>
+    {/if}
+
+    {#each socials as social}
+      {JSON.stringify(social)}
+      <span class={`${social.type}`}>
+        <a class="{linkClass}" href={social.url} alt={social.type}><Icon class={iconClass} icon="{iconMap[social.type]||`mdi:${social.type}`}" />{#if showText}<span class="px-2">{social.username}</span>{/if}
+        </a>
+      </span>
+    {/each}
+  {/if}
 
   <!-- {/if} -->
 
