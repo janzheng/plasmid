@@ -7,8 +7,8 @@
   import { browser } from '$app/environment';
   import { onMount, tick } from 'svelte';
 
-  import { toPng } from 'html-to-image';
-  import { jsPDF } from 'jspdf';
+  // import { toPng } from 'html-to-image';
+  // import { jsPDF } from 'jspdf';
 
   import Letter from './Certificate.svelte'
   

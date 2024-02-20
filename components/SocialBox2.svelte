@@ -98,7 +98,6 @@
     {/if}
 
     {#each socials as social}
-      {JSON.stringify(social)}
       <span class={`${social.type}`}>
         <a class="{linkClass}" href={social.url} alt={social.type}><Icon class={iconClass} icon="{iconMap[social.type]||`mdi:${social.type}`}" />{#if showText}<span class="px-2">{social.username}</span>{/if}
         </a>
