@@ -10,7 +10,7 @@
   export let showFullLinks = false;
   let socials;
   
-  if (email) {
+  $: if(email) {
     let emailRegex = /\S+@\S+\.\S+/;
     let match = email.match(emailRegex);
     if (match) {
@@ -18,7 +18,7 @@
     }
   }
 
-  if(socialText) {
+  $: if(socialText) {
     socialProfiles = socialParse(socialText);
     socials = socialProfiles.resultsArr;
 
