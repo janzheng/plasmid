@@ -187,7 +187,7 @@ export const endoloader = async (config, {
 
 
     if (!response.ok) {
-      console.log('ENDOLOADER ERROR RESPONSE:', response)
+      console.log('ENDOLOADER ERROR RESPONSE:', response.status, url, key)
       throw new Error(`HTTP error! status: ${response.status}`);
     }
 

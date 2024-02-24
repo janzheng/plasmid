@@ -1,5 +1,14 @@
 // forms
 
+:root {
+  --input-border-color: #bfdbfe; /* blue-200 */
+  --input-focus-border-color: #3b82f6; /* blue-500 */
+  --input-bg-color: #ffffff; /* white */
+  --input-hover-border-color: #3b82f6; /* blue-500 */
+}
+
+
+
 
 // form {
 
@@ -36,7 +45,14 @@ input[type='search'] {
 input[type='file'] {
   @extend .input-borders;
 
-  @apply px-3 py-1.5 bg-clip-padding border border-solid border-blue-300 focus:text-blue-700 focus:bg-white focus:border-blue-600 focus:outline-none
+  @apply px-3 py-1.5 bg-clip-padding border border-solid;
+  border-color: var(--input-border-color); /* var(--input-border-color) */
+  &:focus, &:focus-visible {
+    color: var(--input-focus-text-color); /* focus:text-var(--input-focus-text-color) */
+    background-color: var(--input-bg-color); /* focus:bg-var(--input-bg-color) */
+    border-color: var(--input-focus-border-color); /* focus:border-var(--input-focus-border-color) */
+    // outline-color: var(--input-focus-border-color); /* focus:border-var(--input-focus-border-color) */
+  }
 }
 
 
@@ -73,24 +89,82 @@ select[multiple],
   }
 }
 
+// .input-borders {
+//   @apply rounded-md bg-white border-blue-200 focus:border-blue-500 border-2 focus:bg-white focus:ring-0 hover:border-blue-500 hover:transition-all ease-in-out;
+// }
+// .input-borders {
+//   @apply rounded-md bg-var(--input-bg-color) border-var(--input-border-color) focus:border-var(--input-focus-border-color) border-2 focus:bg-var(--input-bg-color) focus:ring-0 hover:border-var(--input-hover-border-color) hover:transition-all ease-in-out;
+// }
+
+// .input-checkers {
+//   @apply bg-gray-100 border-var(--input-border-color) focus:border-var(--input-focus-border-color) border-2 focus:bg-var(--input-bg-color) focus:ring-1 hover:border-var(--input-hover-border-color) hover:transition-all ease-in-out;
+// }
+
+// .input-formlet-outline {
+//   // no hover styles
+//   @apply rounded-md bg-var(--input-bg-color) border-blue-100 focus:border-var(--input-focus-border-color) border-2 focus:bg-var(--input-bg-color) focus:ring-0;
+// }
+
+// .input-formlet-outline-hover {
+//   // no hover styles
+//   @extend .input-formlet-outline;
+//   @apply hover:border-var(--input-hover-border-color) hover:transition-all ease-in-out cursor-pointer;
+// }
 .input-borders {
-  @apply rounded-md bg-white border-blue-200 focus:border-blue-500 border-2 focus:bg-white focus:ring-0 hover:border-blue-500 hover:transition-all ease-in-out;
+  @apply rounded-md border-2 focus:ring-0 hover:transition-all ease-in-out;
+  background-color: var(--input-bg-color);
+  border-color: var(--input-border-color);
+
+  &:focus, &:focus-visible {
+    border-color: var(--input-focus-border-color);
+    // outline-color: var(--input-focus-border-color);
+    background-color: var(--input-bg-color);
+  }
+
+  &:hover {
+    border-color: var(--input-hover-border-color);
+  }
 }
 
 .input-checkers {
-  @apply bg-gray-100 border-blue-200 focus:border-blue-500 border-2 focus:bg-white focus:ring-1 hover:border-blue-500 hover:transition-all ease-in-out;
+  @apply bg-gray-100 border-2 focus:ring-1 hover:transition-all ease-in-out;
+  border-color: var(--input-border-color);
+
+  &:focus, &:focus-visible {
+    border-color: var(--input-focus-border-color);
+    background-color: var(--input-bg-color);
+  }
+
+  &:hover {
+    border-color: var(--input-hover-border-color);
+  }
 }
 
 .input-formlet-outline {
-  // no hover styles
-  @apply rounded-md bg-white border-blue-100 focus:border-blue-500 border-2 focus:bg-white focus:ring-0;
+  @apply rounded-md border-2 focus:ring-0;
+  background-color: var(--input-bg-color);
+  border-color: var(--input-border-color);
+
+  &:focus, &:focus-visible {
+    border-color: var(--input-focus-border-color);
+    background-color: var(--input-bg-color);
+  }
 }
 
 .input-formlet-outline-hover {
-  // no hover styles
   @extend .input-formlet-outline;
-  @apply hover:border-blue-500 hover:transition-all ease-in-out cursor-pointer;
+  @apply hover:transition-all ease-in-out cursor-pointer;
+
+  &:hover {
+    border-color: var(--input-hover-border-color);
+  }
 }
+
+
+
+
+
+
 
 .input-formlet-checkers-label {
   // wrapper for radio, checkboxes
