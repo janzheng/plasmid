@@ -22,6 +22,8 @@
     socialProfiles = socialParse(socialText);
     socials = socialProfiles.resultsArr;
 
+    console.log('socials', socials)
+
     socials.map(social => {
       if(social.type == 'twitter')
         social.username = '@'+social.username
@@ -40,6 +42,7 @@
   const iconMap = {
     'url': 'mdi:earth',
     'twitter': 'tabler:brand-x',
+    'x': 'tabler:brand-x',
     'youtube': 'mdi:youtube',
     'medium': 'mdi:medium',
     'linkedin': 'mdi:linkedin',
