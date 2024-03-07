@@ -22,7 +22,7 @@
     socialProfiles = socialParse(socialText);
     socials = socialProfiles.resultsArr;
 
-    console.log('socials', socials)
+    // console.log('socials', socials)
 
     socials.map(social => {
       if(social.type == 'twitter')
