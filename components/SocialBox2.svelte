@@ -22,7 +22,7 @@
     socialProfiles = socialParse(socialText);
     socials = socialProfiles.resultsArr;
 
-    // console.log('socials', socials)
+    // console.log('socials', socialText, socials)
 
     socials.map(social => {
       if(social.type == 'twitter')
@@ -37,6 +37,10 @@
       //   social.type = 'github-circled' // for icon to work
       // }
     });
+
+    // if email is given, remove it from socials (if it exists)
+    if(email)
+      socials = socials?.filter(social => social.type !== 'email')
   };
 
   const iconMap = {
@@ -49,12 +53,14 @@
     'instagram': 'mdi:instagram',
     'vimeo': 'mdi:vimeo',
     'github': 'mdi:github',
-    'email': 'tabler:mail',
     'orcid': 'academicons:orcid',
     'researchgate': 'academicons:researchgate',
     'publons': 'academicons:publons',
     'protocolsio': 'academicons:protocolsio',
     'googlescholar': 'academicons:google-scholar',
+    'googlescholar': 'academicons:google-scholar',
+    'email': 'tabler:mail',
+    'resume': 'tabler:file-info',
   };
 
 </script>

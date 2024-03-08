@@ -26,6 +26,8 @@ const internals = {
   // We sometimes use [A-Za-z_]{0,3} instead of www since there are localized urls like au.linkedin.com
   // The {0,3} will get flagged as unsafe but I have not found a better solution yet
   regexes: {
+    'email': /([a-zA-Z0-9._%-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,16})/ig,
+    'resume': /.*\/resume.*/ig,
     'aboutme': /(https?:\/\/(www\.)?)?about\.me\/([^ /\\\n]+)/ig,
     'angellist': /(https?:\/\/(www\.)?)?angel\.co\/([^ /\\\n]+)/ig,
     'behance': /(https?:\/\/(www\.)?)?behance\.(com|net)\/([^ /\\\n]+)/ig,
@@ -65,14 +67,14 @@ const internals = {
     'yahoo': /https?:\/\/((profile|me|local)\.)?yahoo\.com\/([^ /\\\n]+)/ig,
     'youtube': /https?:\/\/([A-Za-z_]{0,3}\.)?youtube\.com\/(user\/|channel\/|c\/)?([^ /\\\n]+)/ig,  //eslint-disable-line unicorn/no-unsafe-regex
 
-    orcid: /(https?:\/\/(www\.)?)?orcid\.org\/([^ /\\\n]+)/ig,
-    researchgate: /(https?:\/\/(www\.)?)?researchgate\.net\/profile\/([^ /\\\n]+)/ig,
+    'orcid': /(https?:\/\/(www\.)?)?orcid\.org\/([^ /\\\n]+)/ig,
+    'researchgate': /(https?:\/\/(www\.)?)?researchgate\.net\/profile\/([^ /\\\n]+)/ig,
     // googlescholar: /https?:\/\/scholar\.google\.com\/citations\?user=([^ /\\\n]+)/ig,
     // match things like scholar.google.co.in, co.uk and others
     // 'googlescholar': /https?:\/\/scholar\.google\.[a-z\.]{2,6}\/citations\?user=([^ /\\\n]+)/ig,
     'googlescholar': /https?:\/\/scholar\.google\.[a-z\.]{2,6}\/citations\?.*user=([^ /\\\n]+)/ig,
-    publons: /(https?:\/\/(www\.)?)?publons\.com\/researcher\/([0-9]{0,9})?\/([^ /\\\n]+)/ig,
-    protocolsio: /(https?:\/\/(www\.)?)?protocols\.io\/researchers\/([^ /\\\n]+)/ig,
+    'publons': /(https?:\/\/(www\.)?)?publons\.com\/researcher\/([0-9]{0,9})?\/([^ /\\\n]+)/ig,
+    'protocolsio': /(https?:\/\/(www\.)?)?protocols\.io\/researchers\/([^ /\\\n]+)/ig,
     'url': /https?:\/\/w{0,3}\w*?\.(\w*?\.)?\w{2,3}\S*|www\.(\w*?\.)?\w*?\.\w{2,3}\S*|(\w*?\.)?\w*?\.\w{2,3}[\/\?]\S*/ig,
     'twitter@': /\@([^ /\\\n]+)/ig,
   },
@@ -120,6 +122,8 @@ const internals = {
     ['publons', 'Publons'],
     ['protocolsio', 'ProtocolsIO'],
     ['url', 'URL'],
+    ['email', 'Email'],
+    ['resume', 'Resume'],
   ])
 };
 
@@ -147,12 +151,19 @@ export const socialParse = (inputText) => {
 
   // extract and deduplicate all links from inputText
   // extract all links from inputText using a regular expression
-  let links = inputText.match(/https?:\/\/[^"<\s]+/g);
+  let links = inputText.match(/https?:\/\/[^"<\s]+/g) || [];
 
-  // deduplicate links by converting to a Set and back to an Array
-  links = [...new Set(links)];
+  // extract all emails from inputText using a regular expression
+  let emails = inputText.match(/([a-zA-Z0-9._%-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,16})/g) || [];
+
+  // combine links and emails
+  let combined = [...links, ...emails];
+
+  // deduplicate combined by converting to a Set and back to an Array
+  combined = [...new Set(combined)];
+
   // console.log('---> LINKS:: links:', links)
-  inputText = links.join('\n')
+  inputText = combined.join('\n')
   // console.log('---> LINKS:: inputText:', inputText)
 
   // Create a copy of internals.regexes
@@ -193,6 +204,14 @@ export const socialParse = (inputText) => {
       let urlMatch = url.match(urlRegex);
       if (urlMatch && urlMatch[0].includes('http') === false) {
         url = `https://${urlMatch[0]}`
+      }
+
+      if(type === 'email') {
+        url = "mailto:"+url
+      }
+
+      if(type === 'resume') {
+        url = url 
       }
       
       let cleanUrlRegex = /https?:\/\/[^">]+/i;
