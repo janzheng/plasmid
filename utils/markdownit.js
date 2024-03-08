@@ -121,7 +121,8 @@ md['strip'] = function (md, start='<p>', end="</p>") {
   // really useful for rendering markdown content in to an H1, etc.
   // usage: $md.strip($md.render( post.fields['Title'] || ''))
   // return md.substring(3, md.length-5)
-  return md.substring(start.length, md.length - (end.length))
+  // added a fix; end.length + 1 seems to better cut off the </p>; might break other implementations
+  return md.substring(start.length, md.length - (end.length+1))
 }
 
 
