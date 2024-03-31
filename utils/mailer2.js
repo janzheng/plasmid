@@ -163,7 +163,7 @@ export const mailto = async (data, secret, loud = false, trail = false) => {
       return
     }
 
-    if (checkToken(secret).includes('demo')) {
+    if (checkToken(secret)?.includes('demo')) {
       // check for the secret here; if demo, force email address here
       console.warn('[mailer] demo mode: not sending public emails; redirecting to [jan@phage.directory]')
       to = "jan@phage.directory"

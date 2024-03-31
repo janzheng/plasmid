@@ -8,6 +8,7 @@
 
 */
 export const checkToken = (token, separator = "|") => {
+  if (!process.env.SECRET_PAIRS) return
   // token is the key that needs to match
   // future: should name secret_name AND token for more security
   let secretPairs = process.env.SECRET_PAIRS.split(separator)
